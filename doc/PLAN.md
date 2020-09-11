@@ -1,6 +1,5 @@
 # Game Plan
-## NAMEs
-
+## Jack Ellwood, 
 
 ### Breakout Variation Ideas
 
