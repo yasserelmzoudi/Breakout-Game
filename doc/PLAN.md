@@ -27,9 +27,11 @@
 
  * Power Up 1
 
- A multi-ball power-up
+ A multi-ball power-up.
 
  * Power Up 2
+
+ Extended paddle.
 
  * Power Up 3
 
@@ -38,7 +40,11 @@
 
  * Cheat Key 1
 
+ Spawn in extra balls.
+
  * Cheat Key 2
+
+ Infinite lives.
 
  * Cheat Key 3
 
@@ -68,17 +74,29 @@
  * Class 1
    * Purpose
 
+   A `Paddle` class to instatiate a paddle and control its movement.
+
    * Method
+
+   Maybe `moveRight()` and `moveLeft()` methods, or just a general `move()` method that takes a direction as a parameter.
 
  * Class 2
    * Purpose
 
+   A `Ball` class to instantiate balls and control their physics and collisions.
+
    * Method
+
+   A `hasContact()` method for if a ball is about to hit something.
 
  * Class 3
    * Purpose
 
+   A `Brick` class to instantiate bricks and deal with holding power-ups and breaking apart.
+
    * Method
+
+   The class could have an `isBroken()` method for when the brick has just been hit by the ball and its "health" is at zero, meaning it should despawn.
 
  * Class 4
    * Purpose
