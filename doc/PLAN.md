@@ -1,5 +1,5 @@
 # Game Plan
-## Jack Ellwood, 
+## Jack Ellwood, Yasser Elmzoudi
 
 ### Breakout Variation Ideas
 
@@ -7,12 +7,16 @@
 
  * Game 1
 
+ Super Breakout is one of the variations I'm most familiar with.  I think having a variety of timed power-ups generally makes the game more replayable and interesting, since power-ups can be randomized which makes replaying through the same level more interesting depending on the power-ups that are dropped.  It also allows for some creativity in the designing the power-ups.
+
  * Game 2
 
 
 #### Block Ideas
 
  * Block 1
+
+ A block that takes multiple hits to break.
 
  * Block 2
 
@@ -22,6 +26,8 @@
 #### Power Up Ideas
 
  * Power Up 1
+
+ A multi-ball power-up
 
  * Power Up 2
 
