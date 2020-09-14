@@ -23,6 +23,7 @@ public class Game extends Application {
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
 
   private Scene myScene;
+  private Ball myBall;
 
   @Override
   public void start(Stage stage) {
@@ -42,8 +43,9 @@ public class Game extends Application {
 
   Scene setupScene (int width, int height, Paint background) {
     Group root = new Group();
-    Scene scene = new Scene(root, width, height, background);
-    return scene;
+    myBall = new Ball();
+    root.getChildren().add(myBall.getCircle());
+    return new Scene(root, width, height, background);
   }
 
   public static void main (String[] args) {
