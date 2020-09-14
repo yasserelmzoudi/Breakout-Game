@@ -12,11 +12,16 @@ public class Ball {
   public static final double HORIZONTAL_SPEED = 10;
 
   private Circle ball;
+  private double verticalSpeed;
+  private double horizontalSpeed;
 
   public Ball() {
     ball = new Circle(STARTING_X, STARTING_Y, BALL_RADIUS);
     ball.setFill(Color.RED);
     ball.setId("ball");
+
+    verticalSpeed = VERTICAL_SPEED;
+    horizontalSpeed = HORIZONTAL_SPEED;
   }
 
   public void setX(double x) {
@@ -41,5 +46,15 @@ public class Ball {
 
   public Circle getCircle() {
     return ball;
+  }
+
+  public void setSpeed(double time) {
+    horizontalSpeed *= time;
+    verticalSpeed *= time;
+  }
+
+  public void ballMovement(double elapsedTime) {
+    ball.setCenterX(ball.getCenterX() + elapsedTime * horizontalSpeed);
+    ball.setCenterY(ball.getCenterY() + elapsedTime * verticalSpeed);
   }
 }

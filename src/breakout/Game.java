@@ -17,7 +17,7 @@ import javafx.util.Duration;
 public class Game extends Application {
   public static final String TITLE = "Jack and Yasser's Breakout";
   public static final int SIZE = 400;
-  public static final int FRAMES_PER_SECOND = 60;
+  public static final int FRAMES_PER_SECOND = 120;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
@@ -31,21 +31,23 @@ public class Game extends Application {
     stage.setScene(myScene);
     stage.setTitle(TITLE);
     stage.show();
-
-//    The following code will be used for animations when we implement them
-
-//    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step(SECOND_DELAY));
-//    Timeline animation = new Timeline();
-//    animation.setCycleCount(Timeline.INDEFINITE);
-//    animation.getKeyFrames().add(frame);
-//    animation.play();
+    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step(SECOND_DELAY));
+    Timeline animation = new Timeline();
+    animation.setCycleCount(Timeline.INDEFINITE);
+    animation.getKeyFrames().add(frame);
+    animation.play();
   }
 
   Scene setupScene (int width, int height, Paint background) {
     Group root = new Group();
     myBall = new Ball();
     root.getChildren().add(myBall.getCircle());
-    return new Scene(root, width, height, background);
+    Scene scene = new Scene(root, width, height, background);
+    return scene;
+  }
+
+  void step (double elapsedTime) {
+    myBall.ballMovement(elapsedTime);
   }
 
   public static void main (String[] args) {
