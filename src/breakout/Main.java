@@ -1,7 +1,5 @@
 package breakout;
 
-import javafx.application.Application;
-
 /**
  * Feel free to completely change this code or delete it entirely.
  */

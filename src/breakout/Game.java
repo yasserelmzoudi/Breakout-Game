@@ -23,7 +23,13 @@ public class Game extends Application {
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
 
   private Scene myScene;
+  private Paddle myPaddle;
 
+  /**
+   * Begins the application by opening a window with objects initialized
+   *
+   * @param stage the stage used to display the application
+   */
   @Override
   public void start(Stage stage) {
     myScene = setupScene(SIZE, SIZE, BACKGROUND);
@@ -42,10 +48,16 @@ public class Game extends Application {
 
   Scene setupScene (int width, int height, Paint background) {
     Group root = new Group();
-    Scene scene = new Scene(root, width, height, background);
-    return scene;
+    myPaddle = new Paddle();
+    root.getChildren().add(myPaddle.getRectangle());
+    return new Scene(root, width, height, background);
   }
 
+  /**
+   * Used to launch the application.
+   *
+   * @param args
+   */
   public static void main (String[] args) {
     launch(args);
   }
