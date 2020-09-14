@@ -50,7 +50,13 @@ public class Game extends Application {
     Group root = new Group();
     myPaddle = new Paddle();
     root.getChildren().add(myPaddle.getRectangle());
-    return new Scene(root, width, height, background);
+    Scene scene = new Scene(root, width, height, background);
+    scene.setOnKeyPressed(key -> handleKeyInput(key.getCode()));
+    return scene;
+  }
+
+  private void handleKeyInput(KeyCode code) {
+    myPaddle.movePaddle(code);
   }
 
   /**
