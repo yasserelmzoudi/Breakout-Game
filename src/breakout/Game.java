@@ -15,6 +15,7 @@ import javafx.util.Duration;
  * The actual application which manages the various game objects and processes.
  */
 public class Game extends Application {
+
   public static final String TITLE = "Jack and Yasser's Breakout";
   public static final int SIZE = 400;
   public static final int FRAMES_PER_SECOND = 60;
@@ -46,7 +47,7 @@ public class Game extends Application {
 //    animation.play();
   }
 
-  Scene setupScene (int width, int height, Paint background) {
+  Scene setupScene(int width, int height, Paint background) {
     Group root = new Group();
     myPaddle = new Paddle();
     root.getChildren().add(myPaddle.getRectangle());
@@ -64,7 +65,7 @@ public class Game extends Application {
    *
    * @param args
    */
-  public static void main (String[] args) {
+  public static void main(String[] args) {
     launch(args);
   }
 
