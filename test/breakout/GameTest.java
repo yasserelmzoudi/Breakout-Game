@@ -17,6 +17,7 @@ public class GameTest extends ApplicationTest {
   private final Game myGame = new Game();
   private Scene myScene;
   private Rectangle myPaddleRectangle;
+  private Circle myBall;
 
   @Override
   public void start(Stage stage) {
@@ -27,6 +28,7 @@ public class GameTest extends ApplicationTest {
 
     // find individual items within game by ID (must have been set in your code using setID())
     myPaddleRectangle = lookup("#paddle").query();
+    myBall = lookup("#ball").query();
   }
 
   @Test
@@ -35,6 +37,10 @@ public class GameTest extends ApplicationTest {
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
     assertEquals(Paddle.LENGTH, myPaddleRectangle.getWidth());
     assertEquals(Paddle.HEIGHT, myPaddleRectangle.getHeight());
+    
+    assertEquals(Ball.STARTING_X, myBall.getCenterX());
+    assertEquals(Ball.STARTING_Y, myBall.getCenterY());
+    assertEquals(Ball.BALL_RADIUS, myBall.getRadius());
     // sleep(1, TimeUnit.SECONDS); // If you want to see the test
   }
 
@@ -63,5 +69,5 @@ public class GameTest extends ApplicationTest {
         new KeyEvent(KeyEvent.KEY_PRESSED, key.getChar(), key.getName(), key, false, false, false,
             false));
   }
-
 }
+
