@@ -42,9 +42,10 @@ public class Paddle {
    * @param code the direction of movement for the Paddle
    */
   public void movePaddle(KeyCode code) {
-    switch(code) {
-      case LEFT -> myRectangle.setX(myRectangle.getX() - SPEED);
-      case RIGHT -> myRectangle.setX(myRectangle.getX() + SPEED);
+    if (code == KeyCode.LEFT) {
+      myRectangle.setX(myRectangle.getX() - SPEED);
+    } else if (code == KeyCode.RIGHT) {
+      myRectangle.setX(myRectangle.getX() + SPEED);
     }
   }
 
