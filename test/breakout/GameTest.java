@@ -1,13 +1,15 @@
 package breakout;
 
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+
 
 public class GameTest extends ApplicationTest {
   private final Game myGame = new Game();

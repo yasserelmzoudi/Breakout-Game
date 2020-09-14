@@ -14,7 +14,7 @@ public class Ball {
   public Ball() {
     ball = new Circle(STARTING_X, STARTING_Y, BALL_RADIUS);
     ball.setFill(Color.RED);
-    ball.setId("#ball");
+    ball.setId("ball");
   }
 
   public double getStartingX() {
