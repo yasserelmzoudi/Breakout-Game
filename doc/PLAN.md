@@ -17,6 +17,8 @@
  * A block that drops a random power up with a certain probability
 
  * A block that cannot be destroyed
+ 
+ * A block that only can be destroyed if it is hit at a certain time and blinks or is invisible if it cannot be
 
 
 #### Power Up Ideas
