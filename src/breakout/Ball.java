@@ -101,19 +101,19 @@ public class Ball {
   }
 
   public boolean bottomSideHit() {
-    return getY() + getRadius() >= Game.SIZE;
+    return getBottomY() >= Game.SIZE;
   }
 
   public boolean topSideHit() {
-    return getY() - getRadius() <= 0;
+    return getTopY() <= 0;
   }
 
   public boolean leftSideHit() {
-    return getX() - getRadius() <= 0;
+    return getLeftX() <= 0;
   }
 
   public boolean rightSideHit() {
-    return getX() + getRadius() >= Game.SIZE;
+    return getRightX() >= Game.SIZE;
   }
 
   public void bounceVertical() {
@@ -124,4 +124,19 @@ public class Ball {
     horizontalSpeed *= -1;
   }
 
+  public double getRightX() {
+    return getX() + getRadius();
+  }
+
+  public double getLeftX() {
+    return getX() - getRadius();
+  }
+
+  public double getTopY() {
+    return getY() - getRadius();
+  }
+
+  public double getBottomY() {
+    return getY() + getRadius();
+  }
 }
