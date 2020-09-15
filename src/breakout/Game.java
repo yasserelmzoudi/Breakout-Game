@@ -106,7 +106,7 @@ public class Game extends Application {
     if (!paused) {
       myBall.ballMovement(elapsedTime);
       myBall.checkPaddleHit(myPaddle);
-      myBall.resetBall();
+      myBall.checkWallHit();
     }
   }
 

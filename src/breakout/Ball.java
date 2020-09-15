@@ -8,8 +8,8 @@ public class Ball {
   public static final double STARTING_X = Game.SIZE / 2;
   public static final double STARTING_Y = Game.SIZE / 2;
   public static final double BALL_RADIUS = 6;
-  public static final double VERTICAL_SPEED = 50;
-  public static final double HORIZONTAL_SPEED = 50;
+  public static final double VERTICAL_SPEED = 80;
+  public static final double HORIZONTAL_SPEED = 80;
 
   private Circle ball;
   private double verticalSpeed;
@@ -32,6 +32,10 @@ public class Ball {
     ball.setCenterY(y);
   }
 
+  private double getHorizontalSpeed() {
+    return horizontalSpeed;
+  }
+
   public void setHorizontalSpeed(double horizontalSpeed) {
     this.horizontalSpeed = horizontalSpeed;
   }
@@ -40,23 +44,15 @@ public class Ball {
     this.verticalSpeed = verticalSpeed;
   }
 
-  public double getHorizontalSpeed() {
-    return horizontalSpeed;
+  public double getX() {
+    return ball.getCenterX();
   }
 
-  public double getVerticalSpeed() {
-    return verticalSpeed;
+  public double getY() {
+    return ball.getCenterY();
   }
 
-  public double getStartingX() {
-    return STARTING_X;
-  }
-
-  public double getStartingY() {
-    return STARTING_Y;
-  }
-
-  public double BALL_RADIUS() {
+  public double getRadius() {
     return BALL_RADIUS;
   }
 
@@ -76,19 +72,72 @@ public class Ball {
 
   public void checkPaddleHit(Paddle paddle) {
     if (ball.getBoundsInParent().intersects(paddle.getRectangle().getBoundsInParent())) {
-      setHorizontalSpeed(HORIZONTAL_SPEED);
+      if (horizontalSpeed == 0) {
+        setHorizontalSpeed(HORIZONTAL_SPEED);
+      }
       bounceVertical();
     }
+  }
+
+  public void checkWallHit() {
+    if (rightSideHit()) {
+      bounceHorizontal();
+    }
+    if (leftSideHit()) {
+      bounceHorizontal();
+    }
+    if (topSideHit()) {
+      bounceVertical();
+    }
+    if (bottomSideHit()) {
+      reset();
+    }
+  }
+
+  public void reset() {
+    setX(STARTING_X);
+    setY(STARTING_Y);
+    setVerticalSpeed(VERTICAL_SPEED);
+    setHorizontalSpeed(0);
+  }
+
+  public boolean bottomSideHit() {
+    return getBottomY() >= Game.SIZE;
+  }
+
+  public boolean topSideHit() {
+    return getTopY() <= 0;
+  }
+
+  public boolean leftSideHit() {
+    return getLeftX() <= 0;
+  }
+
+  public boolean rightSideHit() {
+    return getRightX() >= Game.SIZE;
   }
 
   public void bounceVertical() {
     verticalSpeed *= -1;
   }
 
-  public void resetBall(){
-    if(ball.getCenterY() + ball.getRadius() >= Game.SIZE){
-      setX(Ball.STARTING_X);
-      setY(Ball.STARTING_Y);
-    }
+  public void bounceHorizontal() {
+    horizontalSpeed *= -1;
+  }
+
+  public double getRightX() {
+    return getX() + getRadius();
+  }
+
+  public double getLeftX() {
+    return getX() - getRadius();
+  }
+
+  public double getTopY() {
+    return getY() - getRadius();
+  }
+
+  public double getBottomY() {
+    return getY() + getRadius();
   }
 }
