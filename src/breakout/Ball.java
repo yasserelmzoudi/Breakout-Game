@@ -7,9 +7,9 @@ public class Ball {
 
   public static final double STARTING_X = Game.SIZE / 2;
   public static final double STARTING_Y = Game.SIZE / 2;
-  public static final double BALL_RADIUS = 20;
-  public static final double VERTICAL_SPEED = 10;
-  public static final double HORIZONTAL_SPEED = 10;
+  public static final double BALL_RADIUS = 6;
+  public static final double VERTICAL_SPEED = 50;
+  public static final double HORIZONTAL_SPEED = 50;
 
   private Circle ball;
   private double verticalSpeed;
@@ -21,7 +21,7 @@ public class Ball {
     ball.setId("ball");
 
     verticalSpeed = VERTICAL_SPEED;
-    horizontalSpeed = HORIZONTAL_SPEED;
+    horizontalSpeed = 0;
   }
 
   public void setX(double x) {
@@ -30,6 +30,10 @@ public class Ball {
 
   public void setY(double y) {
     ball.setCenterY(y);
+  }
+
+  public void setHorizontalSpeed(double horizontalSpeed) {
+    this.horizontalSpeed = horizontalSpeed;
   }
 
   public double getStartingX() {
@@ -56,5 +60,16 @@ public class Ball {
   public void ballMovement(double elapsedTime) {
     ball.setCenterX(ball.getCenterX() + elapsedTime * horizontalSpeed);
     ball.setCenterY(ball.getCenterY() + elapsedTime * verticalSpeed);
+  }
+
+  public void checkPaddleHit(Paddle paddle) {
+    if (ball.getBoundsInParent().intersects(paddle.getRectangle().getBoundsInParent())) {
+      setHorizontalSpeed(HORIZONTAL_SPEED);
+      bounceVertical();
+    }
+  }
+
+  public void bounceVertical() {
+    verticalSpeed *= -1;
   }
 }
