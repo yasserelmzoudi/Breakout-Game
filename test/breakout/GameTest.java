@@ -8,7 +8,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -49,6 +48,8 @@ public class GameTest extends ApplicationTest {
     assertEquals(Ball.STARTING_X, myBall.getCenterX());
     assertEquals(Ball.STARTING_Y, myBall.getCenterY());
     assertEquals(Ball.BALL_RADIUS, myBall.getRadius());
+    assertEquals(0, myGame.getBall().getHorizontalSpeed());
+    assertEquals(Ball.VERTICAL_SPEED, myGame.getBall().getVerticalSpeed());
     // sleep(1, TimeUnit.SECONDS); // If you want to see the test
   }
 
@@ -89,6 +90,29 @@ public class GameTest extends ApplicationTest {
   }
 
   @Test
+  public void testBounceOffPaddle() {
+    while(myGame.getBall().getVerticalSpeed() > 0){
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(-1 * Ball.VERTICAL_SPEED, myGame.getBall().getVerticalSpeed());
+  }
+
+  @Test
+  public void testBallReset() {
+    double ballBefore = myBall.getCenterY();
+    double ballAfter = myBall.getCenterY();
+
+    while(ballBefore <= ballAfter){
+      press(myScene, KeyCode.LEFT);
+      ballBefore = myBall.getCenterY();
+      myGame.step(Game.SECOND_DELAY);
+      ballAfter = myBall.getCenterY();
+    }
+    assertEquals(Ball.STARTING_X, myBall.getCenterX());
+    assertEquals(Ball.STARTING_X, myBall.getCenterY());
+  }
+
+  @Test
   public void testReset() {
     //sleep(1, TimeUnit.SECONDS);
     press(myScene, KeyCode.R);
@@ -102,8 +126,8 @@ public class GameTest extends ApplicationTest {
 
   @Test
   public void testPause() {
-    myPaddleRectangle.setX(Paddle.STARTING_X);
-    myPaddleRectangle.setY(Paddle.STARTING_Y);
+   myPaddleRectangle.setX(Paddle.STARTING_X);
+   myPaddleRectangle.setY(Paddle.STARTING_Y);
 
     press(myScene, KeyCode.SPACE);
     press(myScene, KeyCode.RIGHT);

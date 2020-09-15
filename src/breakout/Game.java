@@ -116,6 +116,8 @@ public class Game extends Application {
       myPaddle.getRectangle().setY(Paddle.STARTING_Y);
       myBall.getCircle().setCenterX(Ball.STARTING_X);
       myBall.getCircle().setCenterY(Ball.STARTING_Y);
+      myBall.setHorizontalSpeed(0);
+      myBall.setVerticalSpeed(Ball.VERTICAL_SPEED);
     }
   }
 
@@ -123,6 +125,10 @@ public class Game extends Application {
     if (code == KeyCode.SPACE) {
       paused = !paused;
     }
+  }
+
+  public Ball getBall() {
+    return myBall;
   }
 
   /**
