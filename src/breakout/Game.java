@@ -102,11 +102,14 @@ public class Game extends Application {
     pause(code);
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
   
   void step (double elapsedTime) {
     myBall.ballMovement(elapsedTime);
     myBall.checkPaddleHit(myPaddle);
 =======
+=======
+>>>>>>> cae3ca84017b445b4a7904ff482a8b570f1f61e0
 
   void step(double elapsedTime) {
     if (!paused) {
@@ -127,7 +130,10 @@ public class Game extends Application {
     if (code == KeyCode.SPACE) {
       paused = !paused;
     }
+<<<<<<< HEAD
 >>>>>>> e7fedfd9842e88c44b8a1819c27fe71fec2d88b2
+=======
+>>>>>>> cae3ca84017b445b4a7904ff482a8b570f1f61e0
   }
 
   /**
