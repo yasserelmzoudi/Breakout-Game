@@ -36,6 +36,18 @@ public class Ball {
     this.horizontalSpeed = horizontalSpeed;
   }
 
+  public void setVerticalSpeed(double verticalSpeed) {
+    this.verticalSpeed = verticalSpeed;
+  }
+
+  public double getHorizontalSpeed() {
+    return horizontalSpeed;
+  }
+
+  public double getVerticalSpeed() {
+    return verticalSpeed;
+  }
+
   public double getStartingX() {
     return STARTING_X;
   }
@@ -71,5 +83,12 @@ public class Ball {
 
   public void bounceVertical() {
     verticalSpeed *= -1;
+  }
+
+  public void resetBall(){
+    if(ball.getCenterY() + ball.getRadius() >= Game.SIZE){
+      setX(Ball.STARTING_X);
+      setY(Ball.STARTING_Y);
+    }
   }
 }
