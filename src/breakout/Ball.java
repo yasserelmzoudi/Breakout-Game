@@ -8,8 +8,8 @@ public class Ball {
   public static final double STARTING_X = Game.SIZE / 2;
   public static final double STARTING_Y = Game.SIZE / 2;
   public static final double BALL_RADIUS = 6;
-  public static final double VERTICAL_SPEED = 50;
-  public static final double HORIZONTAL_SPEED = 50;
+  public static final double VERTICAL_SPEED = 80;
+  public static final double HORIZONTAL_SPEED = 80;
 
   private Circle ball;
   private double verticalSpeed;
@@ -72,9 +72,10 @@ public class Ball {
 
   public void checkPaddleHit(Paddle paddle) {
     if (ball.getBoundsInParent().intersects(paddle.getRectangle().getBoundsInParent())) {
-      setHorizontalSpeed(HORIZONTAL_SPEED);
+      if (horizontalSpeed == 0) {
+        setHorizontalSpeed(HORIZONTAL_SPEED);
+      }
       bounceVertical();
-      bounceHorizontal();
     }
   }
 
