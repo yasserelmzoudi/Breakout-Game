@@ -32,6 +32,10 @@ public class Ball {
     ball.setCenterY(y);
   }
 
+  private double getHorizontalSpeed() {
+    return horizontalSpeed;
+  }
+
   public void setHorizontalSpeed(double horizontalSpeed) {
     this.horizontalSpeed = horizontalSpeed;
   }
@@ -70,6 +74,7 @@ public class Ball {
     if (ball.getBoundsInParent().intersects(paddle.getRectangle().getBoundsInParent())) {
       setHorizontalSpeed(HORIZONTAL_SPEED);
       bounceVertical();
+      bounceHorizontal();
     }
   }
 
@@ -88,26 +93,26 @@ public class Ball {
     }
   }
 
-  private void reset() {
+  public void reset() {
     setX(STARTING_X);
     setY(STARTING_Y);
     setVerticalSpeed(VERTICAL_SPEED);
     setHorizontalSpeed(0);
   }
 
-  private boolean bottomSideHit() {
+  public boolean bottomSideHit() {
     return getY() + getRadius() >= Game.SIZE;
   }
 
-  private boolean topSideHit() {
+  public boolean topSideHit() {
     return getY() - getRadius() <= 0;
   }
 
-  private boolean leftSideHit() {
+  public boolean leftSideHit() {
     return getX() - getRadius() <= 0;
   }
 
-  private boolean rightSideHit() {
+  public boolean rightSideHit() {
     return getX() + getRadius() >= Game.SIZE;
   }
 
