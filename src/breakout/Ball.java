@@ -32,6 +32,10 @@ public class Ball {
     ball.setCenterY(y);
   }
 
+  public void setHorizontalSpeed(double horizontalSpeed) {
+    this.horizontalSpeed = horizontalSpeed;
+  }
+
   public double getStartingX() {
     return STARTING_X;
   }
@@ -54,12 +58,13 @@ public class Ball {
   }
 
   public void ballMovement(double elapsedTime) {
-    //ball.setCenterX(ball.getCenterX() + elapsedTime * horizontalSpeed);
+    ball.setCenterX(ball.getCenterX() + elapsedTime * horizontalSpeed);
     ball.setCenterY(ball.getCenterY() + elapsedTime * verticalSpeed);
   }
 
   public void checkPaddleHit(Paddle paddle) {
     if (ball.getBoundsInParent().intersects(paddle.getRectangle().getBoundsInParent())) {
+      setHorizontalSpeed(HORIZONTAL_SPEED);
       bounceVertical();
     }
   }
