@@ -33,6 +33,7 @@ public class Game extends Application {
   private Scene myScene;
   private Paddle myPaddle;
   private Ball myBall;
+  private boolean paused = false;
 
   /**
    * Begins the application by opening a window with objects initialized
@@ -68,11 +69,12 @@ public class Game extends Application {
    * Builds the blocks for a level from a text file
    *
    * @param level filename of the level
-   * @param root of the JavaFX resource tree
+   * @param root  of the JavaFX resource tree
    * @throws IOException
    * @throws URISyntaxException
    */
-  public void buildBlocksFromFile(String level, Group root) // Maybe this method should be in Block.java?
+  public void buildBlocksFromFile(String level,
+      Group root) // Maybe this method should be in Block.java?
       throws IOException, URISyntaxException {
     Path path = Paths
         .get(Objects.requireNonNull(Main.class.getClassLoader().getResource(level)).toURI());
@@ -93,20 +95,31 @@ public class Game extends Application {
   }
 
   private void handleKeyInput(KeyCode code) {
-    myPaddle.movePaddle(code);
-    reset(code);
-  }
-  
-  void step (double elapsedTime) {
-    myBall.ballMovement(elapsedTime);
+    if (!paused) {
+      myPaddle.movePaddle(code);
+      reset(code);
+    }
+    pause(code);
   }
 
-  void reset(KeyCode code){
-    if (code == KeyCode.R){
+  void step(double elapsedTime) {
+    if (!paused) {
+      myBall.ballMovement(elapsedTime);
+    }
+  }
+
+  private void reset(KeyCode code) {
+    if (code == KeyCode.R) {
       myPaddle.getRectangle().setX(Paddle.STARTING_X);
       myPaddle.getRectangle().setY(Paddle.STARTING_Y);
       myBall.getCircle().setCenterX(Ball.STARTING_X);
       myBall.getCircle().setCenterY(Ball.STARTING_Y);
+    }
+  }
+
+  private void pause(KeyCode code) {
+    if (code == KeyCode.SPACE) {
+      paused = !paused;
     }
   }
 
@@ -115,7 +128,7 @@ public class Game extends Application {
    *
    * @param args
    */
-  public static void main (String[] args) {
+  public static void main(String[] args) {
     launch(args);
   }
 

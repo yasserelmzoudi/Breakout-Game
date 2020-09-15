@@ -44,7 +44,7 @@ public class GameTest extends ApplicationTest {
   }
 
   @Test
-  public void testInitialBallPosition(){
+  public void testInitialBallPosition() {
     assertEquals(Ball.STARTING_X, myBall.getCenterX());
     assertEquals(Ball.STARTING_Y, myBall.getCenterY());
     assertEquals(Ball.BALL_RADIUS, myBall.getRadius());
@@ -52,7 +52,7 @@ public class GameTest extends ApplicationTest {
   }
 
   @Test
-  public void testInitialBlockPositions(){
+  public void testInitialBlockPositions() {
     myBlockRectangle = lookup("#block00").query();
     assertEquals(0, myBlockRectangle.getX());
     assertEquals(0, myBlockRectangle.getY());
@@ -88,7 +88,7 @@ public class GameTest extends ApplicationTest {
   }
 
   @Test
-  public void testReset(){
+  public void testReset() {
     //sleep(1, TimeUnit.SECONDS);
     press(myScene, KeyCode.R);
     //sleep(1, TimeUnit.SECONDS);
@@ -97,6 +97,18 @@ public class GameTest extends ApplicationTest {
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
     assertEquals(Ball.STARTING_X, myBall.getCenterX());
     assertEquals(Ball.STARTING_Y, myBall.getCenterY());
+  }
+
+  @Test
+  public void testPause() {
+    myPaddleRectangle.setX(Paddle.STARTING_X);
+    myPaddleRectangle.setY(Paddle.STARTING_Y);
+
+    press(myScene, KeyCode.SPACE);
+    press(myScene, KeyCode.RIGHT);
+
+    assertEquals(Paddle.STARTING_X, myPaddleRectangle.getX());
+    assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
   }
 
   private void press(Scene myScene, KeyCode key) {
