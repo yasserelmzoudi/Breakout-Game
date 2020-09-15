@@ -12,31 +12,31 @@
 
 #### Block Ideas
 
- * A block that takes multiple hits to break.
+ * A block that takes multiple hits to break
 
- * Block 2
+ * A block that drops a random power up with a certain probability
 
- * Block 3
+ * A block that cannot be destroyed
 
 
 #### Power Up Ideas
 
- * A multi-ball power-up.
+ * A multi-ball power-up
 
- * Extended paddle.
+ * An extended paddle
 
- * Power Up 3
+ * A sticky paddle
 
 
 #### Cheat Key Ideas
 
- * Spawn in extra balls.
+ * Spawn in extra balls
 
- * Infinite lives.
+ * Infinite lives
 
- * Cheat Key 3
+ * Skip to a level
 
- * Cheat Key 4
+ * Take away a life
 
 
 #### Level Descriptions
@@ -45,7 +45,7 @@
    * [Simple Level](https://coursework.cs.duke.edu/compsci307_2020fall/game_team24/-/blob/master/data/testlevel.txt)
 
    * This is an example of a simple level with varying numbers of blocks on each row.
-   Certain random blocks would have power-ups hidden inside, like in Super Breakout.
+   Certain random blocks would have power-ups hidden inside, like in Super Breakout. The paddle and all balls would also move at a relatively normal pace.
 
  * Level 2
    * Block Configuration
@@ -61,7 +61,7 @@
 ### Possible Classes
 
  * Class 1
-   * A `Paddle` class to instatiate a paddle and control its movement.
+   * A `Paddle` class to instantiate a paddle and control its movement.
 
    * Maybe `moveRight()` and `moveLeft()` methods, or just a general `move()` method that takes a direction as a parameter.
 
