@@ -87,6 +87,18 @@ public class GameTest extends ApplicationTest {
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
   }
 
+  @Test
+  public void testReset(){
+    //sleep(1, TimeUnit.SECONDS);
+    press(myScene, KeyCode.R);
+    //sleep(1, TimeUnit.SECONDS);
+
+    assertEquals(Paddle.STARTING_X, myPaddleRectangle.getX());
+    assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
+    assertEquals(Ball.STARTING_X, myBall.getCenterX());
+    assertEquals(Ball.STARTING_Y, myBall.getCenterY());
+  }
+
   private void press(Scene myScene, KeyCode key) {
     myScene.processKeyEvent(
         new KeyEvent(KeyEvent.KEY_PRESSED, key.getChar(), key.getName(), key, false, false, false,

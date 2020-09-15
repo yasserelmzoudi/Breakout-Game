@@ -94,10 +94,20 @@ public class Game extends Application {
 
   private void handleKeyInput(KeyCode code) {
     myPaddle.movePaddle(code);
+    reset(code);
   }
   
   void step (double elapsedTime) {
     myBall.ballMovement(elapsedTime);
+  }
+
+  void reset(KeyCode code){
+    if (code == KeyCode.R){
+      myPaddle.getRectangle().setX(Paddle.STARTING_X);
+      myPaddle.getRectangle().setY(Paddle.STARTING_Y);
+      myBall.getCircle().setCenterX(Ball.STARTING_X);
+      myBall.getCircle().setCenterY(Ball.STARTING_Y);
+    }
   }
 
   /**
