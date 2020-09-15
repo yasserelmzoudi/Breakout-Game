@@ -62,6 +62,7 @@ public class Game extends Application {
   
   void step (double elapsedTime) {
     myBall.ballMovement(elapsedTime);
+    myBall.checkPaddleHit(myPaddle);
   }
 
   /**
