@@ -36,15 +36,19 @@ public class Ball {
     this.horizontalSpeed = horizontalSpeed;
   }
 
-  public double getStartingX() {
-    return STARTING_X;
+  public void setVerticalSpeed(double verticalSpeed) {
+    this.verticalSpeed = verticalSpeed;
   }
 
-  public double getStartingY() {
-    return STARTING_Y;
+  public double getX() {
+    return ball.getCenterX();
   }
 
-  public double BALL_RADIUS() {
+  public double getY() {
+    return ball.getCenterY();
+  }
+
+  public double getRadius() {
     return BALL_RADIUS;
   }
 
@@ -69,7 +73,50 @@ public class Ball {
     }
   }
 
+  public void checkWallHit() {
+    if (rightSideHit()) {
+      bounceHorizontal();
+    }
+    if (leftSideHit()) {
+      bounceHorizontal();
+    }
+    if (topSideHit()) {
+      bounceVertical();
+    }
+    if (bottomSideHit()) {
+      reset();
+    }
+  }
+
+  private void reset() {
+    setX(STARTING_X);
+    setY(STARTING_Y);
+    setVerticalSpeed(VERTICAL_SPEED);
+    setHorizontalSpeed(0);
+  }
+
+  private boolean bottomSideHit() {
+    return getY() + getRadius() >= Game.SIZE;
+  }
+
+  private boolean topSideHit() {
+    return getY() - getRadius() <= 0;
+  }
+
+  private boolean leftSideHit() {
+    return getX() - getRadius() <= 0;
+  }
+
+  private boolean rightSideHit() {
+    return getX() + getRadius() >= Game.SIZE;
+  }
+
   public void bounceVertical() {
     verticalSpeed *= -1;
   }
+
+  public void bounceHorizontal() {
+    horizontalSpeed *= -1;
+  }
+
 }

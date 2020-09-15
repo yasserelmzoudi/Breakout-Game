@@ -105,6 +105,8 @@ public class Game extends Application {
   void step(double elapsedTime) {
     if (!paused) {
       myBall.ballMovement(elapsedTime);
+      myBall.checkPaddleHit(myPaddle);
+      myBall.checkWallHit();
     }
   }
 
