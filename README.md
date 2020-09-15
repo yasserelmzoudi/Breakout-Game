@@ -3,11 +3,11 @@ game
 
 This project implements the game of Breakout.
 
-Name: 
+Name: Jack Ellwood, Yasser Elmzoudi
 
 ### Timeline
 
-Start Date: 
+Start Date: 9/13/2020
 
 Finish Date: 
 
@@ -18,7 +18,7 @@ Hours Spent:
 
 ### Running the Program
 
-Main class:
+Main class: Main.java
 
 Data files needed: 
 
