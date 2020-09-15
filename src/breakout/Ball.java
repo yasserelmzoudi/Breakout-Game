@@ -32,10 +32,6 @@ public class Ball {
     ball.setCenterY(y);
   }
 
-  private double getHorizontalSpeed() {
-    return horizontalSpeed;
-  }
-
   public void setHorizontalSpeed(double horizontalSpeed) {
     this.horizontalSpeed = horizontalSpeed;
   }
@@ -50,6 +46,14 @@ public class Ball {
 
   public double getY() {
     return ball.getCenterY();
+  }
+
+  public double getVerticalSpeed() {
+    return verticalSpeed;
+  }
+
+  public double getHorizontalSpeed() {
+    return horizontalSpeed;
   }
 
   public double getRadius() {
