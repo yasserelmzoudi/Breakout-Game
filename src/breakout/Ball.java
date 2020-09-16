@@ -85,8 +85,8 @@ public class Ball {
     verticalSpeed *= -1;
   }
 
-  public void resetBall(){
-    if(ball.getCenterY() + ball.getRadius() >= Game.SIZE){
+  public void resetBall() {
+    if (ball.getCenterY() + ball.getRadius() >= Game.SIZE) {
       setX(Ball.STARTING_X);
       setY(Ball.STARTING_Y);
     }
