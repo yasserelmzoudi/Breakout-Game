@@ -130,6 +130,7 @@ public class Ball {
       setX(Ball.STARTING_X);
       setY(Ball.STARTING_Y);
     }
+  }
 
   public void bounceHorizontal() {
     horizontalSpeed *= -1;
