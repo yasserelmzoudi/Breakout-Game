@@ -14,7 +14,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameTest extends ApplicationTest {
+public class GameTest extends DukeApplicationTest {
 
   private final Game myGame = new Game();
   private Scene myScene;
@@ -91,7 +91,7 @@ public class GameTest extends ApplicationTest {
 
   @Test
   public void testBounceOffPaddle() {
-    while(myGame.getBall().getVerticalSpeed() > 0){
+    while (myGame.getBall().getVerticalSpeed() > 0) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(-1 * Ball.VERTICAL_SPEED, myGame.getBall().getVerticalSpeed());
@@ -102,7 +102,7 @@ public class GameTest extends ApplicationTest {
     double ballBefore = myBall.getCenterY();
     double ballAfter = myBall.getCenterY();
 
-    while(ballBefore <= ballAfter){
+    while (ballBefore <= ballAfter) {
       press(myScene, KeyCode.LEFT);
       ballBefore = myBall.getCenterY();
       myGame.step(Game.SECOND_DELAY);
@@ -126,8 +126,8 @@ public class GameTest extends ApplicationTest {
 
   @Test
   public void testPause() {
-   myPaddleRectangle.setX(Paddle.STARTING_X);
-   myPaddleRectangle.setY(Paddle.STARTING_Y);
+    myPaddleRectangle.setX(Paddle.STARTING_X);
+    myPaddleRectangle.setY(Paddle.STARTING_Y);
 
     press(myScene, KeyCode.SPACE);
     press(myScene, KeyCode.RIGHT);
@@ -136,10 +136,5 @@ public class GameTest extends ApplicationTest {
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
   }
 
-  private void press(Scene myScene, KeyCode key) {
-    myScene.processKeyEvent(
-        new KeyEvent(KeyEvent.KEY_PRESSED, key.getChar(), key.getName(), key, false, false, false,
-            false));
-  }
 }
 
