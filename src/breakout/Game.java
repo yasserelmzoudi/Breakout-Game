@@ -12,6 +12,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -65,6 +66,7 @@ public class Game extends Application {
     myPowerUps = new ArrayList<>();
     myBalls = new ArrayList<>();
     myBalls.add(new Ball());
+
     myRoot.getChildren().add(myBalls.get(MAIN_BALL).getCircle());
     buildBlocksFromFile(LEVEL, myRoot);
     Scene scene = new Scene(myRoot, width, height, background);
@@ -116,8 +118,8 @@ public class Game extends Application {
     }
   }
 
-  private void moveBalls(double elapsedTime){
-    for (Ball ball : myBalls){
+  private void moveBalls(double elapsedTime) {
+    for (Ball ball : myBalls) {
       ball.ballMovement(elapsedTime);
       ball.checkPaddleHit(myPaddle);
       ball.checkWallHit();
@@ -155,15 +157,15 @@ public class Game extends Application {
     return myBalls;
   }
 
-  public Paddle getPaddle(){
+  public Paddle getPaddle() {
     return myPaddle;
   }
 
-  public List<PowerUp> getPowerUps(){
+  public List<PowerUp> getPowerUps() {
     return myPowerUps;
   }
 
-  public Group getRoot(){
+  public Group getRoot() {
     return myRoot;
   }
 

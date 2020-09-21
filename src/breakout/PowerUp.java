@@ -41,7 +41,7 @@ public abstract class PowerUp {
   public void fallFromDestroyedBlock(Game game, double elapsedTime) {
     myText.setY(myText.getY() + elapsedTime * SPEED);
     myRectangle.setY(myRectangle.getY() + elapsedTime * SPEED);
-    if(collisionWithPaddle(game.getPaddle())){
+    if (collisionWithPaddle(game.getPaddle())) {
       activate(game);
       game.getRoot().getChildren().remove(myText);
       game.getRoot().getChildren().remove(myRectangle);

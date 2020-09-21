@@ -28,7 +28,7 @@ public class GameTest extends DukeApplicationTest {
 
     // find individual items within game by ID (must have been set in your code using setID())
     myPaddleRectangle = lookup("#paddle").query();
-    myBallCircle = lookup("#ball").query();
+    myBallCircle = myGame.getBall().getCircle();
   }
 
   @Test
@@ -151,6 +151,16 @@ public class GameTest extends DukeApplicationTest {
     myGame.step(Game.SECOND_DELAY);
     assertEquals(Game.SIZE / 2 + PowerUp.SPEED * Game.SECOND_DELAY + PowerUp.HEIGHT,
         myPowerUp.getBottom());
+  }
+
+  @Test
+  public void testMultiBallPowerUp() {
+    PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
+    myGame.getPowerUps().add(myPowerUp);
+    while (myGame.getBalls().size() == 1) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(3, myGame.getBalls().size());
   }
 
 }
