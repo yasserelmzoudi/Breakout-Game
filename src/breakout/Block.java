@@ -33,4 +33,27 @@ public class Block {
     return myRectangle;
   }
 
+  public double getX() {
+    return myRectangle.getX();
+  }
+
+  public double getY() {
+    return myRectangle.getY();
+  }
+
+  public double getRightX() {
+    return getX() + getRadius();
+  }
+
+  public double getLeftX() {
+    return getX() - getRadius();
+  }
+
+  public double getTopY() {
+    return getY() - getRadius();
+  }
+
+  public double getBottomY() {
+    return getY() + getRadius();
+  }
 }

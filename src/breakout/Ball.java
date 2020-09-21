@@ -85,13 +85,13 @@ public class Ball {
   }
 
   public void checkWallHit() {
-    if (rightSideHit() || leftSideHit()) {
+    if (rightSideWallHit() || leftSideWallHit()) {
       bounceHorizontal();
     }
-    if (topSideHit()) {
+    if (topSideWallHit()) {
       bounceVertical();
     }
-    if (bottomSideHit()) {
+    if (bottomSideWallHit()) {
       reset();
       //remove one life
     }
@@ -104,19 +104,19 @@ public class Ball {
     setHorizontalSpeed(0);
   }
 
-  public boolean bottomSideHit() {
+  public boolean bottomSideWallHit() {
     return getBottomY() >= Game.SIZE;
   }
 
-  public boolean topSideHit() {
+  public boolean topSideWallHit() {
     return getTopY() <= 0;
   }
 
-  public boolean leftSideHit() {
+  public boolean leftSideWallHit() {
     return getLeftX() <= 0;
   }
 
-  public boolean rightSideHit() {
+  public boolean rightSideWallHit() {
     return getRightX() >= Game.SIZE;
   }
 
@@ -142,5 +142,32 @@ public class Ball {
 
   public double getBottomY() {
     return getY() + getRadius();
+  }
+
+  public void checkBrickHit(Block brick) {
+    if (ball.getBoundsInParent().intersects(brick.getRectangle().getBoundsInParent())) {
+      if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
+        bounceVertical();
+      }
+      if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
+        bounceHorizontal();
+      }
+    }
+  }
+
+  public boolean leftSideBrickHit(Block brick) {
+    return getRightX() <= brick.getLeftX();
+  }
+
+  public boolean rightSideBrickHit(Block brick) {
+    return getLeftX() >= brick.getRightX();
+  }
+
+  public boolean bottomSideBrickHit(Block brick) {
+    return getTopY() >= brick.getBottomY();
+  }
+
+  public boolean topSideBrickHit(Block brick) {
+    return getBottomY() <= brick.getTopY();
   }
 }
