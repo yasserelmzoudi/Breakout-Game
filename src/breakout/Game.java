@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javafx.animation.KeyFrame;
@@ -33,6 +34,7 @@ public class Game extends Application {
   public static final int MAIN_BALL = 0;
 
   private Scene myScene;
+  private Group myRoot;
   private Paddle myPaddle;
   private List<Ball> myBalls;
   private List<PowerUp> myPowerUps;
@@ -57,13 +59,15 @@ public class Game extends Application {
   }
 
   Scene setupScene(int width, int height, Paint background) throws IOException, URISyntaxException {
-    Group root = new Group();
+    myRoot = new Group();
     myPaddle = new Paddle();
-    root.getChildren().add(myPaddle.getRectangle());
+    myRoot.getChildren().add(myPaddle.getRectangle());
+    myPowerUps = new ArrayList<>();
+    myBalls = new ArrayList<>();
     myBalls.add(new Ball());
-    root.getChildren().add(myBalls.get(MAIN_BALL).getCircle());
-    buildBlocksFromFile(LEVEL, root);
-    Scene scene = new Scene(root, width, height, background);
+    myRoot.getChildren().add(myBalls.get(MAIN_BALL).getCircle());
+    buildBlocksFromFile(LEVEL, myRoot);
+    Scene scene = new Scene(myRoot, width, height, background);
     scene.setOnKeyPressed(key -> handleKeyInput(key.getCode()));
     return scene;
   }
@@ -107,12 +111,12 @@ public class Game extends Application {
 
   void step(double elapsedTime) {
     if (!paused) {
-      moveBalls(myBalls, elapsedTime);
-      movePowerUps(myPowerUps, elapsedTime);
+      moveBalls(elapsedTime);
+      movePowerUps(elapsedTime);
     }
   }
 
-  private void moveBalls(List<Ball> myBalls, double elapsedTime){
+  private void moveBalls(double elapsedTime){
     for (Ball ball : myBalls){
       ball.ballMovement(elapsedTime);
       ball.checkPaddleHit(myPaddle);
@@ -120,9 +124,9 @@ public class Game extends Application {
     }
   }
 
-  private void movePowerUps(List<PowerUp> myPowerUps, double elapsedTime) {
+  private void movePowerUps(double elapsedTime) {
     for (PowerUp powerUp : myPowerUps) {
-
+      powerUp.fallFromDestroyedBlock(this, elapsedTime);
     }
   }
 
@@ -157,6 +161,10 @@ public class Game extends Application {
 
   public List<PowerUp> getPowerUps(){
     return myPowerUps;
+  }
+
+  public Group getRoot(){
+    return myRoot;
   }
 
   /**

@@ -144,5 +144,14 @@ public class GameTest extends DukeApplicationTest {
     assertEquals(Game.SIZE - Paddle.LENGTH, myPaddleRectangle.getX());
   }
 
+  @Test
+  public void testPowerUpFall() {
+    PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
+    myGame.getPowerUps().add(myPowerUp);
+    myGame.step(Game.SECOND_DELAY);
+    assertEquals(Game.SIZE / 2 + PowerUp.SPEED * Game.SECOND_DELAY + PowerUp.HEIGHT,
+        myPowerUp.getBottom());
+  }
+
 }
 

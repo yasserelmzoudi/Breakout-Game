@@ -1,7 +1,5 @@
 package breakout;
 
-import java.util.List;
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -28,34 +26,34 @@ public abstract class PowerUp {
     myRectangle.setId("powerUpRectangle" + x + y);
   }
 
-  private double getLeftSideX() {
+  public double getLeftSideX() {
     return myRectangle.getX();
   }
 
-  private double getRightSideX() {
+  public double getRightSideX() {
     return myRectangle.getX() + LENGTH;
   }
 
-  private double getBottom() {
+  public double getBottom() {
     return myRectangle.getY() + HEIGHT;
   }
 
-  public void fallFromDestroyedBlock(Group root, double elapsedTime, Paddle paddle) {
+  public void fallFromDestroyedBlock(Game game, double elapsedTime) {
     myText.setY(myText.getY() + elapsedTime * SPEED);
     myRectangle.setY(myRectangle.getY() + elapsedTime * SPEED);
-    if(collisionWithPaddle(paddle)){
-      activate(root);
-      root.getChildren().remove(myText);
-      root.getChildren().remove(myRectangle);
+    if(collisionWithPaddle(game.getPaddle())){
+      activate(game);
+      game.getRoot().getChildren().remove(myText);
+      game.getRoot().getChildren().remove(myRectangle);
     }
   }
 
   public boolean collisionWithPaddle(Paddle paddle) {
-    return getBottom() <= Paddle.STARTING_Y && getRightSideX() >= paddle.getLeftSideX()
+    return getBottom() >= Paddle.STARTING_Y && getRightSideX() >= paddle.getLeftSideX()
         && getLeftSideX() <= paddle.getRightSideX();
   }
 
-  public abstract void activate(Group root);
+  public abstract void activate(Game game);
 
   public abstract String getImageString();
 }
