@@ -2,15 +2,12 @@ package breakout;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.concurrent.TimeUnit;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +16,7 @@ public class GameTest extends DukeApplicationTest {
   private final Game myGame = new Game();
   private Scene myScene;
   private Rectangle myPaddleRectangle;
-  private Circle myBall;
+  private Circle myBallCircle;
   private Rectangle myBlockRectangle;
 
   @Override
@@ -31,7 +28,7 @@ public class GameTest extends DukeApplicationTest {
 
     // find individual items within game by ID (must have been set in your code using setID())
     myPaddleRectangle = lookup("#paddle").query();
-    myBall = lookup("#ball").query();
+    myBallCircle = myGame.getBall().getCircle();
   }
 
   @Test
@@ -45,9 +42,9 @@ public class GameTest extends DukeApplicationTest {
 
   @Test
   public void testInitialBallPosition() {
-    assertEquals(Ball.STARTING_X, myBall.getCenterX());
-    assertEquals(Ball.STARTING_Y, myBall.getCenterY());
-    assertEquals(Ball.BALL_RADIUS, myBall.getRadius());
+    assertEquals(Ball.STARTING_X, myBallCircle.getCenterX());
+    assertEquals(Ball.STARTING_Y, myBallCircle.getCenterY());
+    assertEquals(Ball.BALL_RADIUS, myBallCircle.getRadius());
     assertEquals(0, myGame.getBall().getHorizontalSpeed());
     assertEquals(Ball.VERTICAL_SPEED, myGame.getBall().getVerticalSpeed());
     // sleep(1, TimeUnit.SECONDS); // If you want to see the test
@@ -99,17 +96,17 @@ public class GameTest extends DukeApplicationTest {
 
   @Test
   public void testBallReset() {
-    double ballBefore = myBall.getCenterY();
-    double ballAfter = myBall.getCenterY();
+    double ballBefore = myBallCircle.getCenterY();
+    double ballAfter = myBallCircle.getCenterY();
 
     while (ballBefore <= ballAfter) {
       press(myScene, KeyCode.LEFT);
-      ballBefore = myBall.getCenterY();
+      ballBefore = myBallCircle.getCenterY();
       myGame.step(Game.SECOND_DELAY);
-      ballAfter = myBall.getCenterY();
+      ballAfter = myBallCircle.getCenterY();
     }
-    assertEquals(Ball.STARTING_X, myBall.getCenterX());
-    assertEquals(Ball.STARTING_X, myBall.getCenterY());
+    assertEquals(Ball.STARTING_X, myBallCircle.getCenterX());
+    assertEquals(Ball.STARTING_X, myBallCircle.getCenterY());
   }
 
   @Test
@@ -120,8 +117,8 @@ public class GameTest extends DukeApplicationTest {
 
     assertEquals(Paddle.STARTING_X, myPaddleRectangle.getX());
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
-    assertEquals(Ball.STARTING_X, myBall.getCenterX());
-    assertEquals(Ball.STARTING_Y, myBall.getCenterY());
+    assertEquals(Ball.STARTING_X, myBallCircle.getCenterX());
+    assertEquals(Ball.STARTING_Y, myBallCircle.getCenterY());
   }
 
   @Test
@@ -134,6 +131,36 @@ public class GameTest extends DukeApplicationTest {
 
     assertEquals(Paddle.STARTING_X, myPaddleRectangle.getX());
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
+  }
+
+  @Test
+  public void testPaddleOnWall() {
+    myPaddleRectangle.setX(0);
+    press(myScene, KeyCode.LEFT);
+    assertEquals(0, myPaddleRectangle.getX());
+
+    myPaddleRectangle.setX(Game.SIZE - Paddle.LENGTH);
+    press(myScene, KeyCode.RIGHT);
+    assertEquals(Game.SIZE - Paddle.LENGTH, myPaddleRectangle.getX());
+  }
+
+  @Test
+  public void testPowerUpFall() {
+    PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
+    myGame.getPowerUps().add(myPowerUp);
+    myGame.step(Game.SECOND_DELAY);
+    assertEquals(Game.SIZE / 2 + PowerUp.SPEED * Game.SECOND_DELAY + PowerUp.HEIGHT,
+        myPowerUp.getBottom());
+  }
+
+  @Test
+  public void testMultiBallPowerUp() {
+    PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
+    myGame.getPowerUps().add(myPowerUp);
+    while (myGame.getBalls().size() == 1) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(3, myGame.getBalls().size());
   }
 
 }

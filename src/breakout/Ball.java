@@ -1,5 +1,6 @@
 package breakout;
 
+import java.util.Random;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -18,7 +19,7 @@ public class Ball {
   public Ball() {
     ball = new Circle(STARTING_X, STARTING_Y, BALL_RADIUS);
     ball.setFill(Color.RED);
-    ball.setId("ball");
+    ball.setId("ball" + new Random());
 
     verticalSpeed = VERTICAL_SPEED;
     horizontalSpeed = 0;

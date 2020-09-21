@@ -41,11 +41,18 @@ public class Paddle {
    * @param code the direction of movement for the Paddle
    */
   public void movePaddle(KeyCode code) {
-    if (code == KeyCode.LEFT) {
-      myRectangle.setX(myRectangle.getX() - SPEED);
-    } else if (code == KeyCode.RIGHT) {
-      myRectangle.setX(myRectangle.getX() + SPEED);
+    if (code == KeyCode.LEFT && getLeftSideX() - SPEED >= 0) {
+      myRectangle.setX(getLeftSideX() - SPEED);
+    } else if (code == KeyCode.RIGHT && getRightSideX() + SPEED <= Game.SIZE) {
+      myRectangle.setX(getLeftSideX() + SPEED);
     }
   }
 
+  public double getLeftSideX() {
+    return myRectangle.getX();
+  }
+
+  public double getRightSideX() {
+    return myRectangle.getX() + LENGTH;
+  }
 }

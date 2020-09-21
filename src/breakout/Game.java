@@ -5,11 +5,14 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -29,10 +32,13 @@ public class Game extends Application {
   public static final Paint BACKGROUND = Color.AZURE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
   public static final String LEVEL = "testlevel.txt";
+  public static final int MAIN_BALL = 0;
 
   private Scene myScene;
+  private Group myRoot;
   private Paddle myPaddle;
-  private Ball myBall;
+  private List<Ball> myBalls;
+  private List<PowerUp> myPowerUps;
   private boolean paused = false;
 
   /**
@@ -54,13 +60,16 @@ public class Game extends Application {
   }
 
   Scene setupScene(int width, int height, Paint background) throws IOException, URISyntaxException {
-    Group root = new Group();
+    myRoot = new Group();
     myPaddle = new Paddle();
-    root.getChildren().add(myPaddle.getRectangle());
-    myBall = new Ball();
-    root.getChildren().add(myBall.getCircle());
-    buildBlocksFromFile(LEVEL, root);
-    Scene scene = new Scene(root, width, height, background);
+    myRoot.getChildren().add(myPaddle.getRectangle());
+    myPowerUps = new ArrayList<>();
+    myBalls = new ArrayList<>();
+    myBalls.add(new Ball());
+
+    myRoot.getChildren().add(myBalls.get(MAIN_BALL).getCircle());
+    buildBlocksFromFile(LEVEL, myRoot);
+    Scene scene = new Scene(myRoot, width, height, background);
     scene.setOnKeyPressed(key -> handleKeyInput(key.getCode()));
     return scene;
   }
@@ -104,9 +113,22 @@ public class Game extends Application {
 
   void step(double elapsedTime) {
     if (!paused) {
-      myBall.ballMovement(elapsedTime);
-      myBall.checkPaddleHit(myPaddle);
-      myBall.checkWallHit();
+      moveBalls(elapsedTime);
+      movePowerUps(elapsedTime);
+    }
+  }
+
+  private void moveBalls(double elapsedTime) {
+    for (Ball ball : myBalls) {
+      ball.ballMovement(elapsedTime);
+      ball.checkPaddleHit(myPaddle);
+      ball.checkWallHit();
+    }
+  }
+
+  private void movePowerUps(double elapsedTime) {
+    for (PowerUp powerUp : myPowerUps) {
+      powerUp.fallFromDestroyedBlock(this, elapsedTime);
     }
   }
 
@@ -114,10 +136,10 @@ public class Game extends Application {
     if (code == KeyCode.R) {
       myPaddle.getRectangle().setX(Paddle.STARTING_X);
       myPaddle.getRectangle().setY(Paddle.STARTING_Y);
-      myBall.getCircle().setCenterX(Ball.STARTING_X);
-      myBall.getCircle().setCenterY(Ball.STARTING_Y);
-      myBall.setHorizontalSpeed(0);
-      myBall.setVerticalSpeed(Ball.VERTICAL_SPEED);
+      myBalls.get(MAIN_BALL).getCircle().setCenterX(Ball.STARTING_X);
+      myBalls.get(MAIN_BALL).getCircle().setCenterY(Ball.STARTING_Y);
+      myBalls.get(MAIN_BALL).setHorizontalSpeed(0);
+      myBalls.get(MAIN_BALL).setVerticalSpeed(Ball.VERTICAL_SPEED);
     }
   }
 
@@ -128,7 +150,23 @@ public class Game extends Application {
   }
 
   public Ball getBall() {
-    return myBall;
+    return myBalls.get(MAIN_BALL);
+  }
+
+  public List<Ball> getBalls() {
+    return myBalls;
+  }
+
+  public Paddle getPaddle() {
+    return myPaddle;
+  }
+
+  public List<PowerUp> getPowerUps() {
+    return myPowerUps;
+  }
+
+  public Group getRoot() {
+    return myRoot;
   }
 
   /**
