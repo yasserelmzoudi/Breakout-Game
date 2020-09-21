@@ -30,6 +30,7 @@ public class Game extends Application {
   public static final Paint BACKGROUND = Color.AZURE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
   public static final String LEVEL = "testlevel.txt";
+  public static final int MAIN_BALL = 0;
 
   private Scene myScene;
   private Paddle myPaddle;
@@ -60,7 +61,7 @@ public class Game extends Application {
     myPaddle = new Paddle();
     root.getChildren().add(myPaddle.getRectangle());
     myBalls.add(new Ball());
-    root.getChildren().add(myBalls.get(0).getCircle());
+    root.getChildren().add(myBalls.get(MAIN_BALL).getCircle());
     buildBlocksFromFile(LEVEL, root);
     Scene scene = new Scene(root, width, height, background);
     scene.setOnKeyPressed(key -> handleKeyInput(key.getCode()));
@@ -129,10 +130,10 @@ public class Game extends Application {
     if (code == KeyCode.R) {
       myPaddle.getRectangle().setX(Paddle.STARTING_X);
       myPaddle.getRectangle().setY(Paddle.STARTING_Y);
-      myBall.getCircle().setCenterX(Ball.STARTING_X);
-      myBall.getCircle().setCenterY(Ball.STARTING_Y);
-      myBall.setHorizontalSpeed(0);
-      myBall.setVerticalSpeed(Ball.VERTICAL_SPEED);
+      myBalls.get(MAIN_BALL).getCircle().setCenterX(Ball.STARTING_X);
+      myBalls.get(MAIN_BALL).getCircle().setCenterY(Ball.STARTING_Y);
+      myBalls.get(MAIN_BALL).setHorizontalSpeed(0);
+      myBalls.get(MAIN_BALL).setVerticalSpeed(Ball.VERTICAL_SPEED);
     }
   }
 
@@ -143,7 +144,19 @@ public class Game extends Application {
   }
 
   public Ball getBall() {
-    return myBall;
+    return myBalls.get(MAIN_BALL);
+  }
+
+  public List<Ball> getBalls() {
+    return myBalls;
+  }
+
+  public Paddle getPaddle(){
+    return myPaddle;
+  }
+
+  public List<PowerUp> getPowerUps(){
+    return myPowerUps;
   }
 
   /**
