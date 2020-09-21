@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-public abstract class PowerUp {
+public abstract class PowerUp  {
 
   public static final double SPEED = 20;
   public static final double LENGTH = 25;

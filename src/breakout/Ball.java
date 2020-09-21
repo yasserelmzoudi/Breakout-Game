@@ -85,10 +85,7 @@ public class Ball {
   }
 
   public void checkWallHit() {
-    if (rightSideHit()) {
-      bounceHorizontal();
-    }
-    if (leftSideHit()) {
+    if (rightSideHit() || leftSideHit()) {
       bounceHorizontal();
     }
     if (topSideHit()) {
@@ -96,6 +93,7 @@ public class Ball {
     }
     if (bottomSideHit()) {
       reset();
+      //remove one life
     }
   }
 
@@ -124,13 +122,6 @@ public class Ball {
 
   public void bounceVertical() {
     verticalSpeed *= -1;
-  }
-
-  public void resetBall() {
-    if (ball.getCenterY() + ball.getRadius() >= Game.SIZE) {
-      setX(Ball.STARTING_X);
-      setY(Ball.STARTING_Y);
-    }
   }
 
   public void bounceHorizontal() {
