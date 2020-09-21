@@ -163,5 +163,11 @@ public class GameTest extends DukeApplicationTest {
     assertEquals(3, myGame.getBalls().size());
   }
 
+  @Test
+  public void testPowerUpCheat() {
+    press(myScene, KeyCode.P);
+    assertEquals(1, myGame.getPowerUps().size());
+  }
+
 }
 
