@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -32,7 +33,8 @@ public class Game extends Application {
 
   private Scene myScene;
   private Paddle myPaddle;
-  private Ball myBall;
+  private List<Ball> myBalls;
+  private List<PowerUp> myPowerUps;
   private boolean paused = false;
 
   /**
@@ -57,8 +59,8 @@ public class Game extends Application {
     Group root = new Group();
     myPaddle = new Paddle();
     root.getChildren().add(myPaddle.getRectangle());
-    myBall = new Ball();
-    root.getChildren().add(myBall.getCircle());
+    myBalls.add(new Ball());
+    root.getChildren().add(myBalls.get(0).getCircle());
     buildBlocksFromFile(LEVEL, root);
     Scene scene = new Scene(root, width, height, background);
     scene.setOnKeyPressed(key -> handleKeyInput(key.getCode()));
@@ -104,9 +106,22 @@ public class Game extends Application {
 
   void step(double elapsedTime) {
     if (!paused) {
-      myBall.ballMovement(elapsedTime);
-      myBall.checkPaddleHit(myPaddle);
-      myBall.checkWallHit();
+      moveBalls(myBalls, elapsedTime);
+      movePowerUps(myPowerUps, elapsedTime);
+    }
+  }
+
+  private void moveBalls(List<Ball> myBalls, double elapsedTime){
+    for (Ball ball : myBalls){
+      ball.ballMovement(elapsedTime);
+      ball.checkPaddleHit(myPaddle);
+      ball.checkWallHit();
+    }
+  }
+
+  private void movePowerUps(List<PowerUp> myPowerUps, double elapsedTime) {
+    for (PowerUp powerUp : myPowerUps) {
+
     }
   }
 

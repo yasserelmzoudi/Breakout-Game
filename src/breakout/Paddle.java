@@ -48,11 +48,11 @@ public class Paddle {
     }
   }
 
-  private double getLeftSideX() {
+  public double getLeftSideX() {
     return myRectangle.getX();
   }
 
-  private double getRightSideX() {
+  public double getRightSideX() {
     return myRectangle.getX() + LENGTH;
   }
 }

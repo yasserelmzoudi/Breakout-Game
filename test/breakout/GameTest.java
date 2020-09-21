@@ -137,12 +137,10 @@ public class GameTest extends DukeApplicationTest {
   public void testPaddleOnWall() {
     myPaddleRectangle.setX(0);
     press(myScene, KeyCode.LEFT);
-
     assertEquals(0, myPaddleRectangle.getX());
 
     myPaddleRectangle.setX(Game.SIZE - Paddle.LENGTH);
     press(myScene, KeyCode.RIGHT);
-
     assertEquals(Game.SIZE - Paddle.LENGTH, myPaddleRectangle.getX());
   }
 
