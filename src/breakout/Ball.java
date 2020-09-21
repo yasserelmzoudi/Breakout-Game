@@ -58,7 +58,7 @@ public class Ball {
   }
 
   public double getRadius() {
-    return BALL_RADIUS;
+    return ball.getRadius();
   }
 
   public Circle getCircle() {
@@ -71,8 +71,8 @@ public class Ball {
   }
 
   public void ballMovement(double elapsedTime) {
-    ball.setCenterX(ball.getCenterX() + elapsedTime * horizontalSpeed);
-    ball.setCenterY(ball.getCenterY() + elapsedTime * verticalSpeed);
+    setX(getX() + elapsedTime * horizontalSpeed);
+    setY(getY() + elapsedTime * verticalSpeed);
   }
 
   public void checkPaddleHit(Paddle paddle) {
@@ -88,10 +88,10 @@ public class Ball {
     if (rightSideWallHit() || leftSideWallHit()) {
       bounceHorizontal();
     }
-    if (topSideWallHit()) {
+    else if (topSideWallHit()) {
       bounceVertical();
     }
-    if (bottomSideWallHit()) {
+    else if (bottomSideWallHit()) {
       reset();
       //remove one life
     }
@@ -149,7 +149,7 @@ public class Ball {
       if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
         bounceVertical();
       }
-      if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
+      else if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
         bounceHorizontal();
       }
     }

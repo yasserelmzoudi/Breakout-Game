@@ -121,6 +121,7 @@ public class Game extends Application {
     if (!paused) {
       moveBalls(elapsedTime);
       movePowerUps(elapsedTime);
+      checkBallBrickCollision();
     }
   }
 
