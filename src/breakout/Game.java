@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -107,6 +108,7 @@ public class Game extends Application {
     if (!paused) {
       myPaddle.movePaddle(code);
       reset(code);
+      dropPowerUp(code);
     }
     pause(code);
   }
@@ -140,6 +142,15 @@ public class Game extends Application {
       myBalls.get(MAIN_BALL).getCircle().setCenterY(Ball.STARTING_Y);
       myBalls.get(MAIN_BALL).setHorizontalSpeed(0);
       myBalls.get(MAIN_BALL).setVerticalSpeed(Ball.VERTICAL_SPEED);
+    }
+  }
+
+  private void dropPowerUp(KeyCode code) {
+    if (code == KeyCode.P) {
+      PowerUp powerUp = new MultiBallPowerUp(SIZE / 2, SIZE / 2);
+      myPowerUps.add(powerUp);
+      myRoot.getChildren().add(powerUp.getRectangle());
+      myRoot.getChildren().add(powerUp.getText());
     }
   }
 

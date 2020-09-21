@@ -38,6 +38,14 @@ public abstract class PowerUp {
     return myRectangle.getY() + HEIGHT;
   }
 
+  public Rectangle getRectangle() {
+    return myRectangle;
+  }
+
+  public Text getText() {
+    return myText;
+  }
+
   public void fallFromDestroyedBlock(Game game, double elapsedTime) {
     myText.setY(myText.getY() + elapsedTime * SPEED);
     myRectangle.setY(myRectangle.getY() + elapsedTime * SPEED);
@@ -45,6 +53,7 @@ public abstract class PowerUp {
       activate(game);
       game.getRoot().getChildren().remove(myText);
       game.getRoot().getChildren().remove(myRectangle);
+      game.getPowerUps().remove(this);
     }
   }
 
