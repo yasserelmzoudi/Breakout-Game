@@ -58,7 +58,7 @@ public class Ball {
   }
 
   public double getRadius() {
-    return BALL_RADIUS;
+    return ball.getRadius();
   }
 
   public Circle getCircle() {
@@ -71,8 +71,8 @@ public class Ball {
   }
 
   public void ballMovement(double elapsedTime) {
-    ball.setCenterX(ball.getCenterX() + elapsedTime * horizontalSpeed);
-    ball.setCenterY(ball.getCenterY() + elapsedTime * verticalSpeed);
+    setX(getX() + elapsedTime * horizontalSpeed);
+    setY(getY() + elapsedTime * verticalSpeed);
   }
 
   public void checkPaddleHit(Paddle paddle) {
@@ -85,17 +85,15 @@ public class Ball {
   }
 
   public void checkWallHit() {
-    if (rightSideHit()) {
+    if (rightSideWallHit() || leftSideWallHit()) {
       bounceHorizontal();
     }
-    if (leftSideHit()) {
-      bounceHorizontal();
-    }
-    if (topSideHit()) {
+    else if (topSideWallHit()) {
       bounceVertical();
     }
-    if (bottomSideHit()) {
+    else if (bottomSideWallHit()) {
       reset();
+      //remove one life
     }
   }
 
@@ -106,31 +104,24 @@ public class Ball {
     setHorizontalSpeed(0);
   }
 
-  public boolean bottomSideHit() {
+  public boolean bottomSideWallHit() {
     return getBottomY() >= Game.SIZE;
   }
 
-  public boolean topSideHit() {
+  public boolean topSideWallHit() {
     return getTopY() <= 0;
   }
 
-  public boolean leftSideHit() {
+  public boolean leftSideWallHit() {
     return getLeftX() <= 0;
   }
 
-  public boolean rightSideHit() {
+  public boolean rightSideWallHit() {
     return getRightX() >= Game.SIZE;
   }
 
   public void bounceVertical() {
     verticalSpeed *= -1;
-  }
-
-  public void resetBall() {
-    if (ball.getCenterY() + ball.getRadius() >= Game.SIZE) {
-      setX(Ball.STARTING_X);
-      setY(Ball.STARTING_Y);
-    }
   }
 
   public void bounceHorizontal() {
@@ -151,5 +142,42 @@ public class Ball {
 
   public double getBottomY() {
     return getY() + getRadius();
+  }
+
+  public boolean checkBrickHit(Block brick) {
+    boolean brickHit = false;
+    if (ball.getBoundsInParent().intersects(brick.getRectangle().getBoundsInParent())) {
+      if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
+        bounceVertical();
+        brickHit = true;
+        System.out.println("BOUNCE VERTICAL");
+      }
+      else if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
+        bounceHorizontal();
+        brickHit = true;
+        System.out.println("BOUNCE HORIZONTAL");
+      }
+    }
+    return brickHit;
+  }
+
+  public boolean leftSideBrickHit(Block brick) {
+    //return (getRightX() <= brick.getLeftX());
+    return getBottomY() >= brick.getTopY() && getTopY() <= brick.getBottomY();
+  }
+
+  public boolean rightSideBrickHit(Block brick) {
+    //return (getLeftX() >= brick.getRightX());
+    return getBottomY() >= brick.getTopY() && getTopY() <= brick.getBottomY();
+  }
+
+  public boolean bottomSideBrickHit(Block brick) {
+    //return (getTopY() >= brick.getBottomY());
+    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getTopY() <= brick.getTopY();
+  }
+
+  public boolean topSideBrickHit(Block brick) {
+    //return (getBottomY() <= brick.getTopY());
+    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getTopY() >= brick.getTopY();
   }
 }

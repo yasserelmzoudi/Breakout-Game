@@ -39,6 +39,7 @@ public class Game extends Application {
   private Paddle myPaddle;
   private Display myDisplay;
   private List<Ball> myBalls;
+  private List<Block> myBricks;
   private List<PowerUp> myPowerUps;
 
   private boolean paused = false;
@@ -100,11 +101,14 @@ public class Game extends Application {
     int currentX;
     int currentY = 0;
 
+    myBricks = new ArrayList<>();
+
     for (String row : Files.readAllLines(path)) {
       currentX = 0;
       for (String space : row.split("")) {
         if (space.equalsIgnoreCase(Block.BLOCK_LETTER)) {
           Block block = new Block(currentX, currentY);
+          myBricks.add(block);
           root.getChildren().add(block.getRectangle());
         }
         currentX += Block.LENGTH;
@@ -127,6 +131,7 @@ public class Game extends Application {
     if (!paused) {
       moveBalls(elapsedTime);
       movePowerUps(elapsedTime);
+      checkBallBrickCollision();
     }
   }
 
@@ -137,6 +142,17 @@ public class Game extends Application {
       ball.checkWallHit();
     }
   }
+
+  private void checkBallBrickCollision() {
+    for (Ball ball : myBalls) {
+      for (Block brick : myBricks) {
+        if (ball.checkBrickHit(brick)) {
+          break;
+        }
+      }
+    }
+  }
+
 
   private void movePowerUps(double elapsedTime) {
     for (PowerUp powerUp : myPowerUps) {
