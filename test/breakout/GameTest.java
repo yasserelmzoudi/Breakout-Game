@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,7 @@ public class GameTest extends DukeApplicationTest {
   private Rectangle myPaddleRectangle;
   private Circle myBallCircle;
   private Rectangle myBlockRectangle;
+  private Display myDisplay;
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
@@ -167,6 +169,18 @@ public class GameTest extends DukeApplicationTest {
   public void testPowerUpCheat() {
     press(myScene, KeyCode.P);
     assertEquals(1, myGame.getPowerUps().size());
+  }
+
+  @Test
+  public void testDisplay(){
+    Text myScoreText = lookup("#scoreText").query();
+    Text myLivesText = lookup("#livesText").query();
+
+    assertEquals(Display.TEXT_LOCATION, myLivesText.getX());
+    assertEquals(Display.TEXT_LOCATION, myScoreText.getX());
+
+    assertEquals(Game.SIZE - Display.TEXT_LOCATION - Display.TEXT_OFFSET, myLivesText.getY());
+    assertEquals(Game.SIZE - Display.TEXT_LOCATION, myScoreText.getY());
   }
 
 }

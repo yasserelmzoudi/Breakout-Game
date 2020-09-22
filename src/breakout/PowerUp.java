@@ -1,5 +1,6 @@
 package breakout;
 
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -53,7 +54,7 @@ public abstract class PowerUp {
       activate(game);
       game.getRoot().getChildren().remove(myText);
       game.getRoot().getChildren().remove(myRectangle);
-      game.getPowerUps().remove(this);
+      Platform.runLater(() -> game.getPowerUps().remove(this));
     }
   }
 

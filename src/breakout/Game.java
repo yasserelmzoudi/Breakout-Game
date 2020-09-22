@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +12,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -34,12 +32,15 @@ public class Game extends Application {
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
   public static final String LEVEL = "testlevel.txt";
   public static final int MAIN_BALL = 0;
+  public static final int DIFFICULTY = 1;
 
   private Scene myScene;
   private Group myRoot;
   private Paddle myPaddle;
+  private Display myDisplay;
   private List<Ball> myBalls;
   private List<PowerUp> myPowerUps;
+
   private boolean paused = false;
 
   /**
@@ -62,14 +63,22 @@ public class Game extends Application {
 
   Scene setupScene(int width, int height, Paint background) throws IOException, URISyntaxException {
     myRoot = new Group();
+
     myPaddle = new Paddle();
     myRoot.getChildren().add(myPaddle.getRectangle());
+
     myPowerUps = new ArrayList<>();
+
     myBalls = new ArrayList<>();
     myBalls.add(new Ball());
-
     myRoot.getChildren().add(myBalls.get(MAIN_BALL).getCircle());
+
     buildBlocksFromFile(LEVEL, myRoot);
+
+    myDisplay = new Display(DIFFICULTY);
+    myRoot.getChildren().add(myDisplay.getScoreText());
+    myRoot.getChildren().add(myDisplay.getLivesText());
+
     Scene scene = new Scene(myRoot, width, height, background);
     scene.setOnKeyPressed(key -> handleKeyInput(key.getCode()));
     return scene;
