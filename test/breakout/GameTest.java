@@ -68,46 +68,15 @@ public class GameTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testPaddleMovement() {
-    myPaddleRectangle.setX(Paddle.STARTING_X);
-    myPaddleRectangle.setY(Paddle.STARTING_Y);
+  public void testInitialDisplayPosition() {
+    Text myScoreText = lookup("#scoreText").query();
+    Text myLivesText = lookup("#livesText").query();
 
-    //sleep(1, TimeUnit.SECONDS);
-    press(myScene, KeyCode.LEFT);
-    //sleep(1, TimeUnit.SECONDS);
+    assertEquals(Display.TEXT_LOCATION, myLivesText.getX());
+    assertEquals(Display.TEXT_LOCATION, myScoreText.getX());
 
-    assertEquals(Paddle.STARTING_X - Paddle.SPEED, myPaddleRectangle.getX());
-    assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
-
-    //sleep(1, TimeUnit.SECONDS);
-    press(myScene, KeyCode.RIGHT);
-    //sleep(1, TimeUnit.SECONDS);
-
-    assertEquals(Paddle.STARTING_X, myPaddleRectangle.getX());
-    assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
-  }
-
-  @Test
-  public void testBounceOffPaddle() {
-    while (myGame.getBall().getVerticalSpeed() > 0) {
-      myGame.step(Game.SECOND_DELAY);
-    }
-    assertEquals(-1 * Ball.VERTICAL_SPEED, myGame.getBall().getVerticalSpeed());
-  }
-
-  @Test
-  public void testBallReset() {
-    double ballBefore = myBallCircle.getCenterY();
-    double ballAfter = myBallCircle.getCenterY();
-
-    while (ballBefore <= ballAfter) {
-      press(myScene, KeyCode.LEFT);
-      ballBefore = myBallCircle.getCenterY();
-      myGame.step(Game.SECOND_DELAY);
-      ballAfter = myBallCircle.getCenterY();
-    }
-    assertEquals(Ball.STARTING_X, myBallCircle.getCenterX());
-    assertEquals(Ball.STARTING_X, myBallCircle.getCenterY());
+    assertEquals(Game.SIZE - Display.TEXT_LOCATION - Display.TEXT_OFFSET, myLivesText.getY());
+    assertEquals(Game.SIZE - Display.TEXT_LOCATION, myScoreText.getY());
   }
 
   @Test
@@ -135,61 +104,9 @@ public class GameTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testPaddleOnWall() {
-    myPaddleRectangle.setX(0);
-    press(myScene, KeyCode.LEFT);
-    assertEquals(0, myPaddleRectangle.getX());
-
-    myPaddleRectangle.setX(Game.SIZE - Paddle.LENGTH);
-    press(myScene, KeyCode.RIGHT);
-    assertEquals(Game.SIZE - Paddle.LENGTH, myPaddleRectangle.getX());
-  }
-
-  @Test
-  public void testPowerUpFall() {
-    PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getPowerUps().add(myPowerUp);
-    myGame.step(Game.SECOND_DELAY);
-    assertEquals(Game.SIZE / 2 + PowerUp.SPEED * Game.SECOND_DELAY + PowerUp.HEIGHT,
-        myPowerUp.getBottom());
-  }
-
-  @Test
-  public void testMultiBallPowerUp() {
-    PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getPowerUps().add(myPowerUp);
-    while (myGame.getBalls().size() == 1) {
-      myGame.step(Game.SECOND_DELAY);
-    }
-    assertEquals(3, myGame.getBalls().size());
-  }
-
-  @Test
   public void testPowerUpCheat() {
     press(myScene, KeyCode.P);
     assertEquals(1, myGame.getPowerUps().size());
-  }
-
-  @Test
-  public void testDisplay(){
-    Text myScoreText = lookup("#scoreText").query();
-    Text myLivesText = lookup("#livesText").query();
-
-    assertEquals(Display.TEXT_LOCATION, myLivesText.getX());
-    assertEquals(Display.TEXT_LOCATION, myScoreText.getX());
-
-    assertEquals(Game.SIZE - Display.TEXT_LOCATION - Display.TEXT_OFFSET, myLivesText.getY());
-    assertEquals(Game.SIZE - Display.TEXT_LOCATION, myScoreText.getY());
-  }
-
-  @Test
-  public void testDisplayMethods(){
-    Display myDisplay = new Display(1);
-    myDisplay.changeLives(1);
-    myDisplay.changeScore(500);
-
-    assertEquals(4, myDisplay.getLives());
-    assertEquals(500, myDisplay.getScore());
   }
 
 }
