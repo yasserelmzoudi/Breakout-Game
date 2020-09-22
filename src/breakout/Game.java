@@ -18,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -143,7 +145,18 @@ public class Game extends Application {
       ball.ballMovement(elapsedTime);
       ball.checkPaddleHit(myPaddle);
       ball.checkWallHit(myDisplay, myBalls, myRoot);
+      if (myDisplay.isGameOver()) {
+        gameOver("YOU LOSE!");
+      }
     }
+  }
+
+  private void gameOver(String gameOverMessage) {
+    myRoot.getChildren().clear();
+    Text lostText = new Text(Game.SIZE / 4, Game.SIZE / 2, gameOverMessage);
+    Font font = new Font(30);
+    lostText.setFont(font);
+    myRoot.getChildren().add(lostText);
   }
 
   private void checkBallBrickCollision() {
@@ -153,6 +166,9 @@ public class Game extends Application {
           myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
           Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
           myBricks.remove(brick);
+          if (myBricks.size() == 0) {
+            gameOver("YOU WIN!");
+          }
           spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
           break;
         }
