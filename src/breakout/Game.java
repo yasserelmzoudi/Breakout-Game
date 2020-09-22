@@ -40,6 +40,7 @@ public class Game extends Application {
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
   public static final int POINTS_FOR_HITTING_BLOCK = 100;
+  public static final int POWER_UP_SPAWN_CHANCE = 10;
 
   private Scene myScene;
   private Group myRoot;
@@ -130,6 +131,7 @@ public class Game extends Application {
       reset(code);
       dropPowerUp(code);
       extraLife(code);
+      breakBlock(code);
     }
     pause(code);
   }
@@ -181,8 +183,10 @@ public class Game extends Application {
     }
   }
 
-  private void spawnPowerUp(Group root, List<PowerUp> myPowerUps, double initialX, double initialY) {
-    if(ThreadLocalRandom.current().nextInt(0, 100) < 10){
+  private void spawnPowerUp(Group root, List<PowerUp> myPowerUps, double initialX,
+      double initialY) {
+    int randomSeed = ThreadLocalRandom.current().nextInt(0, 100);
+    if (randomSeed < POWER_UP_SPAWN_CHANCE) {
       PowerUp newPowerUp = new MultiBallPowerUp(initialX, initialY);
       root.getChildren().add(newPowerUp.getRectangle());
       root.getChildren().add(newPowerUp.getText());
@@ -224,8 +228,17 @@ public class Game extends Application {
   }
 
   private void extraLife(KeyCode code) {
-    if(code == KeyCode.L){
+    if (code == KeyCode.L) {
       myDisplay.changeLives(1);
+    }
+  }
+
+  private void breakBlock(KeyCode code) {
+    if (code == KeyCode.B) {
+      Block brick = myBricks.remove(0);
+      myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
+      Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
+      spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
     }
   }
 
@@ -237,7 +250,7 @@ public class Game extends Application {
     return myBalls;
   }
 
-  public List<Block> getBricks(){
+  public List<Block> getBricks() {
     return myBricks;
   }
 

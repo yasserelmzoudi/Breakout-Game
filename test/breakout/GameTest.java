@@ -81,7 +81,7 @@ public class GameTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBlockHit(){
+  public void testBlockHit() {
     myGame.getBall().setVerticalSpeed(-80);
     int brickNum = myGame.getBricks().size();
     while (myGame.getBall().getVerticalSpeed() < 0) {
@@ -125,6 +125,13 @@ public class GameTest extends DukeApplicationTest {
   public void testExtraLife() {
     press(myScene, KeyCode.L);
     assertEquals(Display.MAX_LIVES - Game.DIFFICULTY + 1, myGame.getDisplay().getLives());
+  }
+
+  @Test
+  public void testBreakBlock() {
+    int brickNum = myGame.getBricks().size();
+    press(myScene, KeyCode.B);
+    assertEquals(brickNum - 1, myGame.getBricks().size());
   }
 
 }
