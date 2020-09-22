@@ -1,5 +1,7 @@
 package breakout;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;
 
 public class MultiBallPowerUp extends PowerUp {
@@ -16,6 +18,7 @@ public class MultiBallPowerUp extends PowerUp {
       Ball ball = new Ball();
       Platform.runLater(() -> game.getRoot().getChildren().add(ball.getCircle()));
       game.getBalls().add(ball);
+      ball.setHorizontalSpeed(ThreadLocalRandom.current().nextDouble(0, Ball.HORIZONTAL_SPEED));
     }
   }
 
