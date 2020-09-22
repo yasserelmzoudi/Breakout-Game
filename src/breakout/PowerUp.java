@@ -1,6 +1,9 @@
 package breakout;
 
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;

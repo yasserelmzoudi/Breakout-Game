@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -152,9 +153,19 @@ public class Game extends Application {
           myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
           Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
           myBricks.remove(brick);
+          spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
           break;
         }
       }
+    }
+  }
+
+  private void spawnPowerUp(Group root, List<PowerUp> myPowerUps, double initialX, double initialY) {
+    if(ThreadLocalRandom.current().nextInt(0, 100) < 10){
+      PowerUp newPowerUp = new MultiBallPowerUp(initialX, initialY);
+      root.getChildren().add(newPowerUp.getRectangle());
+      root.getChildren().add(newPowerUp.getText());
+      myPowerUps.add(newPowerUp);
     }
   }
 
