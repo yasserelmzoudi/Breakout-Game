@@ -1,6 +1,5 @@
 package breakout;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;
 

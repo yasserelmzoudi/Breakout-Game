@@ -9,7 +9,7 @@ public class Display {
   private int myScore;
   private Text myLivesText;
   private Text myScoreText;
-  private static final int MAX_LIVES = 4;
+  public static final int MAX_LIVES = 4;
   public static final double TEXT_LOCATION = Game.SIZE / 16;
   public static final double TEXT_OFFSET = 20;
   private static final Color TEXT_COLOR = Color.BLACK;

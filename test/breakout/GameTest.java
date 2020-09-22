@@ -109,5 +109,11 @@ public class GameTest extends DukeApplicationTest {
     assertEquals(1, myGame.getPowerUps().size());
   }
 
+  @Test
+  public void testExtraLife() {
+    press(myScene, KeyCode.L);
+    assertEquals(Display.MAX_LIVES - Game.DIFFICULTY + 1, myGame.getDisplay().getLives());
+  }
+
 }
 
