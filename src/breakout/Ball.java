@@ -147,15 +147,15 @@ public class Ball {
   public boolean checkBrickHit(Block brick) {
     boolean brickHit = false;
     if (ball.getBoundsInParent().intersects(brick.getRectangle().getBoundsInParent())) {
-      if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
-        bounceVertical();
-        brickHit = true;
-        System.out.println("BOUNCE VERTICAL");
-      }
-      else if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
+      if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
         bounceHorizontal();
         brickHit = true;
         System.out.println("BOUNCE HORIZONTAL");
+      }
+      else if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
+        bounceVertical();
+        brickHit = true;
+        System.out.println("BOUNCE VERTICAL");
       }
     }
     return brickHit;
@@ -173,11 +173,11 @@ public class Ball {
 
   public boolean bottomSideBrickHit(Block brick) {
     //return (getTopY() >= brick.getBottomY());
-    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getTopY() <= brick.getTopY();
+    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getTopY() >= brick.getBottomY();
   }
 
   public boolean topSideBrickHit(Block brick) {
     //return (getBottomY() <= brick.getTopY());
-    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getTopY() >= brick.getTopY();
+    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getBottomY() <= brick.getTopY();
   }
 }
