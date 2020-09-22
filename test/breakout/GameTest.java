@@ -19,7 +19,6 @@ public class GameTest extends DukeApplicationTest {
   private Rectangle myPaddleRectangle;
   private Circle myBallCircle;
   private Rectangle myBlockRectangle;
-  private Display myDisplay;
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
@@ -181,6 +180,16 @@ public class GameTest extends DukeApplicationTest {
 
     assertEquals(Game.SIZE - Display.TEXT_LOCATION - Display.TEXT_OFFSET, myLivesText.getY());
     assertEquals(Game.SIZE - Display.TEXT_LOCATION, myScoreText.getY());
+  }
+
+  @Test
+  public void testDisplayMethods(){
+    Display myDisplay = new Display(1);
+    myDisplay.changeLives(1);
+    myDisplay.changeScore(500);
+
+    assertEquals(4, myDisplay.getLives());
+    assertEquals(500, myDisplay.getScore());
   }
 
 }
