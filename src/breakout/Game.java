@@ -136,7 +136,9 @@ public class Game extends Application {
   private void checkBallBrickCollision() {
     for (Ball ball : myBalls) {
       for (Block brick : myBricks) {
-        ball.checkBrickHit(brick);
+        if (ball.checkBrickHit(brick)) {
+          break;
+        }
       }
     }
   }
