@@ -11,6 +11,7 @@ import java.util.Objects;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -33,6 +34,7 @@ public class Game extends Application {
   public static final String LEVEL = "testlevel.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
+  public static final int POINTS_FOR_HITTING_BLOCK = 100;
 
   private Scene myScene;
   private Group myRoot;
@@ -139,7 +141,7 @@ public class Game extends Application {
     for (Ball ball : myBalls) {
       ball.ballMovement(elapsedTime);
       ball.checkPaddleHit(myPaddle);
-      ball.checkWallHit();
+      ball.checkWallHit(myDisplay, myBalls, myRoot);
     }
   }
 
@@ -147,6 +149,9 @@ public class Game extends Application {
     for (Ball ball : myBalls) {
       for (Block brick : myBricks) {
         if (ball.checkBrickHit(brick)) {
+          myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
+          Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
+          myBricks.remove(brick);
           break;
         }
       }
@@ -198,6 +203,10 @@ public class Game extends Application {
 
   public List<Ball> getBalls() {
     return myBalls;
+  }
+
+  public List<Block> getBricks(){
+    return myBricks;
   }
 
   public Paddle getPaddle() {

@@ -1,6 +1,9 @@
 package breakout;
 
+import java.util.List;
 import java.util.Random;
+import javafx.application.Platform;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -84,7 +87,7 @@ public class Ball {
     }
   }
 
-  public void checkWallHit() {
+  public void checkWallHit(Display myDisplay, List<Ball> ballList, Group root) {
     if (rightSideWallHit() || leftSideWallHit()) {
       bounceHorizontal();
     }
@@ -92,8 +95,14 @@ public class Ball {
       bounceVertical();
     }
     else if (bottomSideWallHit()) {
-      reset();
-      //remove one life
+      if(ballList.size() > 1){
+        root.getChildren().remove(this);
+        Platform.runLater(() -> ballList.remove(this));
+      }
+      else {
+        reset();
+        myDisplay.changeLives(-1);
+      }
     }
   }
 

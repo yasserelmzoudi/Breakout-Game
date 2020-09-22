@@ -2,6 +2,7 @@ package breakout;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
@@ -77,6 +78,17 @@ public class GameTest extends DukeApplicationTest {
 
     assertEquals(Game.SIZE - Display.TEXT_LOCATION - Display.TEXT_OFFSET, myLivesText.getY());
     assertEquals(Game.SIZE - Display.TEXT_LOCATION, myScoreText.getY());
+  }
+
+  @Test
+  public void testBlockHit(){
+    myGame.getBall().setVerticalSpeed(-80);
+    int brickNum = myGame.getBricks().size();
+    while (myGame.getBall().getVerticalSpeed() < 0) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(brickNum - 1, myGame.getBricks().size());
+    assertEquals(Game.POINTS_FOR_HITTING_BLOCK, myGame.getDisplay().getScore());
   }
 
   @Test
