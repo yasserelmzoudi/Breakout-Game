@@ -66,4 +66,7 @@ public class Display {
     setLivesText();
   }
 
+  public boolean isGameOver() {
+    return myLives == 0;
+  }
 }

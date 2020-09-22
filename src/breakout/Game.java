@@ -13,11 +13,15 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -143,7 +147,21 @@ public class Game extends Application {
       ball.ballMovement(elapsedTime);
       ball.checkPaddleHit(myPaddle);
       ball.checkWallHit(myDisplay, myBalls, myRoot);
+      if (myDisplay.isGameOver()) {
+        gameOver("YOU LOSE!");
+      }
     }
+  }
+
+  private void gameOver(String gameOverMessage) {
+    myRoot.getChildren().clear();
+    Text gameOverText = new Text(gameOverMessage);
+    gameOverText.setTextOrigin(VPos.TOP);
+    Font font = new Font(30);
+    gameOverText.setFont(font);
+    gameOverText.layoutXProperty().bind(myScene.widthProperty().subtract(gameOverText.prefWidth(-1)).divide(2));
+    gameOverText.layoutYProperty().bind(myScene.heightProperty().subtract(gameOverText.prefHeight(-1)).divide(2));
+    myRoot.getChildren().add(gameOverText);
   }
 
   private void checkBallBrickCollision() {
@@ -153,6 +171,9 @@ public class Game extends Application {
           myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
           Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
           myBricks.remove(brick);
+          if (myBricks.size() == 0) {
+            gameOver("YOU WIN!");
+          }
           spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
           break;
         }
