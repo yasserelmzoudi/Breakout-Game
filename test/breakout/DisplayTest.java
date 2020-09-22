@@ -32,11 +32,11 @@ public class DisplayTest extends DukeApplicationTest {
 
   @Test
   public void testDisplayMethods() {
-    Display myDisplay = new Display(1);
+    Display myDisplay = new Display(Game.DIFFICULTY);
     myDisplay.changeLives(1);
     myDisplay.changeScore(500);
 
-    assertEquals(4, myDisplay.getLives());
+    assertEquals(Display.MAX_LIVES - Game.DIFFICULTY + 1, myDisplay.getLives());
     assertEquals(500, myDisplay.getScore());
   }
 

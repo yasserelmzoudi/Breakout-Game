@@ -118,6 +118,7 @@ public class Game extends Application {
       myPaddle.movePaddle(code);
       reset(code);
       dropPowerUp(code);
+      extraLife(code);
     }
     pause(code);
   }
@@ -169,6 +170,12 @@ public class Game extends Application {
     }
   }
 
+  private void extraLife(KeyCode code) {
+    if(code == KeyCode.L){
+      myDisplay.changeLives(1);
+    }
+  }
+
   public Ball getBall() {
     return myBalls.get(MAIN_BALL);
   }
@@ -187,6 +194,10 @@ public class Game extends Application {
 
   public Group getRoot() {
     return myRoot;
+  }
+
+  public Display getDisplay() {
+    return myDisplay;
   }
 
   /**
