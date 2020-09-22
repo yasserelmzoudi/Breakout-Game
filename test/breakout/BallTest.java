@@ -52,6 +52,7 @@ public class BallTest extends DukeApplicationTest {
     }
     assertEquals(Ball.STARTING_X, myBallCircle.getCenterX());
     assertEquals(Ball.STARTING_X, myBallCircle.getCenterY());
+    assertEquals(Display.MAX_LIVES - Game.DIFFICULTY - 1, myGame.getDisplay().getLives());
   }
 
 }
