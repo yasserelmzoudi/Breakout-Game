@@ -159,12 +159,10 @@ public class Ball {
       if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
         bounceHorizontal();
         brickHit = true;
-        System.out.println("BOUNCE HORIZONTAL");
       }
       else if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
         bounceVertical();
         brickHit = true;
-        System.out.println("BOUNCE VERTICAL");
       }
     }
     return brickHit;

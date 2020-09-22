@@ -13,6 +13,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -20,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -153,10 +155,13 @@ public class Game extends Application {
 
   private void gameOver(String gameOverMessage) {
     myRoot.getChildren().clear();
-    Text lostText = new Text(Game.SIZE / 4, Game.SIZE / 2, gameOverMessage);
+    Text gameOverText = new Text(gameOverMessage);
+    gameOverText.setTextOrigin(VPos.TOP);
     Font font = new Font(30);
-    lostText.setFont(font);
-    myRoot.getChildren().add(lostText);
+    gameOverText.setFont(font);
+    gameOverText.layoutXProperty().bind(myScene.widthProperty().subtract(gameOverText.prefWidth(-1)).divide(2));
+    gameOverText.layoutYProperty().bind(myScene.heightProperty().subtract(gameOverText.prefHeight(-1)).divide(2));
+    myRoot.getChildren().add(gameOverText);
   }
 
   private void checkBallBrickCollision() {
