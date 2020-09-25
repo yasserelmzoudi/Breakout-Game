@@ -4,8 +4,15 @@
 - "if" and "for" statements that are nested too deeply than can be refactored and made their own methods
     - Game: Line 170
 - Useless imports that can be removed
+    - Game: Line 24
+    - PowerUp: Line 3
+    - PowerUp: Line 4
+    - PowerUp: Line 6
 - Program should throw Exception when reading Blocks from file
+    - Game: Line 104
 - Variable names should not include "my" 
     - Ball: Line 18
 - Checking for cheat codes can be broken up into various methods called from switch statement
+    - Game: Line 128
 - PowerUp activate() should eventually not take the entire Game as a parameter
+    - PowerUp: Line 69
