@@ -1,0 +1,7 @@
+- A few magic numbers that can be made constants
+- "if" and "for" statements that are nested too deeply than can be refactored and made their own methods
+- Useless imports that can be removed
+- Program should throw Exception when reading Blocks from file
+- Variable names should not include "my"
+- Checking for cheat codes can be broken up into various methods called from switch statement
+- PowerUp activate() should eventually not take the entire Game as a parameter
