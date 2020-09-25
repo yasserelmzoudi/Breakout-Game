@@ -128,12 +128,18 @@ public class Game extends Application {
   private void handleKeyInput(KeyCode code) {
     if (!paused) {
       myPaddle.movePaddle(code);
-      reset(code);
-      dropPowerUp(code);
-      extraLife(code);
-      breakBlock(code);
+      checkCheatKey(code);
     }
     pause(code);
+  }
+
+  private void checkCheatKey(KeyCode code) {
+    switch (code) {
+      case R -> reset();
+      case P -> dropPowerUp();
+      case B -> breakBlock();
+      case L -> extraLife();
+    }
   }
 
   void step(double elapsedTime) {
@@ -201,24 +207,20 @@ public class Game extends Application {
     }
   }
 
-  private void reset(KeyCode code) {
-    if (code == KeyCode.R) {
-      myPaddle.getRectangle().setX(Paddle.STARTING_X);
-      myPaddle.getRectangle().setY(Paddle.STARTING_Y);
-      myBalls.get(MAIN_BALL).getCircle().setCenterX(Ball.STARTING_X);
-      myBalls.get(MAIN_BALL).getCircle().setCenterY(Ball.STARTING_Y);
-      myBalls.get(MAIN_BALL).setHorizontalSpeed(0);
-      myBalls.get(MAIN_BALL).setVerticalSpeed(Ball.VERTICAL_SPEED);
-    }
+  private void reset() {
+    myPaddle.getRectangle().setX(Paddle.STARTING_X);
+    myPaddle.getRectangle().setY(Paddle.STARTING_Y);
+    myBalls.get(MAIN_BALL).getCircle().setCenterX(Ball.STARTING_X);
+    myBalls.get(MAIN_BALL).getCircle().setCenterY(Ball.STARTING_Y);
+    myBalls.get(MAIN_BALL).setHorizontalSpeed(0);
+    myBalls.get(MAIN_BALL).setVerticalSpeed(Ball.VERTICAL_SPEED);
   }
 
-  private void dropPowerUp(KeyCode code) {
-    if (code == KeyCode.P) {
-      PowerUp powerUp = new MultiBallPowerUp(SIZE / 2, SIZE / 2);
-      myPowerUps.add(powerUp);
-      myRoot.getChildren().add(powerUp.getRectangle());
-      myRoot.getChildren().add(powerUp.getText());
-    }
+  private void dropPowerUp() {
+    PowerUp powerUp = new MultiBallPowerUp(SIZE / 2, SIZE / 2);
+    myPowerUps.add(powerUp);
+    myRoot.getChildren().add(powerUp.getRectangle());
+    myRoot.getChildren().add(powerUp.getText());
   }
 
   private void pause(KeyCode code) {
@@ -227,19 +229,15 @@ public class Game extends Application {
     }
   }
 
-  private void extraLife(KeyCode code) {
-    if (code == KeyCode.L) {
-      myDisplay.changeLives(1);
-    }
+  private void extraLife() {
+    myDisplay.changeLives(1);
   }
 
-  private void breakBlock(KeyCode code) {
-    if (code == KeyCode.B) {
-      Block brick = myBricks.remove(0);
-      myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
-      Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
-      spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
-    }
+  private void breakBlock() {
+    Block brick = myBricks.remove(0);
+    myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
+    Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
+    spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
   }
 
   public Ball getBall() {
