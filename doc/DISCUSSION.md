@@ -1,7 +1,11 @@
 - A few magic numbers that can be made constants
+    - Game: Line 188
+    - Game: Line 162
 - "if" and "for" statements that are nested too deeply than can be refactored and made their own methods
+    - Game: Line 170
 - Useless imports that can be removed
 - Program should throw Exception when reading Blocks from file
-- Variable names should not include "my"
+- Variable names should not include "my" 
+    - Ball: Line 18
 - Checking for cheat codes can be broken up into various methods called from switch statement
 - PowerUp activate() should eventually not take the entire Game as a parameter
