@@ -7,18 +7,18 @@
 
  * [Super Breakout](https://www.youtube.com/watch?v=bHQKoESsS80) is one of the variations that we are the most familiar with. We think that having a variety of timed power-ups generally makes the game more replayable and interesting, since power-ups can be randomized which makes replaying through the same level more interesting depending on the power-ups that are dropped. This also allows for some creativity in the designing the power-ups.
 
- * [Bricks n Balls](https://www.youtube.com/watch?v=n7alxnfUhCE) was another variation that stood out to us and that we found to be very interesting. In conjunction with the "puzzle game feel" that it creates, this variate would work well coupled with our idea of a "disappearing" block that can only be destroyed at certain times as it allows for players to feel more in control of the ball's movement and enhances the skill required for the game. 
+ * [Bricks n Balls](https://www.youtube.com/watch?v=n7alxnfUhCE) was another variation that stood out to us and that we found to be very interesting. In conjunction with the "puzzle game feel" that it creates, this variate would work well coupled with our idea of a "disappearing" brick that can only be destroyed at certain times as it allows for players to feel more in control of the ball's movement and enhances the skill required for the game. 
 
 
 #### Block Ideas
 
- * A block that takes multiple hits to break
+ * A brick that takes multiple hits to break
 
- * A block that drops a random power up with a certain probability
+ * A brick that drops a random power up with a certain probability
 
- * A block that cannot be destroyed
+ * A brick that cannot be destroyed
  
- * A block that only can be destroyed if it is hit at a certain time and blinks or is invisible if it cannot be hit
+ * A brick that only can be destroyed if it is hit at a certain time and blinks or is invisible if it cannot be hit
 
 
 #### Power Up Ideas
