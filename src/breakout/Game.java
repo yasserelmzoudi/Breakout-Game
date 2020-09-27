@@ -178,6 +178,9 @@ public class Game extends Application {
       ball.ballMovement(elapsedTime);
       ball.checkPaddleHit(myPaddle);
       ball.checkWallHit(myDisplay, myBalls, myRoot);
+      if (ball.bottomSideWallHit()) {
+        break;
+      }
       if (myDisplay.isGameOver()) {
         gameOver("YOU LOSE!");
       }

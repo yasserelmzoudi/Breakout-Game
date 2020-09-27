@@ -92,7 +92,8 @@ public class Ball {
       bounceHorizontal();
     } else if (topSideWallHit()) {
       bounceVertical();
-    } else if (bottomSideWallHit()) {
+    }
+    else if (bottomSideWallHit()) {
       if (ballList.size() > 1) {
         root.getChildren().remove(ball);
         Platform.runLater(() -> ballList.remove(this));
