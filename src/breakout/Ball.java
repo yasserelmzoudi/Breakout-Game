@@ -90,16 +90,14 @@ public class Ball {
   public void checkWallHit(Display myDisplay, List<Ball> ballList, Group root) {
     if (rightSideWallHit() || leftSideWallHit()) {
       bounceHorizontal();
-    }
-    else if (topSideWallHit()) {
+    } else if (topSideWallHit()) {
       bounceVertical();
     }
     else if (bottomSideWallHit()) {
       if (ballList.size() > 1) {
         root.getChildren().remove(ball);
         Platform.runLater(() -> ballList.remove(this));
-      }
-      else {
+      } else {
         reset();
         myDisplay.changeLives(-1);
       }
@@ -159,8 +157,7 @@ public class Ball {
       if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
         bounceHorizontal();
         brickHit = true;
-      }
-      else if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
+      } else if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
         bounceVertical();
         brickHit = true;
       }
@@ -180,11 +177,13 @@ public class Ball {
 
   public boolean bottomSideBrickHit(Brick brick) {
     //return (getTopY() >= brick.getBottomY());
-    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getTopY() >= brick.getBottomY();
+    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getTopY() >= brick
+        .getBottomY();
   }
 
   public boolean topSideBrickHit(Brick brick) {
     //return (getBottomY() <= brick.getTopY());
-    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX() && getBottomY() <= brick.getTopY();
+    return getRightX() >= brick.getLeftX() && getLeftX() <= brick.getRightX()
+        && getBottomY() <= brick.getTopY();
   }
 }

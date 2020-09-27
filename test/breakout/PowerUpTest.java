@@ -33,7 +33,7 @@ public class PowerUpTest extends DukeApplicationTest {
   @Test
   public void testPowerUpFall() {
     PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getPowerUps().add(myPowerUp);
+    myGame.getFallingPowerUps().add(myPowerUp);
     myGame.step(Game.SECOND_DELAY);
     assertEquals(Game.SIZE / 2 + PowerUp.SPEED * Game.SECOND_DELAY + PowerUp.HEIGHT,
         myPowerUp.getBottom());
@@ -42,11 +42,22 @@ public class PowerUpTest extends DukeApplicationTest {
   @Test
   public void testMultiBallPowerUp() {
     PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getPowerUps().add(myPowerUp);
+    myGame.getFallingPowerUps().add(myPowerUp);
     while (myGame.getBalls().size() == 1) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(3, myGame.getBalls().size());
+  }
+
+  @Test
+  public void testExtendedPaddlePowerUp() {
+    PowerUp myPowerUp = new ExtendedPaddlePowerUp(Game.SIZE / 2, Game.SIZE / 2);
+    myGame.getFallingPowerUps().add(myPowerUp);
+    while (myGame.getPaddle().getRectangle().getWidth() == Paddle.STARTING_WIDTH) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(Paddle.STARTING_WIDTH * ExtendedPaddlePowerUp.WIDTH_INCREASE,
+        myGame.getPaddle().getRectangle().getWidth());
   }
 
 }

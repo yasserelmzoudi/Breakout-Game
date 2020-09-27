@@ -36,7 +36,7 @@ public class GameTest extends DukeApplicationTest {
   public void testInitialPaddlePositions() {
     assertEquals(Paddle.STARTING_X, myPaddleRectangle.getX());
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
-    assertEquals(Paddle.LENGTH, myPaddleRectangle.getWidth());
+    assertEquals(Paddle.STARTING_WIDTH, myPaddleRectangle.getWidth());
     assertEquals(Paddle.HEIGHT, myPaddleRectangle.getHeight());
     // sleep(1, TimeUnit.SECONDS); // If you want to see the test
   }
@@ -117,7 +117,7 @@ public class GameTest extends DukeApplicationTest {
   @Test
   public void testPowerUpCheat() {
     press(myScene, KeyCode.P);
-    assertEquals(1, myGame.getPowerUps().size());
+    assertEquals(1, myGame.getFallingPowerUps().size());
   }
 
   @Test
