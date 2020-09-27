@@ -2,7 +2,6 @@ package breakout;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.concurrent.TimeUnit;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
@@ -88,7 +87,7 @@ public class GameTest extends DukeApplicationTest {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(brickNum - 1, myGame.getBricks().size());
-    assertEquals(Game.POINTS_FOR_HITTING_BLOCK, myGame.getDisplay().getScore());
+    assertEquals(Game.POINTS_FOR_HITTING_BRICK, myGame.getDisplay().getScore());
   }
 
   @Test

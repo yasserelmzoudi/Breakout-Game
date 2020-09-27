@@ -35,11 +35,11 @@ public class Game extends Application {
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String LEVEL = "testlevel.txt";
+  public static final String LEVEL = "testlevel2.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
-  public static final int POINTS_FOR_HITTING_BLOCK = 100;
   public static final int POWER_UP_SPAWN_CHANCE = 10;
+  public static final int POINTS_FOR_HITTING_BRICK = 100;
 
   private Scene myScene;
   private Group myRoot;
@@ -112,16 +112,29 @@ public class Game extends Application {
 
     for (String row : Files.readAllLines(path)) {
       currentX = 0;
-      for (String space : row.split("")) {
-        if (space.equalsIgnoreCase(Brick.BLOCK_LETTER)) {
-          Brick brick = new Brick(currentX, currentY);
-          myBricks.add(brick);
+      for (String blockType : row.split("")) {
+        if (validBrick(blockType)) {
+          Brick brick = brickBuilder(currentX, currentY, blockType);
           root.getChildren().add(brick.getRectangle());
         }
         currentX += Brick.LENGTH;
       }
       currentY += Brick.HEIGHT;
     }
+  }
+
+  private boolean validBrick(String blockType) {
+    return !(blockType.equals(" ") || blockType.equals(""));
+  }
+
+  private Brick brickBuilder(int currentX, int currentY, String blockType) {
+    Brick brick;
+    switch(blockType) {
+      case "X" -> brick = new MultiHitBrick(currentX, currentY);
+      default -> brick = new BasicBrick(currentX, currentY);
+    }
+    myBricks.add(brick);
+    return brick;
   }
 
   private void handleKeyInput(KeyCode code) {
@@ -133,7 +146,7 @@ public class Game extends Application {
   }
 
   private void checkCheatKey(KeyCode code) {
-    switch (code) {
+    switch(code) {
       case R -> reset();
       case P -> dropPowerUp();
       case B -> breakBlock();
@@ -166,8 +179,10 @@ public class Game extends Application {
     gameOverText.setTextOrigin(VPos.TOP);
     Font font = new Font(30);
     gameOverText.setFont(font);
-    gameOverText.layoutXProperty().bind(myScene.widthProperty().subtract(gameOverText.prefWidth(-1)).divide(2));
-    gameOverText.layoutYProperty().bind(myScene.heightProperty().subtract(gameOverText.prefHeight(-1)).divide(2));
+    gameOverText.layoutXProperty()
+        .bind(myScene.widthProperty().subtract(gameOverText.prefWidth(-1)).divide(2));
+    gameOverText.layoutYProperty()
+        .bind(myScene.heightProperty().subtract(gameOverText.prefHeight(-1)).divide(2));
     myRoot.getChildren().add(gameOverText);
   }
 
@@ -180,33 +195,14 @@ public class Game extends Application {
   private void checkBrickCollision(Ball ball) {
     for (Brick brick : myBricks) {
       if (ball.checkBrickHit(brick)) {
-        activateBrick(brick);
+        brick.activateBrick(myDisplay, myRoot, myBricks, myPowerUps);
+        if (myBricks.size() == 0) {
+          gameOver("YOU WIN!");
+        }
         break;
       }
     }
   }
-
-  private void activateBrick(Brick brick) {
-    myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
-    Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
-    myBricks.remove(brick);
-    if (myBricks.size() == 0) {
-      gameOver("YOU WIN!");
-    }
-    spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
-  }
-
-  private void spawnPowerUp(Group root, List<PowerUp> myPowerUps, double initialX,
-      double initialY) {
-    int randomSeed = ThreadLocalRandom.current().nextInt(0, 100);
-    if (randomSeed < POWER_UP_SPAWN_CHANCE) {
-      PowerUp newPowerUp = new MultiBallPowerUp(initialX, initialY);
-      root.getChildren().add(newPowerUp.getRectangle());
-      root.getChildren().add(newPowerUp.getText());
-      myPowerUps.add(newPowerUp);
-    }
-  }
-
 
   private void movePowerUps(double elapsedTime) {
     for (PowerUp powerUp : myPowerUps) {
@@ -242,9 +238,11 @@ public class Game extends Application {
 
   private void breakBlock() {
     Brick brick = myBricks.remove(0);
-    myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
-    Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
-    spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
+    brick.destroyBrick(myRoot, myBricks, myPowerUps);
+    myDisplay.changeScore(brick.getScore());
+    if (myBricks.size() == 0) {
+      gameOver("YOU WIN!");
+    }
   }
 
   public Ball getBall() {

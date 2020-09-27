@@ -1,17 +1,20 @@
 package breakout;
 
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import javafx.application.Platform;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Brick {
+public abstract class Brick {
 
   public static final int LENGTH = 40;
   public static final int HEIGHT = 20;
-  public static final String BLOCK_LETTER = "x";
-  public static final Color BLOCK_BASE_COLOR = Color.CRIMSON;
+  public static final Color BRICK_BASE_COLOR = Color.CRIMSON;
 
   private Rectangle myRectangle;
-  private int myHealth;
+  private Color myColor;
 
   /**
    * Block constructor
@@ -19,10 +22,11 @@ public class Brick {
    * @param x location of block
    * @param y location of block
    */
-  public Brick(int x, int y) {
+  public Brick(double x, double y) {
     myRectangle = new Rectangle(x, y, LENGTH, HEIGHT);
-    myRectangle.setFill(BLOCK_BASE_COLOR);
     myRectangle.setId("block" + x + y);
+    myColor = BRICK_BASE_COLOR;
+    myRectangle.setFill(myColor);
   }
 
   /**
@@ -34,7 +38,34 @@ public class Brick {
     return myRectangle;
   }
 
-  //public void blockHit
+  public abstract void activateBrick(Display display, Group root, List<Brick> bricks,
+      List<PowerUp> powerUps);
+
+  public abstract int getScore();
+
+  public void destroyBrick(Group root, List<Brick> bricks, List<PowerUp> powerUps) {
+    Platform.runLater(() -> root.getChildren().remove(myRectangle));
+    bricks.remove(this);
+    spawnPowerUp(root, powerUps);
+  }
+
+  protected void spawnPowerUp(Group root, List<PowerUp> powerUps) {
+    int randomSeed = ThreadLocalRandom.current().nextInt(0, 100);
+    if (randomSeed < Game.POWER_UP_SPAWN_CHANCE) {
+      PowerUp newPowerUp = new MultiBallPowerUp(getX(), getY());
+      root.getChildren().add(newPowerUp.getRectangle());
+      root.getChildren().add(newPowerUp.getText());
+      powerUps.add(newPowerUp);
+    }
+  }
+
+  public Color getColor() {
+    return myColor;
+  }
+
+  protected void setColor(Color newColor) {
+    myColor = newColor;
+  }
 
   public double getX() {
     return myRectangle.getX();
