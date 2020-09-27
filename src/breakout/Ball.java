@@ -96,7 +96,7 @@ public class Ball {
     }
     else if (bottomSideWallHit()) {
       if(ballList.size() > 1){
-        root.getChildren().remove(this);
+        root.getChildren().remove(ball);
         Platform.runLater(() -> ballList.remove(this));
       }
       else {
