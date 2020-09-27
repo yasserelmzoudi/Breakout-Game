@@ -65,4 +65,17 @@ class BrickTest extends DukeApplicationTest {
 
   }
 
+  @Test
+  public void testUnbreakableBrick() {
+    Brick brick = new UnbreakableBrick(myBallCircle.getCenterX(), myBallCircle.getCenterY() - 5);
+    myGame.getBricks().add(brick);
+    for (int hitNumber = 0; hitNumber < 10; hitNumber++) {
+      myGame.getBall().setVerticalSpeed(-80);
+      while (myGame.getBall().getVerticalSpeed() < 0) {
+        myGame.step(Game.SECOND_DELAY);
+      }
+    }
+    assertTrue(myGame.getBricks().contains(brick));
+  }
+
 }

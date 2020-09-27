@@ -35,7 +35,7 @@ public class Game extends Application {
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String LEVEL = "testlevel2.txt";
+  public static final String LEVEL = "testlevel3.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
   public static final int POWER_UP_SPAWN_CHANCE = 10;
@@ -48,6 +48,7 @@ public class Game extends Application {
   private List<Ball> myBalls;
   private List<Brick> myBricks;
   private List<PowerUp> myPowerUps;
+  private int myUnbreakableBricks = 0;
 
   private boolean paused = false;
 
@@ -131,6 +132,10 @@ public class Game extends Application {
     Brick brick;
     switch(blockType) {
       case "X" -> brick = new MultiHitBrick(currentX, currentY);
+      case "i" -> {
+        brick = new UnbreakableBrick(currentX, currentY);
+        myUnbreakableBricks++;
+      }
       default -> brick = new BasicBrick(currentX, currentY);
     }
     myBricks.add(brick);
@@ -196,7 +201,7 @@ public class Game extends Application {
     for (Brick brick : myBricks) {
       if (ball.checkBrickHit(brick)) {
         brick.activateBrick(myDisplay, myRoot, myBricks, myPowerUps);
-        if (myBricks.size() == 0) {
+        if (myBricks.size() == myUnbreakableBricks) {
           gameOver("YOU WIN!");
         }
         break;
@@ -240,7 +245,7 @@ public class Game extends Application {
     Brick brick = myBricks.remove(0);
     brick.destroyBrick(myRoot, myBricks, myPowerUps);
     myDisplay.changeScore(brick.getScore());
-    if (myBricks.size() == 0) {
+    if (myBricks.size() == myUnbreakableBricks) {
       gameOver("YOU WIN!");
     }
   }

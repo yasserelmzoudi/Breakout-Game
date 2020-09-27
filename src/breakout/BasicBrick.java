@@ -1,6 +1,6 @@
 package breakout;
 
-import java.util.List;;
+import java.util.List;
 import javafx.scene.Group;
 
 public class BasicBrick extends Brick {
@@ -26,6 +26,5 @@ public class BasicBrick extends Brick {
   public int getScore() {
     return POINTS_FOR_BASIC_BRICK;
   }
-
 
 }
