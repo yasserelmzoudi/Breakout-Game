@@ -1,20 +1,20 @@
 package breakout;
 
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-public abstract class PowerUp  {
+public abstract class PowerUp {
 
   public static final double SPEED = 20;
   public static final double LENGTH = 25;
   public static final double HEIGHT = 15;
   public static final Color TEXT_COLOR = Color.BLACK;
   public static final Color BACKGROUND_COLOR = Color.ORANGE;
+  public static final double MAX_POWER_UP_TIME = Game.FRAMES_PER_SECOND * 10;
+
   private Text myText;
   private Rectangle myRectangle;
 
@@ -30,12 +30,50 @@ public abstract class PowerUp  {
     myRectangle.setId("powerUpRectangle" + x + y);
   }
 
+  public boolean fallFromDestroyedBlock(Game game, double elapsedTime) {
+    myText.setY(myText.getY() + elapsedTime * SPEED);
+    myRectangle.setY(myRectangle.getY() + elapsedTime * SPEED);
+    if (collisionWithPaddle(game.getPaddle())) {
+      activate(game);
+      game.getRoot().getChildren().remove(myText);
+      game.getRoot().getChildren().remove(myRectangle);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean collisionWithPaddle(Paddle paddle) {
+    return getBottom() >= Paddle.STARTING_Y && getTop() <= Paddle.STARTING_Y + Paddle.HEIGHT
+        && getRightSideX() >= paddle.getLeftSideX()
+        && getLeftSideX() <= paddle.getRightSideX();
+  }
+
+  public static PowerUp powerUpGenerator(double x, double y) {
+    PowerUp newPowerUp;
+    int randomPowerUpType = ThreadLocalRandom.current().nextInt(0, 2);
+    switch(randomPowerUpType) {
+      case 0 -> newPowerUp = new MultiBallPowerUp(x, y);
+      default -> newPowerUp = new ExtendedPaddlePowerUp(x, y);
+    }
+    return newPowerUp;
+  }
+
+  public abstract void activate(Game game);
+
+  public abstract boolean deactivate(Game game);
+
+  public abstract String getImageString();
+
   public double getLeftSideX() {
     return myRectangle.getX();
   }
 
   public double getRightSideX() {
     return myRectangle.getX() + LENGTH;
+  }
+
+  public double getTop() {
+    return myRectangle.getY();
   }
 
   public double getBottom() {
@@ -49,24 +87,4 @@ public abstract class PowerUp  {
   public Text getText() {
     return myText;
   }
-
-  public void fallFromDestroyedBlock(Game game, double elapsedTime) {
-    myText.setY(myText.getY() + elapsedTime * SPEED);
-    myRectangle.setY(myRectangle.getY() + elapsedTime * SPEED);
-    if (collisionWithPaddle(game.getPaddle())) {
-      activate(game);
-      game.getRoot().getChildren().remove(myText);
-      game.getRoot().getChildren().remove(myRectangle);
-      Platform.runLater(() -> game.getPowerUps().remove(this));
-    }
-  }
-
-  public boolean collisionWithPaddle(Paddle paddle) {
-    return getBottom() >= Paddle.STARTING_Y && getRightSideX() >= paddle.getLeftSideX()
-        && getLeftSideX() <= paddle.getRightSideX();
-  }
-
-  public abstract void activate(Game game);
-
-  public abstract String getImageString();
 }

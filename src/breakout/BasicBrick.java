@@ -13,7 +13,7 @@ public class BasicBrick extends Brick {
    * @param x location of block
    * @param y location of block
    */
-  public BasicBrick(double x, double y) {
+  public BasicBrick(int x, int y) {
     super(x, y);
   }
 

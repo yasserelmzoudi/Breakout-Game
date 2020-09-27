@@ -57,9 +57,9 @@ public class PaddleTest extends DukeApplicationTest {
     press(myScene, KeyCode.LEFT);
     assertEquals(0, myPaddleRectangle.getX());
 
-    myPaddleRectangle.setX(Game.SIZE - Paddle.LENGTH);
+    myPaddleRectangle.setX(Game.SIZE - Paddle.STARTING_WIDTH);
     press(myScene, KeyCode.RIGHT);
-    assertEquals(Game.SIZE - Paddle.LENGTH, myPaddleRectangle.getX());
+    assertEquals(Game.SIZE - Paddle.STARTING_WIDTH, myPaddleRectangle.getX());
   }
 
 

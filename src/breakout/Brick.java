@@ -22,7 +22,7 @@ public abstract class Brick {
    * @param x location of block
    * @param y location of block
    */
-  public Brick(double x, double y) {
+  public Brick(int x, int y) {
     myRectangle = new Rectangle(x, y, LENGTH, HEIGHT);
     myRectangle.setId("block" + x + y);
     myColor = BRICK_BASE_COLOR;
@@ -49,13 +49,13 @@ public abstract class Brick {
     spawnPowerUp(root, powerUps);
   }
 
-  protected void spawnPowerUp(Group root, List<PowerUp> powerUps) {
-    int randomSeed = ThreadLocalRandom.current().nextInt(0, 100);
-    if (randomSeed < Game.POWER_UP_SPAWN_CHANCE) {
-      PowerUp newPowerUp = new MultiBallPowerUp(getX(), getY());
-      root.getChildren().add(newPowerUp.getRectangle());
-      root.getChildren().add(newPowerUp.getText());
-      powerUps.add(newPowerUp);
+  protected void spawnPowerUp(Group root, List<PowerUp> fallingPowerUps) {
+    int randomPowerUpSeed = ThreadLocalRandom.current().nextInt(0, 100);
+    if (randomPowerUpSeed < Game.POWER_UP_SPAWN_CHANCE) {
+      PowerUp newPowerUp = PowerUp.powerUpGenerator(getX(), getY());
+      Platform.runLater(() -> root.getChildren().add(newPowerUp.getRectangle()));
+      Platform.runLater(() -> root.getChildren().add(newPowerUp.getText()));
+      fallingPowerUps.add(newPowerUp);
     }
   }
 
