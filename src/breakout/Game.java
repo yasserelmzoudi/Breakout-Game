@@ -21,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -36,19 +35,20 @@ public class Game extends Application {
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String LEVEL = "testlevel.txt";
+  public static final String LEVEL = "testlevel3.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
-  public static final int POINTS_FOR_HITTING_BLOCK = 100;
   public static final int POWER_UP_SPAWN_CHANCE = 10;
+  public static final int POINTS_FOR_HITTING_BRICK = 100;
 
   private Scene myScene;
   private Group myRoot;
   private Paddle myPaddle;
   private Display myDisplay;
   private List<Ball> myBalls;
-  private List<Block> myBricks;
+  private List<Brick> myBricks;
   private List<PowerUp> myPowerUps;
+  private int myUnbreakableBricks = 0;
 
   private boolean paused = false;
 
@@ -94,7 +94,7 @@ public class Game extends Application {
   }
 
   /**
-   * Builds the blocks for a level from a text file
+   * Builds the bricks for a level from a text file
    *
    * @param level filename of the level
    * @param root  of the JavaFX resource tree
@@ -113,16 +113,33 @@ public class Game extends Application {
 
     for (String row : Files.readAllLines(path)) {
       currentX = 0;
-      for (String space : row.split("")) {
-        if (space.equalsIgnoreCase(Block.BLOCK_LETTER)) {
-          Block block = new Block(currentX, currentY);
-          myBricks.add(block);
-          root.getChildren().add(block.getRectangle());
+      for (String blockType : row.split("")) {
+        if (validBrick(blockType)) {
+          Brick brick = brickBuilder(currentX, currentY, blockType);
+          root.getChildren().add(brick.getRectangle());
         }
-        currentX += Block.LENGTH;
+        currentX += Brick.LENGTH;
       }
-      currentY += Block.HEIGHT;
+      currentY += Brick.HEIGHT;
     }
+  }
+
+  private boolean validBrick(String blockType) {
+    return !(blockType.equals(" ") || blockType.equals(""));
+  }
+
+  private Brick brickBuilder(int currentX, int currentY, String blockType) {
+    Brick brick;
+    switch(blockType) {
+      case "X" -> brick = new MultiHitBrick(currentX, currentY);
+      case "i" -> {
+        brick = new UnbreakableBrick(currentX, currentY);
+        myUnbreakableBricks++;
+      }
+      default -> brick = new BasicBrick(currentX, currentY);
+    }
+    myBricks.add(brick);
+    return brick;
   }
 
   private void handleKeyInput(KeyCode code) {
@@ -134,7 +151,7 @@ public class Game extends Application {
   }
 
   private void checkCheatKey(KeyCode code) {
-    switch (code) {
+    switch(code) {
       case R -> reset();
       case P -> dropPowerUp();
       case B -> breakBlock();
@@ -167,39 +184,30 @@ public class Game extends Application {
     gameOverText.setTextOrigin(VPos.TOP);
     Font font = new Font(30);
     gameOverText.setFont(font);
-    gameOverText.layoutXProperty().bind(myScene.widthProperty().subtract(gameOverText.prefWidth(-1)).divide(2));
-    gameOverText.layoutYProperty().bind(myScene.heightProperty().subtract(gameOverText.prefHeight(-1)).divide(2));
+    gameOverText.layoutXProperty()
+        .bind(myScene.widthProperty().subtract(gameOverText.prefWidth(-1)).divide(2));
+    gameOverText.layoutYProperty()
+        .bind(myScene.heightProperty().subtract(gameOverText.prefHeight(-1)).divide(2));
     myRoot.getChildren().add(gameOverText);
   }
 
   private void checkBallBrickCollision() {
     for (Ball ball : myBalls) {
-      for (Block brick : myBricks) {
-        if (ball.checkBrickHit(brick)) {
-          myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
-          Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
-          myBricks.remove(brick);
-          if (myBricks.size() == 0) {
-            gameOver("YOU WIN!");
-          }
-          spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
-          break;
+      checkBrickCollision(ball);
+    }
+  }
+
+  private void checkBrickCollision(Ball ball) {
+    for (Brick brick : myBricks) {
+      if (ball.checkBrickHit(brick)) {
+        brick.activateBrick(myDisplay, myRoot, myBricks, myPowerUps);
+        if (myBricks.size() == myUnbreakableBricks) {
+          gameOver("YOU WIN!");
         }
+        break;
       }
     }
   }
-
-  private void spawnPowerUp(Group root, List<PowerUp> myPowerUps, double initialX,
-      double initialY) {
-    int randomSeed = ThreadLocalRandom.current().nextInt(0, 100);
-    if (randomSeed < POWER_UP_SPAWN_CHANCE) {
-      PowerUp newPowerUp = new MultiBallPowerUp(initialX, initialY);
-      root.getChildren().add(newPowerUp.getRectangle());
-      root.getChildren().add(newPowerUp.getText());
-      myPowerUps.add(newPowerUp);
-    }
-  }
-
 
   private void movePowerUps(double elapsedTime) {
     for (PowerUp powerUp : myPowerUps) {
@@ -234,10 +242,12 @@ public class Game extends Application {
   }
 
   private void breakBlock() {
-    Block brick = myBricks.remove(0);
-    myDisplay.changeScore(POINTS_FOR_HITTING_BLOCK);
-    Platform.runLater(() -> myRoot.getChildren().remove(brick.getRectangle()));
-    spawnPowerUp(myRoot, myPowerUps, brick.getX(), brick.getY());
+    Brick brick = myBricks.remove(0);
+    brick.destroyBrick(myRoot, myBricks, myPowerUps);
+    myDisplay.changeScore(brick.getScore());
+    if (myBricks.size() == myUnbreakableBricks) {
+      gameOver("YOU WIN!");
+    }
   }
 
   public Ball getBall() {
@@ -248,7 +258,7 @@ public class Game extends Application {
     return myBalls;
   }
 
-  public List<Block> getBricks() {
+  public List<Brick> getBricks() {
     return myBricks;
   }
 
