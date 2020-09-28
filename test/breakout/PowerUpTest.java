@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -58,6 +59,19 @@ public class PowerUpTest extends DukeApplicationTest {
     }
     assertEquals(Paddle.STARTING_WIDTH * ExtendedPaddlePowerUp.WIDTH_INCREASE,
         myGame.getPaddle().getRectangle().getWidth());
+  }
+
+  @Test
+  public void testSlowBallPowerUp() {
+    PowerUp myPowerUp = new SlowBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
+    myGame.getFallingPowerUps().add(myPowerUp);
+    while (Math.abs(myGame.getBall().getVerticalSpeed()) == Ball.VERTICAL_SPEED) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(Ball.VERTICAL_SPEED * SlowBallPowerUp.SPEED_DECREASE,
+        Math.abs(myGame.getBall().getVerticalSpeed()));
+    assertEquals(Ball.HORIZONTAL_SPEED * SlowBallPowerUp.SPEED_DECREASE,
+        Math.abs(myGame.getBall().getHorizontalSpeed()));
   }
 
 }
