@@ -1,7 +1,6 @@
 package breakout;
 
 import java.util.concurrent.ThreadLocalRandom;
-import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -13,7 +12,7 @@ public abstract class PowerUp {
   public static final double HEIGHT = 15;
   public static final Color TEXT_COLOR = Color.BLACK;
   public static final Color BACKGROUND_COLOR = Color.ORANGE;
-  public static final double MAX_POWER_UP_TIME = Game.FRAMES_PER_SECOND * 10;
+  public static final double MAX_POWER_UP_TIME = Game.FRAMES_PER_SECOND * 15;
 
   private Text myText;
   private Rectangle myRectangle;
@@ -50,10 +49,11 @@ public abstract class PowerUp {
 
   public static PowerUp powerUpGenerator(double x, double y) {
     PowerUp newPowerUp;
-    int randomPowerUpType = ThreadLocalRandom.current().nextInt(0, 2);
+    int randomPowerUpType = ThreadLocalRandom.current().nextInt(0, 3);
     switch(randomPowerUpType) {
       case 0 -> newPowerUp = new MultiBallPowerUp(x, y);
-      default -> newPowerUp = new ExtendedPaddlePowerUp(x, y);
+      case 1 -> newPowerUp = new ExtendedPaddlePowerUp(x, y);
+      default -> newPowerUp = new SlowBallPowerUp(x, y);
     }
     return newPowerUp;
   }

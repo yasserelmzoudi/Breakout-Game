@@ -12,8 +12,8 @@ public class Ball {
   public static final double STARTING_X = Game.SIZE / 2;
   public static final double STARTING_Y = Game.SIZE / 2;
   public static final double BALL_RADIUS = 6;
-  public static final double VERTICAL_SPEED = 80;
-  public static final double HORIZONTAL_SPEED = 80;
+  public static final double VERTICAL_SPEED = 120;
+  public static final double HORIZONTAL_SPEED = 120;
 
   private Circle ball;
   private double verticalSpeed;
