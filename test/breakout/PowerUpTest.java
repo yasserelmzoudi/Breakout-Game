@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -33,7 +34,7 @@ public class PowerUpTest extends DukeApplicationTest {
   @Test
   public void testPowerUpFall() {
     PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getPowerUps().add(myPowerUp);
+    myGame.getFallingPowerUps().add(myPowerUp);
     myGame.step(Game.SECOND_DELAY);
     assertEquals(Game.SIZE / 2 + PowerUp.SPEED * Game.SECOND_DELAY + PowerUp.HEIGHT,
         myPowerUp.getBottom());
@@ -42,11 +43,35 @@ public class PowerUpTest extends DukeApplicationTest {
   @Test
   public void testMultiBallPowerUp() {
     PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getPowerUps().add(myPowerUp);
+    myGame.getFallingPowerUps().add(myPowerUp);
     while (myGame.getBalls().size() == 1) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(3, myGame.getBalls().size());
+  }
+
+  @Test
+  public void testExtendedPaddlePowerUp() {
+    PowerUp myPowerUp = new ExtendedPaddlePowerUp(Game.SIZE / 2, Game.SIZE / 2);
+    myGame.getFallingPowerUps().add(myPowerUp);
+    while (myGame.getPaddle().getRectangle().getWidth() == Paddle.STARTING_WIDTH) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(Paddle.STARTING_WIDTH * ExtendedPaddlePowerUp.WIDTH_INCREASE,
+        myGame.getPaddle().getRectangle().getWidth());
+  }
+
+  @Test
+  public void testSlowBallPowerUp() {
+    PowerUp myPowerUp = new SlowBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
+    myGame.getFallingPowerUps().add(myPowerUp);
+    while (Math.abs(myGame.getBall().getVerticalSpeed()) == Ball.VERTICAL_SPEED) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(Ball.VERTICAL_SPEED * SlowBallPowerUp.SPEED_DECREASE,
+        Math.abs(myGame.getBall().getVerticalSpeed()));
+    assertEquals(Ball.HORIZONTAL_SPEED * SlowBallPowerUp.SPEED_DECREASE,
+        Math.abs(myGame.getBall().getHorizontalSpeed()));
   }
 
 }

@@ -27,9 +27,16 @@ public class MultiBallPowerUp extends PowerUp {
 
       Platform.runLater(() -> game.getRoot().getChildren().add(ball.getCircle()));
       game.getBalls().add(ball);
-      ball.setHorizontalSpeed(ThreadLocalRandom.current().nextDouble(0, Ball.HORIZONTAL_SPEED));
+      ball.setHorizontalSpeed(
+          ThreadLocalRandom.current().nextDouble(-Ball.HORIZONTAL_SPEED, Ball.HORIZONTAL_SPEED));
     }
   }
+
+  @Override
+  public boolean deactivate(Game game) {
+    return true;
+  }
+
 
   @Override
   public String getImageString() {

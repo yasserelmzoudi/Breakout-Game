@@ -9,21 +9,23 @@ import javafx.scene.shape.Rectangle;
  */
 public class Paddle {
 
-  public static final int LENGTH = 40;
-  public static final int HEIGHT = 10;
-  public static final int STARTING_X = Game.SIZE / 2 - LENGTH / 2;
-  public static final int STARTING_Y = 7 * Game.SIZE / 8;
-  public static final int SPEED = 10;
+  public static final double STARTING_WIDTH = 40;
+  public static final double HEIGHT = 10;
+  public static final double STARTING_X = Game.SIZE / 2 - STARTING_WIDTH / 2;
+  public static final double STARTING_Y = 7 * Game.SIZE / 8;
+  public static final double SPEED = 10;
 
   private Rectangle myRectangle;
+  private double myWidth;
 
   /**
    * Paddle constructor
    */
   public Paddle() {
-    myRectangle = new Rectangle(STARTING_X, STARTING_Y, LENGTH, HEIGHT);
+    myRectangle = new Rectangle(STARTING_X, STARTING_Y, STARTING_WIDTH, HEIGHT);
     myRectangle.setFill(Color.BLUE);
     myRectangle.setId("paddle");
+    myWidth = STARTING_WIDTH;
   }
 
   /**
@@ -53,6 +55,11 @@ public class Paddle {
   }
 
   public double getRightSideX() {
-    return myRectangle.getX() + LENGTH;
+    return myRectangle.getX() + myRectangle.getWidth();
+  }
+
+  public void setWidth(double newWidth) {
+    myWidth = newWidth;
+    myRectangle.setWidth(myWidth);
   }
 }

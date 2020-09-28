@@ -8,7 +8,7 @@ public class UnbreakableBrick extends Brick {
 
   public static final Color UNBREAKABLE_COLOR = Color.DARKGRAY;
 
-  public UnbreakableBrick(double x, double y) {
+  public UnbreakableBrick(int x, int y) {
     super(x, y);
     setColor(UNBREAKABLE_COLOR);
     getRectangle().setFill(UNBREAKABLE_COLOR);

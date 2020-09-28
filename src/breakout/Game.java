@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -35,7 +34,7 @@ public class Game extends Application {
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String LEVEL = "testlevel3.txt";
+  public static final String LEVEL = "testlevel.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
   public static final int POWER_UP_SPAWN_CHANCE = 10;
@@ -47,7 +46,8 @@ public class Game extends Application {
   private Display myDisplay;
   private List<Ball> myBalls;
   private List<Brick> myBricks;
-  private List<PowerUp> myPowerUps;
+  private List<PowerUp> myFallingPowerUps;
+  private List<PowerUp> myActivePowerUps;
   private int myUnbreakableBricks = 0;
 
   private boolean paused = false;
@@ -76,7 +76,8 @@ public class Game extends Application {
     myPaddle = new Paddle();
     myRoot.getChildren().add(myPaddle.getRectangle());
 
-    myPowerUps = new ArrayList<>();
+    myFallingPowerUps = new ArrayList<>();
+    myActivePowerUps = new ArrayList<>();
 
     myBalls = new ArrayList<>();
     myBalls.add(new Ball());
@@ -102,7 +103,7 @@ public class Game extends Application {
    * @throws URISyntaxException
    */
   public void buildBlocksFromFile(String level,
-      Group root) // Maybe this method should be in Block.java?
+      Group root) // Maybe this method should be in Brick.java?
       throws IOException, URISyntaxException {
     Path path = Paths
         .get(Objects.requireNonNull(Main.class.getClassLoader().getResource(level)).toURI());
@@ -164,7 +165,12 @@ public class Game extends Application {
       moveBalls(elapsedTime);
       movePowerUps(elapsedTime);
       checkBallBrickCollision();
+      checkPowerUpDeactivate();
     }
+  }
+
+  private void checkPowerUpDeactivate() {
+    myActivePowerUps.removeIf(powerUp -> powerUp.deactivate(this));
   }
 
   private void moveBalls(double elapsedTime) {
@@ -203,7 +209,7 @@ public class Game extends Application {
   private void checkBrickCollision(Ball ball) {
     for (Brick brick : myBricks) {
       if (ball.checkBrickHit(brick)) {
-        brick.activateBrick(myDisplay, myRoot, myBricks, myPowerUps);
+        brick.activateBrick(myDisplay, myRoot, myBricks, myFallingPowerUps);
         if (myBricks.size() == myUnbreakableBricks) {
           gameOver("YOU WIN!");
         }
@@ -213,8 +219,11 @@ public class Game extends Application {
   }
 
   private void movePowerUps(double elapsedTime) {
-    for (PowerUp powerUp : myPowerUps) {
-      powerUp.fallFromDestroyedBlock(this, elapsedTime);
+    for (PowerUp powerUp : myFallingPowerUps) {
+      if (powerUp.fallFromDestroyedBlock(this, elapsedTime)) {
+        Platform.runLater(() -> getFallingPowerUps().remove(powerUp));
+        getActivePowerUps().add(powerUp);
+      }
     }
   }
 
@@ -228,8 +237,8 @@ public class Game extends Application {
   }
 
   private void dropPowerUp() {
-    PowerUp powerUp = new MultiBallPowerUp(SIZE / 2, SIZE / 2);
-    myPowerUps.add(powerUp);
+    PowerUp powerUp = PowerUp.powerUpGenerator(SIZE / 2, SIZE / 2);
+    myFallingPowerUps.add(powerUp);
     myRoot.getChildren().add(powerUp.getRectangle());
     myRoot.getChildren().add(powerUp.getText());
   }
@@ -246,7 +255,7 @@ public class Game extends Application {
 
   private void breakBlock() {
     Brick brick = myBricks.remove(0);
-    brick.destroyBrick(myRoot, myBricks, myPowerUps);
+    brick.destroyBrick(myRoot, myBricks, myFallingPowerUps);
     myDisplay.changeScore(brick.getScore());
     if (myBricks.size() == myUnbreakableBricks) {
       gameOver("YOU WIN!");
@@ -269,8 +278,12 @@ public class Game extends Application {
     return myPaddle;
   }
 
-  public List<PowerUp> getPowerUps() {
-    return myPowerUps;
+  public List<PowerUp> getActivePowerUps() {
+    return myActivePowerUps;
+  }
+
+  public List<PowerUp> getFallingPowerUps() {
+    return myFallingPowerUps;
   }
 
   public Group getRoot() {

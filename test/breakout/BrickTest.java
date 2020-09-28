@@ -32,7 +32,8 @@ class BrickTest extends DukeApplicationTest {
 
   @Test
   public void testBasicBrick() {
-    Brick brick = new BasicBrick(myBallCircle.getCenterX(), myBallCircle.getCenterY() - 5);
+    Brick brick = new BasicBrick((int) myBallCircle.getCenterX(),
+        (int) myBallCircle.getCenterY() - 5);
     myGame.getBricks().add(brick);
     myGame.getBall().setVerticalSpeed(-80);
     while (myGame.getBall().getVerticalSpeed() < 0) {
@@ -43,7 +44,8 @@ class BrickTest extends DukeApplicationTest {
 
   @Test
   public void testMultiHitBrick() {
-    Brick brick = new MultiHitBrick(myBallCircle.getCenterX(), myBallCircle.getCenterY() - 5);
+    Brick brick = new MultiHitBrick((int) myBallCircle.getCenterX(),
+        (int) myBallCircle.getCenterY() - 5);
     myGame.getBricks().add(brick);
     myGame.getBall().setVerticalSpeed(-80);
     while (myGame.getBall().getVerticalSpeed() < 0) {
@@ -67,7 +69,8 @@ class BrickTest extends DukeApplicationTest {
 
   @Test
   public void testUnbreakableBrick() {
-    Brick brick = new UnbreakableBrick(myBallCircle.getCenterX(), myBallCircle.getCenterY() - 5);
+    Brick brick = new UnbreakableBrick((int) myBallCircle.getCenterX(),
+        (int) myBallCircle.getCenterY() - 5);
     myGame.getBricks().add(brick);
     for (int hitNumber = 0; hitNumber < 10; hitNumber++) {
       myGame.getBall().setVerticalSpeed(-80);
