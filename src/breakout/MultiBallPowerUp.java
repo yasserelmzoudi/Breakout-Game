@@ -16,7 +16,7 @@ public class MultiBallPowerUp extends PowerUp {
     double mainBallXPosition = game.getBall().getX();
     double mainBallYPosition = game.getBall().getY();
     double mainBallHorizontalSpeed = game.getBall().getHorizontalSpeed();
-    double mainBallVerticalSpeed = game.getBall().getVerticalSpeed();
+    double mainBallVerticalSpeed = -Math.abs(game.getBall().getVerticalSpeed());
 
     for (int i = 0; i < 2; i++) {
       Ball ball = new Ball();
