@@ -64,11 +64,11 @@ public abstract class PowerUp {
 
   public abstract String getImageString();
 
-  public double getLeftSideX() {
+  private double getLeftSideX() {
     return myRectangle.getX();
   }
 
-  public double getRightSideX() {
+  private double getRightSideX() {
     return myRectangle.getX() + LENGTH;
   }
 

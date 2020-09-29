@@ -1,12 +1,10 @@
 package breakout;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javafx.scene.Scene;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +12,7 @@ public class DisplayTest extends DukeApplicationTest {
 
   private final Game myGame = new Game();
   private Scene myScene;
-  private Rectangle myPaddleRectangle;
-  private Circle myBallCircle;
-  private Rectangle myBlockRectangle;
+  private Display myDisplay;
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
@@ -25,14 +21,11 @@ public class DisplayTest extends DukeApplicationTest {
     stage.setScene(myScene);
     stage.show();
 
-    // find individual items within game by ID (must have been set in your code using setID())
-    myPaddleRectangle = lookup("#paddle").query();
-    myBallCircle = myGame.getBall().getCircle();
+    myDisplay = myGame.getDisplay();
   }
 
   @Test
   public void testDisplayMethods() {
-    Display myDisplay = new Display(Game.DIFFICULTY);
     myDisplay.changeLives(1);
     myDisplay.changeScore(500);
 

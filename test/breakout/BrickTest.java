@@ -1,22 +1,25 @@
 package breakout;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
-class BrickTest extends DukeApplicationTest {
+public class BrickTest extends DukeApplicationTest {
 
   private final Game myGame = new Game();
   private Scene myScene;
-  private Rectangle myPaddleRectangle;
+
+  private Ball myBall;
   private Circle myBallCircle;
-  private Rectangle myBlockRectangle;
+  private List<Brick> myBricks;
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
@@ -25,45 +28,45 @@ class BrickTest extends DukeApplicationTest {
     stage.setScene(myScene);
     stage.show();
 
-    // find individual items within game by ID (must have been set in your code using setID())
-    myPaddleRectangle = lookup("#paddle").query();
-    myBallCircle = myGame.getBall().getCircle();
+    myBall = myGame.getBall();
+    myBallCircle = myBall.getCircle();
+    myBricks = myGame.getBricks();
   }
 
   @Test
   public void testBasicBrick() throws IOException, URISyntaxException {
     Brick brick = new BasicBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
-    myGame.getBricks().add(brick);
-    myGame.getBall().setVerticalSpeed(-80);
-    while (myGame.getBall().getVerticalSpeed() < 0) {
+    myBricks.add(brick);
+    myBall.setVerticalSpeed(-80);
+    while (myBall.getVerticalSpeed() < 0) {
       myGame.step(Game.SECOND_DELAY);
     }
-    assertFalse(myGame.getBricks().contains(brick));
+    assertFalse(myBricks.contains(brick));
   }
 
   @Test
   public void testMultiHitBrick() throws IOException, URISyntaxException {
     Brick brick = new MultiHitBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
-    myGame.getBricks().add(brick);
-    myGame.getBall().setVerticalSpeed(-80);
-    while (myGame.getBall().getVerticalSpeed() < 0) {
+    myBricks.add(brick);
+    myBall.setVerticalSpeed(-80);
+    while (myBall.getVerticalSpeed() < 0) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(Brick.BRICK_BASE_COLOR.brighter(), brick.getColor());
 
-    myGame.getBall().setVerticalSpeed(-80);
-    while (myGame.getBall().getVerticalSpeed() < 0) {
+    myBall.setVerticalSpeed(-80);
+    while (myBall.getVerticalSpeed() < 0) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(Brick.BRICK_BASE_COLOR.brighter().brighter(), brick.getColor());
 
-    myGame.getBall().setVerticalSpeed(-80);
-    while (myGame.getBall().getVerticalSpeed() < 0) {
+    myBall.setVerticalSpeed(-80);
+    while (myBall.getVerticalSpeed() < 0) {
       myGame.step(Game.SECOND_DELAY);
     }
-    assertFalse(myGame.getBricks().contains(brick));
+    assertFalse(myBricks.contains(brick));
 
   }
 
@@ -71,14 +74,14 @@ class BrickTest extends DukeApplicationTest {
   public void testUnbreakableBrick() throws IOException, URISyntaxException {
     Brick brick = new UnbreakableBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
-    myGame.getBricks().add(brick);
+    myBricks.add(brick);
     for (int hitNumber = 0; hitNumber < 10; hitNumber++) {
-      myGame.getBall().setVerticalSpeed(-80);
-      while (myGame.getBall().getVerticalSpeed() < 0) {
+      myBall.setVerticalSpeed(-80);
+      while (myBall.getVerticalSpeed() < 0) {
         myGame.step(Game.SECOND_DELAY);
       }
     }
-    assertTrue(myGame.getBricks().contains(brick));
+    assertTrue(myBricks.contains(brick));
   }
 
 }
