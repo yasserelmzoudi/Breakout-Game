@@ -1,7 +1,10 @@
 package Breakout;
 
 import Bricks.Brick;
+import PowerUps.ExtendedPaddlePowerUp;
+import PowerUps.MultiBallPowerUp;
 import PowerUps.PowerUp;
+import PowerUps.SlowBallPowerUp;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -114,17 +117,38 @@ public class Game extends Application {
 
   private void checkCheatKey(KeyCode code) {
     switch(code) {
-      case R -> reset();
-      case P -> dropPowerUp();
-      case D -> breakBlock();
-      case L -> extraLife();
-      case DIGIT1 -> skipLevel(1);
-      case DIGIT2 -> skipLevel(2);
-      case DIGIT3 -> skipLevel(3);
+      case R -> resetCheat();
+      case P -> dropPowerUpCheat();
+      case D -> breakBlockCheat();
+      case L -> extraLifeCheat();
+      case DIGIT1 -> skipLevelCheat(1);
+      case DIGIT2 -> skipLevelCheat(2);
+      case DIGIT3 -> skipLevelCheat(3);
+      case E -> extendPaddleCheat();
+      case M -> multiBallCheat();
+      case S -> slowBallCheat();
     }
   }
 
-  private void skipLevel(int level) {
+  private void slowBallCheat() {
+    PowerUp slowBall = new SlowBallPowerUp(SIZE / 2, SIZE / 2);
+    slowBall.activate(this);
+    myActivePowerUps.add(slowBall);
+  }
+
+  private void multiBallCheat() {
+    PowerUp multiBall = new MultiBallPowerUp(SIZE / 2, SIZE / 2);
+    multiBall.activate(this);
+    myActivePowerUps.add(multiBall);
+  }
+
+  private void extendPaddleCheat() {
+    PowerUp extendedPaddle = new ExtendedPaddlePowerUp(SIZE / 2, SIZE / 2);
+    extendedPaddle.activate(this);
+    myActivePowerUps.add(extendedPaddle);
+  }
+
+  private void skipLevelCheat(int level) {
     try {
       endLevel(level);
     } catch (IOException | URISyntaxException e) {
@@ -226,7 +250,7 @@ public class Game extends Application {
     }
   }
 
-  private void reset() {
+  private void resetCheat() {
     myPaddle.getRectangle().setX(Paddle.STARTING_X);
     myPaddle.getRectangle().setY(Paddle.STARTING_Y);
     myBalls.get(MAIN_BALL).getCircle().setCenterX(Ball.STARTING_X);
@@ -235,7 +259,7 @@ public class Game extends Application {
     myBalls.get(MAIN_BALL).setVerticalSpeed(Ball.VERTICAL_SPEED);
   }
 
-  private void dropPowerUp() {
+  private void dropPowerUpCheat() {
     PowerUp powerUp = PowerUp.powerUpGenerator(SIZE / 2, SIZE / 2);
     myFallingPowerUps.add(powerUp);
     myRoot.getChildren().add(powerUp.getRectangle());
@@ -248,11 +272,11 @@ public class Game extends Application {
     }
   }
 
-  private void extraLife() {
+  private void extraLifeCheat() {
     myDisplay.changeLives(1);
   }
 
-  private void breakBlock() {
+  private void breakBlockCheat() {
     Brick brick = myBricks.remove(0);
     brick.destroyBrick(myRoot, myBricks, myFallingPowerUps);
     myDisplay.changeScore(brick.getScore());
