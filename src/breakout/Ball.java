@@ -68,11 +68,12 @@ public class Ball {
 
   public boolean checkBrickHit(Brick brick) {
     if (ball.getBoundsInParent().intersects(brick.getRectangle().getBoundsInParent())) {
-      if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
-        bounceHorizontal();
-        return true;
-      } else if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
+      if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
         bounceVertical();
+        return true;
+      }
+      else if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
+        bounceHorizontal();
         return true;
       }
     }
