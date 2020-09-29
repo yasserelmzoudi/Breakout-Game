@@ -49,8 +49,11 @@ public class Game extends Application {
   private List<PowerUp> myFallingPowerUps;
   private List<PowerUp> myActivePowerUps;
   private int myUnbreakableBricks = 0;
+  private Timeline animation;
 
   private boolean paused = false;
+  private int currentLevelNumber;
+  private LevelPage level;
 
   /**
    * Begins the application by opening a window with objects initialized
@@ -59,20 +62,21 @@ public class Game extends Application {
    */
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    myScene = setupScene(SIZE, SIZE, BACKGROUND);
+    myScene = setupScene(0, SIZE, SIZE, BACKGROUND);
     stage.setScene(myScene);
     stage.setTitle(TITLE);
     stage.show();
     KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step(SECOND_DELAY));
-    Timeline animation = new Timeline();
+    animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
     animation.play();
   }
 
-  Scene setupScene(int width, int height, Paint background) throws IOException, URISyntaxException {
+  Scene setupScene(int levelNumber, int width, int height, Paint background) throws IOException, URISyntaxException {
     myRoot = new Group();
-
+    currentLevelNumber = levelNumber;
+    level = new LevelPage(currentLevelNumber);
     myPaddle = new Paddle();
     myRoot.getChildren().add(myPaddle.getRectangle());
 
@@ -166,7 +170,19 @@ public class Game extends Application {
       movePowerUps(elapsedTime);
       checkBallBrickCollision();
       checkPowerUpDeactivate();
+      checkLevelEnd();
+      check
     }
+  }
+
+  private void checkLevelEnd() {
+    if (isLevelEnd()) {
+      animation.stop();
+    }
+  }
+
+  private boolean isLevelEnd() {
+    return myBricks.size() == myUnbreakableBricks;
   }
 
   private void checkPowerUpDeactivate() {
