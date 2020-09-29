@@ -134,14 +134,41 @@ public class GameTest extends DukeApplicationTest {
   @Test
   public void testBreakBlock() {
     int brickNum = myBricks.size();
-    press(myScene, KeyCode.B);
+    press(myScene, KeyCode.D);
     assertEquals(brickNum - 1, myBricks.size());
   }
 
   @Test
   public void testLevel1Layout() {
-    press(myScene, KeyCode.DIGIT1);
-    assertEquals(Color.CRIMSON, myBricks.get(0).getColor());
+    try {
+      myScene = myGame.setupScene(1, Game.SIZE, Game.SIZE, Game.BACKGROUND);
+    } catch (IOException | URISyntaxException e) {
+      e.printStackTrace();
+    }
+    myBricks = myGame.getBricks();
+    assertEquals(Brick.BRICK_BASE_COLOR, myBricks.get(10).getColor());
+  }
+
+  @Test
+  public void testLevel2Layout() {
+    try {
+      myScene = myGame.setupScene(2, Game.SIZE, Game.SIZE, Game.BACKGROUND);
+    } catch (IOException | URISyntaxException e) {
+      e.printStackTrace();
+    }
+    myBricks = myGame.getBricks();
+    assertEquals(Brick.BRICK_BASE_COLOR.darker().darker(), myBricks.get(10).getColor());
+  }
+
+  @Test
+  public void testLevel3Layout() {
+    try {
+      myScene = myGame.setupScene(3, Game.SIZE, Game.SIZE, Game.BACKGROUND);
+    } catch (IOException | URISyntaxException e) {
+      e.printStackTrace();
+    }
+    myBricks = myGame.getBricks();
+    assertEquals(UnbreakableBrick.UNBREAKABLE_COLOR, myBricks.get(9).getColor());
   }
 
 }

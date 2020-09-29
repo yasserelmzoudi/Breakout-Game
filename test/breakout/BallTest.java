@@ -2,6 +2,7 @@ package breakout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javafx.scene.Scene;
@@ -50,7 +51,7 @@ public class BallTest extends DukeApplicationTest {
   public void testBounceOffRightWall() throws IOException, URISyntaxException {
     myBall.setVerticalSpeed(0);
     myBall.setHorizontalSpeed(120);
-    while(myBall.getHorizontalSpeed() > 0){
+    while (myBall.getHorizontalSpeed() > 0) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(-120, myBall.getHorizontalSpeed());
@@ -60,7 +61,7 @@ public class BallTest extends DukeApplicationTest {
   public void testBounceOffLeftWall() throws IOException, URISyntaxException {
     myBall.setVerticalSpeed(0);
     myBall.setHorizontalSpeed(-120);
-    while(myBall.getHorizontalSpeed() < 0){
+    while (myBall.getHorizontalSpeed() < 0) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(120, myBall.getHorizontalSpeed());
@@ -73,7 +74,7 @@ public class BallTest extends DukeApplicationTest {
     myBall.setVerticalSpeed(-Ball.VERTICAL_SPEED);
     myBall.setHorizontalSpeed(0);
 
-    while(myBall.getVerticalSpeed() < 0){
+    while (myBall.getVerticalSpeed() < 0) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(myBall.VERTICAL_SPEED, myBall.getVerticalSpeed());

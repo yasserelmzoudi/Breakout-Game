@@ -69,10 +69,8 @@ public class Game extends Application {
     KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
       try {
         step(SECOND_DELAY);
-      } catch (IOException ioException) {
+      } catch (IOException | URISyntaxException ioException) {
         ioException.printStackTrace();
-      } catch (URISyntaxException uriSyntaxException) {
-        uriSyntaxException.printStackTrace();
       }
     });
     animation = new Timeline();
@@ -81,7 +79,8 @@ public class Game extends Application {
     animation.play();
   }
 
-  Scene setupScene(int levelNumber, int width, int height, Paint background) throws IOException, URISyntaxException {
+  Scene setupScene(int levelNumber, int width, int height, Paint background)
+      throws IOException, URISyntaxException {
     myRoot = new Group();
     currentLevelNumber = levelNumber;
     level = new LevelLayout(myRoot, currentLevelNumber);
@@ -107,56 +106,6 @@ public class Game extends Application {
     return scene;
   }
 
-/*
-  /**
-   * Builds the bricks for a level from a text file
-   *
-   * @param level filename of the level
-   * @param root  of the JavaFX resource tree
-   * @throws IOException
-   * @throws URISyntaxException
-   */
-  /*public void buildBlocksFromFile(String level,
-      Group root) // Maybe this method should be in Brick.java?
-      throws IOException, URISyntaxException {
-    Path path = Paths
-        .get(Objects.requireNonNull(Game.class.getClassLoader().getResource(level)).toURI());
-    int currentX;
-    int currentY = 0;
-
-    myBricks = new ArrayList<>();
-
-    for (String row : Files.readAllLines(path)) {
-      currentX = 0;
-      for (String blockType : row.split("")) {
-        if (validBrick(blockType)) {
-          Brick brick = brickBuilder(currentX, currentY, blockType);
-          root.getChildren().add(brick.getRectangle());
-        }
-        currentX += Brick.LENGTH;
-      }
-      currentY += Brick.HEIGHT;
-    }
-  }
-
-  private boolean validBrick(String blockType) {
-    return !(blockType.equals(" ") || blockType.equals(""));
-  }
-
-  private Brick brickBuilder(int currentX, int currentY, String blockType) {
-    Brick brick;
-    switch(blockType) {
-      case "X" -> brick = new MultiHitBrick(currentX, currentY);
-      case "i" -> {
-        brick = new UnbreakableBrick(currentX, currentY);
-        myUnbreakableBricks++;
-      }
-      default -> brick = new BasicBrick(currentX, currentY);
-    }
-    myBricks.add(brick);
-    return brick;
-  }
-*/
   private void handleKeyInput(KeyCode code) {
     if (!paused) {
       myPaddle.movePaddle(code);
@@ -169,7 +118,7 @@ public class Game extends Application {
     switch(code) {
       case R -> reset();
       case P -> dropPowerUp();
-      case B -> breakBlock();
+      case D -> breakBlock();
       case L -> extraLife();
       case DIGIT1 -> skipLevel1();
       case DIGIT2 -> skipLevel2();
@@ -181,34 +130,39 @@ public class Game extends Application {
     animation.stop();
     currentLevelNumber = 1;
     try {
-      start(stage);
+      myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
     } catch (IOException | URISyntaxException e) {
       e.printStackTrace();
     }
+    stage.setScene(myScene);
+    stage.setTitle(TITLE);
+    stage.show();
   }
 
   private void skipLevel2() {
     animation.stop();
     currentLevelNumber = 2;
     try {
-      start(stage);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (URISyntaxException e) {
+      myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
+    } catch (IOException | URISyntaxException e) {
       e.printStackTrace();
     }
+    stage.setScene(myScene);
+    stage.setTitle(TITLE);
+    stage.show();
   }
 
   private void skipLevel3() {
     animation.stop();
     currentLevelNumber = 3;
     try {
-      start(stage);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (URISyntaxException e) {
+      myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
+    } catch (IOException | URISyntaxException e) {
       e.printStackTrace();
     }
+    stage.setScene(myScene);
+    stage.setTitle(TITLE);
+    stage.show();
   }
 
   void step(double elapsedTime) throws IOException, URISyntaxException {
@@ -225,7 +179,10 @@ public class Game extends Application {
     if (isLevelEnd()) {
       animation.stop();
       currentLevelNumber++;
-      start(stage);
+      myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
+      stage.setScene(myScene);
+      stage.setTitle(TITLE);
+      stage.show();
     }
   }
 

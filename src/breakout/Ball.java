@@ -47,8 +47,7 @@ public class Ball {
       bounceHorizontal();
     } else if (topSideWallHit()) {
       bounceVertical();
-    }
-    else if (bottomSideWallHit()) {
+    } else if (bottomSideWallHit()) {
       if (ballList.size() > 1) {
         root.getChildren().remove(ball);
         Platform.runLater(() -> ballList.remove(this));
@@ -71,8 +70,7 @@ public class Ball {
       if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
         bounceVertical();
         return true;
-      }
-      else if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
+      } else if (rightSideBrickHit(brick) || leftSideBrickHit(brick)) {
         bounceHorizontal();
         return true;
       }
