@@ -10,7 +10,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
-public class BallTest extends GameTest {
+public class BallTest extends DukeApplicationTest {
 
   private final Game myGame = new Game();
   private Scene myScene;
