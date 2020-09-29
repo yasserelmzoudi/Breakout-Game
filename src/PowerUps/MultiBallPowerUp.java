@@ -1,5 +1,7 @@
-package breakout;
+package PowerUps;
 
+import Breakout.Ball;
+import Breakout.Game;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;
 

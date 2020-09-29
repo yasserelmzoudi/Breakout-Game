@@ -1,5 +1,8 @@
-package breakout;
+package Bricks;
 
+import Breakout.Display;
+import Breakout.Game;
+import PowerUps.PowerUp;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;

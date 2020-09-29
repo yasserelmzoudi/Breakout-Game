@@ -1,4 +1,4 @@
-package breakout;
+package Breakout;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;

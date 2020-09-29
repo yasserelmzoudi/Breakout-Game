@@ -1,7 +1,11 @@
-package breakout;
+package Breakout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import PowerUps.ExtendedPaddlePowerUp;
+import PowerUps.MultiBallPowerUp;
+import PowerUps.PowerUp;
+import PowerUps.SlowBallPowerUp;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;

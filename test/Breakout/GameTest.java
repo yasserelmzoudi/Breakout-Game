@@ -1,9 +1,9 @@
-package breakout;
+package Breakout;
 
+import Bricks.Brick;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;

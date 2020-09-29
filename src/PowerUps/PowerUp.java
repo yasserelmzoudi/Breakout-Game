@@ -1,5 +1,7 @@
-package breakout;
+package PowerUps;
 
+import Breakout.Game;
+import Breakout.Paddle;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
