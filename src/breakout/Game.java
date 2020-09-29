@@ -33,8 +33,6 @@ public class Game extends Application {
   public static final int FRAMES_PER_SECOND = 120;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
-  public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String LEVEL = "level1.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
   public static final int POWER_UP_SPAWN_CHANCE = 10;
@@ -109,6 +107,7 @@ public class Game extends Application {
     return scene;
   }
 
+/*
   /**
    * Builds the bricks for a level from a text file
    *
@@ -156,8 +155,8 @@ public class Game extends Application {
     }
     myBricks.add(brick);
     return brick;
-  }*/
-
+  }
+*/
   private void handleKeyInput(KeyCode code) {
     if (!paused) {
       myPaddle.movePaddle(code);
@@ -172,6 +171,43 @@ public class Game extends Application {
       case P -> dropPowerUp();
       case B -> breakBlock();
       case L -> extraLife();
+      case DIGIT1 -> skipLevel1();
+      case DIGIT2 -> skipLevel2();
+      case DIGIT3 -> skipLevel3();
+    }
+  }
+
+  private void skipLevel1() {
+    animation.stop();
+    currentLevelNumber = 1;
+    try {
+      start(stage);
+    } catch (IOException | URISyntaxException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void skipLevel2() {
+    animation.stop();
+    currentLevelNumber = 2;
+    try {
+      start(stage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void skipLevel3() {
+    animation.stop();
+    currentLevelNumber = 3;
+    try {
+      start(stage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
     }
   }
 
@@ -187,7 +223,7 @@ public class Game extends Application {
 
   private void checkLevelEnd() throws IOException, URISyntaxException {
     if (isLevelEnd()) {
-      //animation.stop();
+      animation.stop();
       currentLevelNumber++;
       start(stage);
     }
@@ -238,9 +274,9 @@ public class Game extends Application {
     for (Brick brick : myBricks) {
       if (ball.checkBrickHit(brick)) {
         brick.activateBrick(myDisplay, myRoot, myBricks, myFallingPowerUps);
-        /*if (myBricks.size() == myUnbreakableBricks) {
+        if (myBricks.size() == myUnbreakableBricks && currentLevelNumber == 3) {
           gameOver("YOU WIN!");
-        }*/
+        }
         break;
       }
     }
@@ -285,9 +321,9 @@ public class Game extends Application {
     Brick brick = myBricks.remove(0);
     brick.destroyBrick(myRoot, myBricks, myFallingPowerUps);
     myDisplay.changeScore(brick.getScore());
-    /*if (myBricks.size() == myUnbreakableBricks) {
+    if (myBricks.size() == myUnbreakableBricks && currentLevelNumber == 3) {
       gameOver("YOU WIN!");
-    }*/
+    }
   }
 
   public Ball getBall() {

@@ -3,9 +3,9 @@ package breakout;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -87,7 +87,7 @@ public class GameTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBlockHit() {
+  public void testBlockHit() throws IOException, URISyntaxException {
     myBall.setVerticalSpeed(-80);
     int brickNum = myBricks.size();
     while (myBall.getVerticalSpeed() < 0) {
@@ -136,6 +136,12 @@ public class GameTest extends DukeApplicationTest {
     int brickNum = myBricks.size();
     press(myScene, KeyCode.B);
     assertEquals(brickNum - 1, myBricks.size());
+  }
+
+  @Test
+  public void testLevel1Layout() {
+    press(myScene, KeyCode.DIGIT1);
+    assertEquals(Color.CRIMSON, myBricks.get(0).getColor());
   }
 
 }

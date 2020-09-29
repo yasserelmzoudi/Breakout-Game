@@ -127,7 +127,7 @@ public class Ball {
     horizontalSpeed *= -1;
   }
 
-  private boolean bottomSideWallHit() {
+  public boolean bottomSideWallHit() {
     return getBottomY() >= Game.SIZE;
   }
 
