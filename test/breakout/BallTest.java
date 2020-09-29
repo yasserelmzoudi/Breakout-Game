@@ -1,6 +1,7 @@
 package breakout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -21,7 +22,6 @@ public class BallTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    // create game's scene with all shapes in their initial positions and show it
     myScene = myGame.setupScene(1, Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
@@ -32,11 +32,52 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
+  public void testBallMovement() throws IOException, URISyntaxException {
+    double myBallInitialY = myBall.getY();
+    myGame.step(Game.SECOND_DELAY);
+    assertNotEquals(myBallInitialY, myBall.getY());
+  }
+
+  @Test
   public void testBounceOffPaddle() throws IOException, URISyntaxException {
     while (myBall.getVerticalSpeed() > 0) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(-1 * Ball.VERTICAL_SPEED, myBall.getVerticalSpeed());
+  }
+
+  @Test
+  public void testBounceOffRightWall() throws IOException, URISyntaxException {
+    myBall.setVerticalSpeed(0);
+    myBall.setHorizontalSpeed(120);
+    while (myBall.getHorizontalSpeed() > 0) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(-120, myBall.getHorizontalSpeed());
+  }
+
+  @Test
+  public void testBounceOffLeftWall() throws IOException, URISyntaxException {
+    myBall.setVerticalSpeed(0);
+    myBall.setHorizontalSpeed(-120);
+    while (myBall.getHorizontalSpeed() < 0) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(120, myBall.getHorizontalSpeed());
+  }
+
+  @Test
+  public void testBounceOffBrick() throws IOException, URISyntaxException {
+    myBall.setX(Game.SIZE / 2);
+    myBall.setY(Game.SIZE / 2);
+    myBall.setVerticalSpeed(-Ball.VERTICAL_SPEED);
+    myBall.setHorizontalSpeed(0);
+
+    while (myBall.getVerticalSpeed() < 0) {
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(myBall.VERTICAL_SPEED, myBall.getVerticalSpeed());
+
   }
 
   @Test

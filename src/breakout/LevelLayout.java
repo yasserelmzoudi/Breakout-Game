@@ -178,10 +178,14 @@ public class LevelLayout {
     this.groupRoot = groupRoot;
     this.levelNumber = levelNumber;
   }
-  public void buildBlocksFromFile(Group root, int levelNumber, List<Brick> bricks, int unbreakableBricks) // Maybe this method should be in Brick.java?
+
+  public void buildBlocksFromFile(Group root, int levelNumber, List<Brick> bricks,
+      int unbreakableBricks) // Maybe this method should be in Brick.java?
       throws IOException, URISyntaxException {
     Path path = Paths
-        .get(Objects.requireNonNull(Game.class.getClassLoader().getResource("level" + levelNumber + ".txt")).toURI());
+        .get(Objects
+            .requireNonNull(Game.class.getClassLoader().getResource("level" + levelNumber + ".txt"))
+            .toURI());
     int currentX;
     int currentY = 0;
 
@@ -202,7 +206,8 @@ public class LevelLayout {
     return !(blockType.equals(" ") || blockType.equals(""));
   }
 
-  private Brick brickBuilder(int currentX, int currentY, String blockType, int unbreakableBricks, List<Brick> bricks) {
+  private Brick brickBuilder(int currentX, int currentY, String blockType, int unbreakableBricks,
+      List<Brick> bricks) {
     Brick brick;
     switch(blockType) {
       case "X" -> brick = new MultiHitBrick(currentX, currentY);
