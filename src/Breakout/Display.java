@@ -1,4 +1,4 @@
-package breakout;
+package Breakout;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;

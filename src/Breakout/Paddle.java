@@ -1,4 +1,4 @@
-package breakout;
+package Breakout;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -43,19 +43,43 @@ public class Paddle {
    * @param code the direction of movement for the Paddle
    */
   public void movePaddle(KeyCode code) {
-    if (code == KeyCode.LEFT && getLeftSideX() - SPEED >= 0) {
-      myRectangle.setX(getLeftSideX() - SPEED);
-    } else if (code == KeyCode.RIGHT && getRightSideX() + SPEED <= Game.SIZE) {
-      myRectangle.setX(getLeftSideX() + SPEED);
+    if (code == KeyCode.LEFT && getLeftX() - SPEED >= 0) {
+      myRectangle.setX(getLeftX() - SPEED);
+    } else if (code == KeyCode.RIGHT && getRightX() + SPEED <= Game.SIZE) {
+      myRectangle.setX(getLeftX() + SPEED);
     }
   }
 
-  public double getLeftSideX() {
+  public double getX() {
     return myRectangle.getX();
   }
 
-  public double getRightSideX() {
-    return myRectangle.getX() + myRectangle.getWidth();
+  public double getY() {
+    return myRectangle.getY();
+  }
+
+  public double getRightX() {
+    return getX() + getWidth();
+  }
+
+  public  double getWidth() {
+    return myRectangle.getWidth();
+  }
+
+  public double getLeftX() {
+    return getX();
+  }
+
+  public double getTopY() {
+    return getY();
+  }
+
+  public double getBottomY() {
+    return getY() + getHeight();
+  }
+
+  private double getHeight() {
+    return myRectangle.getHeight();
   }
 
   public void setWidth(double newWidth) {

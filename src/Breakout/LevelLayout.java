@@ -155,19 +155,20 @@ public class LevelLayout {
   }
 
 }*/
-package breakout;
+package Breakout;
 
+import Bricks.BasicBrick;
+import Bricks.Brick;
+import Bricks.MultiHitBrick;
+import Bricks.UnbreakableBrick;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 
 public class LevelLayout {
 

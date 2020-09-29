@@ -1,5 +1,6 @@
-package breakout;
+package Breakout;
 
+import Bricks.Brick;
 import java.util.List;
 import java.util.Random;
 import javafx.application.Platform;
@@ -34,12 +35,39 @@ public class Ball {
   }
 
   public void checkPaddleHit(Paddle paddle) {
-    if (ball.getBoundsInParent().intersects(paddle.getRectangle().getBoundsInParent())) {
+    if (isPaddleHit(paddle)) {
       if (horizontalSpeed == 0) {
         setHorizontalSpeed(HORIZONTAL_SPEED);
       }
-      bounceVertical();
+      if (topSidePaddleHit(paddle) || bottomSidePaddleHit(paddle)) {
+        bounceVertical();
+      }
+      else if (rightSidePaddleHit(paddle) || leftSidePaddleHit(paddle)) {
+        bounceHorizontal();
+      }
     }
+  }
+
+  private boolean leftSidePaddleHit(Paddle paddle) {
+    return getBottomY() >= paddle.getTopY() && getTopY() <= paddle.getBottomY();
+  }
+
+  private boolean rightSidePaddleHit(Paddle paddle) {
+    return getBottomY() >= paddle.getTopY() && getTopY() <= paddle.getBottomY();
+  }
+
+  private boolean bottomSidePaddleHit(Paddle paddle) {
+    return getRightX() >= paddle.getLeftX() && getLeftX() <= paddle.getRightX() && getTopY() >= paddle
+        .getBottomY();
+  }
+
+  private boolean topSidePaddleHit(Paddle paddle) {
+    return getRightX() >= paddle.getLeftX() && getLeftX() <= paddle.getRightX()
+        && getBottomY() <= paddle.getTopY();
+  }
+
+  private boolean isPaddleHit(Paddle paddle) {
+    return ball.getBoundsInParent().intersects(paddle.getRectangle().getBoundsInParent());
   }
 
   public void checkWallHit(Display myDisplay, List<Ball> ballList, Group root) {
@@ -66,7 +94,7 @@ public class Ball {
   }
 
   public boolean checkBrickHit(Brick brick) {
-    if (ball.getBoundsInParent().intersects(brick.getRectangle().getBoundsInParent())) {
+    if (isBrickHit(brick)) {
       if (topSideBrickHit(brick) || bottomSideBrickHit(brick)) {
         bounceVertical();
         return true;
@@ -76,6 +104,10 @@ public class Ball {
       }
     }
     return false;
+  }
+
+  private boolean isBrickHit(Brick brick) {
+    return ball.getBoundsInParent().intersects(brick.getRectangle().getBoundsInParent());
   }
 
   public double getX() {

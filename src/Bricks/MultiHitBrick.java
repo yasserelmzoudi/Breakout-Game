@@ -1,5 +1,7 @@
-package breakout;
+package Bricks;
 
+import Breakout.Display;
+import PowerUps.PowerUp;
 import java.util.List;
 import javafx.scene.Group;
 

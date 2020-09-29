@@ -1,4 +1,7 @@
-package breakout;
+package PowerUps;
+
+import Breakout.Game;
+import Breakout.Paddle;
 
 public class ExtendedPaddlePowerUp extends PowerUp {
 

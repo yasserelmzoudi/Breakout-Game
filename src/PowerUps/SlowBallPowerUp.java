@@ -1,5 +1,7 @@
-package breakout;
+package PowerUps;
 
+import Breakout.Ball;
+import Breakout.Game;
 import java.util.List;
 
 public class SlowBallPowerUp extends PowerUp {

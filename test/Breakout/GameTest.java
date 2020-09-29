@@ -1,5 +1,6 @@
-package breakout;
+package Breakout;
 
+import Bricks.Brick;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;

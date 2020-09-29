@@ -1,4 +1,4 @@
-package breakout;
+package Breakout;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
