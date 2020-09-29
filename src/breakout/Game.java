@@ -33,8 +33,6 @@ public class Game extends Application {
   public static final int FRAMES_PER_SECOND = 120;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
-  public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String LEVEL = "testlevel.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
   public static final int POWER_UP_SPAWN_CHANCE = 10;
@@ -42,6 +40,7 @@ public class Game extends Application {
 
   private Scene myScene;
   private Group myRoot;
+  private Stage stage;
   private Paddle myPaddle;
   private Display myDisplay;
   private List<Ball> myBalls;
@@ -49,8 +48,11 @@ public class Game extends Application {
   private List<PowerUp> myFallingPowerUps;
   private List<PowerUp> myActivePowerUps;
   private int myUnbreakableBricks = 0;
+  private Timeline animation;
 
   private boolean paused = false;
+  private int currentLevelNumber = 1;
+  private LevelLayout level;
 
   /**
    * Begins the application by opening a window with objects initialized
@@ -59,20 +61,33 @@ public class Game extends Application {
    */
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    myScene = setupScene(SIZE, SIZE, BACKGROUND);
+    this.stage = stage;
+    myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
     stage.setScene(myScene);
     stage.setTitle(TITLE);
     stage.show();
-    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step(SECOND_DELAY));
-    Timeline animation = new Timeline();
+    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
+      try {
+        step(SECOND_DELAY);
+      } catch (IOException ioException) {
+        ioException.printStackTrace();
+      } catch (URISyntaxException uriSyntaxException) {
+        uriSyntaxException.printStackTrace();
+      }
+    });
+    animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
     animation.play();
   }
 
-  Scene setupScene(int width, int height, Paint background) throws IOException, URISyntaxException {
+  Scene setupScene(int levelNumber, int width, int height, Paint background) throws IOException, URISyntaxException {
     myRoot = new Group();
-
+    currentLevelNumber = levelNumber;
+    level = new LevelLayout(myRoot, currentLevelNumber);
+    myBricks = new ArrayList<>();
+    myUnbreakableBricks = 0;
+    level.buildBlocksFromFile(myRoot, currentLevelNumber, myBricks, myUnbreakableBricks);
     myPaddle = new Paddle();
     myRoot.getChildren().add(myPaddle.getRectangle());
 
@@ -83,8 +98,6 @@ public class Game extends Application {
     myBalls.add(new Ball());
     myRoot.getChildren().add(myBalls.get(MAIN_BALL).getCircle());
 
-    buildBlocksFromFile(LEVEL, myRoot);
-
     myDisplay = new Display(DIFFICULTY);
     myRoot.getChildren().add(myDisplay.getScoreText());
     myRoot.getChildren().add(myDisplay.getLivesText());
@@ -94,6 +107,7 @@ public class Game extends Application {
     return scene;
   }
 
+/*
   /**
    * Builds the bricks for a level from a text file
    *
@@ -102,11 +116,11 @@ public class Game extends Application {
    * @throws IOException
    * @throws URISyntaxException
    */
-  public void buildBlocksFromFile(String level,
+  /*public void buildBlocksFromFile(String level,
       Group root) // Maybe this method should be in Brick.java?
       throws IOException, URISyntaxException {
     Path path = Paths
-        .get(Objects.requireNonNull(Main.class.getClassLoader().getResource(level)).toURI());
+        .get(Objects.requireNonNull(Game.class.getClassLoader().getResource(level)).toURI());
     int currentX;
     int currentY = 0;
 
@@ -142,7 +156,7 @@ public class Game extends Application {
     myBricks.add(brick);
     return brick;
   }
-
+*/
   private void handleKeyInput(KeyCode code) {
     if (!paused) {
       myPaddle.movePaddle(code);
@@ -157,16 +171,66 @@ public class Game extends Application {
       case P -> dropPowerUp();
       case B -> breakBlock();
       case L -> extraLife();
+      case DIGIT1 -> skipLevel1();
+      case DIGIT2 -> skipLevel2();
+      case DIGIT3 -> skipLevel3();
     }
   }
 
-  void step(double elapsedTime) {
+  private void skipLevel1() {
+    animation.stop();
+    currentLevelNumber = 1;
+    try {
+      start(stage);
+    } catch (IOException | URISyntaxException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void skipLevel2() {
+    animation.stop();
+    currentLevelNumber = 2;
+    try {
+      start(stage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void skipLevel3() {
+    animation.stop();
+    currentLevelNumber = 3;
+    try {
+      start(stage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
+  }
+
+  void step(double elapsedTime) throws IOException, URISyntaxException {
     if (!paused) {
       moveBalls(elapsedTime);
       movePowerUps(elapsedTime);
       checkBallBrickCollision();
       checkPowerUpDeactivate();
+      checkLevelEnd();
     }
+  }
+
+  private void checkLevelEnd() throws IOException, URISyntaxException {
+    if (isLevelEnd()) {
+      animation.stop();
+      currentLevelNumber++;
+      start(stage);
+    }
+  }
+
+  private boolean isLevelEnd() {
+    return myBricks.size() == myUnbreakableBricks;
   }
 
   private void checkPowerUpDeactivate() {
@@ -178,6 +242,9 @@ public class Game extends Application {
       ball.ballMovement(elapsedTime);
       ball.checkPaddleHit(myPaddle);
       ball.checkWallHit(myDisplay, myBalls, myRoot);
+      if (ball.bottomSideWallHit()) {
+        break;
+      }
       if (myDisplay.isGameOver()) {
         gameOver("YOU LOSE!");
       }
@@ -207,7 +274,7 @@ public class Game extends Application {
     for (Brick brick : myBricks) {
       if (ball.checkBrickHit(brick)) {
         brick.activateBrick(myDisplay, myRoot, myBricks, myFallingPowerUps);
-        if (myBricks.size() == myUnbreakableBricks) {
+        if (myBricks.size() == myUnbreakableBricks && currentLevelNumber == 3) {
           gameOver("YOU WIN!");
         }
         break;
@@ -254,7 +321,7 @@ public class Game extends Application {
     Brick brick = myBricks.remove(0);
     brick.destroyBrick(myRoot, myBricks, myFallingPowerUps);
     myDisplay.changeScore(brick.getScore());
-    if (myBricks.size() == myUnbreakableBricks) {
+    if (myBricks.size() == myUnbreakableBricks && currentLevelNumber == 3) {
       gameOver("YOU WIN!");
     }
   }

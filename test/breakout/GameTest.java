@@ -3,9 +3,9 @@ package breakout;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -29,7 +29,8 @@ public class GameTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    myScene = myGame.setupScene(Game.SIZE, Game.SIZE, Game.BACKGROUND);
+    // create game's scene with all shapes in their initial positions and show it
+    myScene = myGame.setupScene(1, Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
 
@@ -86,7 +87,7 @@ public class GameTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBlockHit() {
+  public void testBlockHit() throws IOException, URISyntaxException {
     myBall.setVerticalSpeed(-80);
     int brickNum = myBricks.size();
     while (myBall.getVerticalSpeed() < 0) {
@@ -135,6 +136,12 @@ public class GameTest extends DukeApplicationTest {
     int brickNum = myBricks.size();
     press(myScene, KeyCode.B);
     assertEquals(brickNum - 1, myBricks.size());
+  }
+
+  @Test
+  public void testLevel1Layout() {
+    press(myScene, KeyCode.DIGIT1);
+    assertEquals(Color.CRIMSON, myBricks.get(0).getColor());
   }
 
 }

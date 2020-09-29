@@ -21,7 +21,8 @@ public class BallTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    myScene = myGame.setupScene(Game.SIZE, Game.SIZE, Game.BACKGROUND);
+    // create game's scene with all shapes in their initial positions and show it
+    myScene = myGame.setupScene(1, Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
 
@@ -31,14 +32,14 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBallMovement() {
+  public void testBallMovement() throws IOException, URISyntaxException {
     double myBallInitialY = myBall.getY();
     myGame.step(Game.SECOND_DELAY);
     assertNotEquals(myBallInitialY, myBall.getY());
   }
 
   @Test
-  public void testBounceOffPaddle() {
+  public void testBounceOffPaddle() throws IOException, URISyntaxException {
     while (myBall.getVerticalSpeed() > 0) {
       myGame.step(Game.SECOND_DELAY);
     }
@@ -46,7 +47,7 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBounceOffRightWall() {
+  public void testBounceOffRightWall() throws IOException, URISyntaxException {
     myBall.setVerticalSpeed(0);
     myBall.setHorizontalSpeed(120);
     while(myBall.getHorizontalSpeed() > 0){
@@ -56,7 +57,7 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBounceOffLeftWall() {
+  public void testBounceOffLeftWall() throws IOException, URISyntaxException {
     myBall.setVerticalSpeed(0);
     myBall.setHorizontalSpeed(-120);
     while(myBall.getHorizontalSpeed() < 0){
@@ -66,7 +67,7 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBounceOffBrick() {
+  public void testBounceOffBrick() throws IOException, URISyntaxException {
     myBall.setX(Game.SIZE / 2);
     myBall.setY(Game.SIZE / 2);
     myBall.setVerticalSpeed(-Ball.VERTICAL_SPEED);
@@ -80,7 +81,7 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBallReset() {
+  public void testBallReset() throws IOException, URISyntaxException {
     double ballBefore = myBallCircle.getCenterY();
     double ballAfter = myBallCircle.getCenterY();
 
