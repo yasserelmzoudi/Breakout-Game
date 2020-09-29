@@ -120,49 +120,18 @@ public class Game extends Application {
       case P -> dropPowerUp();
       case D -> breakBlock();
       case L -> extraLife();
-      case DIGIT1 -> skipLevel1();
-      case DIGIT2 -> skipLevel2();
-      case DIGIT3 -> skipLevel3();
+      case DIGIT1 -> skipLevel(1);
+      case DIGIT2 -> skipLevel(2);
+      case DIGIT3 -> skipLevel(3);
     }
   }
 
-  private void skipLevel1() {
-    animation.stop();
-    currentLevelNumber = 1;
+  private void skipLevel(int level) {
     try {
-      myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
+      endLevel(level);
     } catch (IOException | URISyntaxException e) {
       e.printStackTrace();
     }
-    stage.setScene(myScene);
-    stage.setTitle(TITLE);
-    stage.show();
-  }
-
-  private void skipLevel2() {
-    animation.stop();
-    currentLevelNumber = 2;
-    try {
-      myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
-    } catch (IOException | URISyntaxException e) {
-      e.printStackTrace();
-    }
-    stage.setScene(myScene);
-    stage.setTitle(TITLE);
-    stage.show();
-  }
-
-  private void skipLevel3() {
-    animation.stop();
-    currentLevelNumber = 3;
-    try {
-      myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
-    } catch (IOException | URISyntaxException e) {
-      e.printStackTrace();
-    }
-    stage.setScene(myScene);
-    stage.setTitle(TITLE);
-    stage.show();
   }
 
   void step(double elapsedTime) throws IOException, URISyntaxException {
@@ -171,19 +140,30 @@ public class Game extends Application {
       movePowerUps(elapsedTime);
       checkBallBrickCollision();
       checkPowerUpDeactivate();
-      checkLevelEnd();
+      checkLevelEnd(currentLevelNumber+1);
     }
   }
 
-  private void checkLevelEnd() throws IOException, URISyntaxException {
+  private void checkLevelEnd(int newLevelNumber) throws IOException, URISyntaxException {
     if (isLevelEnd()) {
-      animation.stop();
-      currentLevelNumber++;
-      myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
-      stage.setScene(myScene);
-      stage.setTitle(TITLE);
-      stage.show();
+      endLevel(newLevelNumber);
     }
+  }
+
+  private void endLevel(int newLevelNumber) throws IOException, URISyntaxException {
+
+    int myOldScore = myDisplay.getScore();
+    int myOldLives = myDisplay.getLives();
+
+    myScene = setupScene(newLevelNumber, SIZE, SIZE, BACKGROUND);
+    stage.setScene(myScene);
+    stage.setTitle(TITLE);
+    stage.show();
+
+    myDisplay.changeScore(myOldScore);
+    myDisplay.changeLives(myOldLives - myDisplay.getLives());
+
+    currentLevelNumber = newLevelNumber;
   }
 
   private boolean isLevelEnd() {
