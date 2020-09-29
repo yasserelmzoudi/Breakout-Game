@@ -34,7 +34,7 @@ public class Game extends Application {
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String LEVEL = "testlevel.txt";
+  public static final String LEVEL = "level1.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
   public static final int POWER_UP_SPAWN_CHANCE = 10;
@@ -106,7 +106,7 @@ public class Game extends Application {
       Group root) // Maybe this method should be in Brick.java?
       throws IOException, URISyntaxException {
     Path path = Paths
-        .get(Objects.requireNonNull(Main.class.getClassLoader().getResource(level)).toURI());
+        .get(Objects.requireNonNull(Game.class.getClassLoader().getResource(level)).toURI());
     int currentX;
     int currentY = 0;
 
