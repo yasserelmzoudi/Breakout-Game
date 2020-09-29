@@ -8,7 +8,7 @@ public class BasicBrick extends Brick {
   public static final int POINTS_FOR_BASIC_BRICK = 100;
 
   /**
-   * Block constructor
+   * Brick constructor
    *
    * @param x location of block
    * @param y location of block
