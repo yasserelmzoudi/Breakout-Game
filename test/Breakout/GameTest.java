@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -29,7 +30,6 @@ public class GameTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    // create game's scene with all shapes in their initial positions and show it
     myScene = myGame.setupScene(1, Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
@@ -57,21 +57,6 @@ public class GameTest extends DukeApplicationTest {
     assertEquals(Ball.BALL_RADIUS, myBallCircle.getRadius());
     assertEquals(0, myBall.getHorizontalSpeed());
     assertEquals(Ball.VERTICAL_SPEED, myGame.getBall().getVerticalSpeed());
-  }
-
-  @Test
-  public void testInitialBlockPositions() {
-    myBrickRectangle = lookup("#block00").query();
-    assertEquals(0, myBrickRectangle.getX());
-    assertEquals(0, myBrickRectangle.getY());
-
-    myBrickRectangle = lookup("#block040").query();
-    assertEquals(0, myBrickRectangle.getX());
-    assertEquals(40, myBrickRectangle.getY());
-
-    myBrickRectangle = lookup("#block080").query();
-    assertEquals(0, myBrickRectangle.getX());
-    assertEquals(80, myBrickRectangle.getY());
   }
 
   @Test
@@ -134,7 +119,7 @@ public class GameTest extends DukeApplicationTest {
   @Test
   public void testBreakBlock() {
     int brickNum = myBricks.size();
-    press(myScene, KeyCode.B);
+    press(myScene, KeyCode.D);
     assertEquals(brickNum - 1, myBricks.size());
   }
 

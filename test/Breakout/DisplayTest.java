@@ -16,7 +16,6 @@ public class DisplayTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    // create game's scene with all shapes in their initial positions and show it
     myScene = myGame.setupScene(1, Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
@@ -25,11 +24,14 @@ public class DisplayTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testDisplayMethods() {
+  public void testLivesDisplay() {
     myDisplay.changeLives(1);
-    myDisplay.changeScore(500);
-
     assertEquals(Display.MAX_LIVES - Game.DIFFICULTY + 1, myDisplay.getLives());
+  }
+
+  @Test
+  public void testScoreDisplay() {
+    myDisplay.changeScore(500);
     assertEquals(500, myDisplay.getScore());
   }
 

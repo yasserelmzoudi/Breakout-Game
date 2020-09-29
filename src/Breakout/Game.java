@@ -31,8 +31,6 @@ public class Game extends Application {
   public static final int FRAMES_PER_SECOND = 120;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.AZURE;
-  public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String LEVEL = "level1.txt";
   public static final int MAIN_BALL = 0;
   public static final int DIFFICULTY = 1;
   public static final int POWER_UP_SPAWN_CHANCE = 10;
@@ -69,10 +67,8 @@ public class Game extends Application {
     KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
       try {
         step(SECOND_DELAY);
-      } catch (IOException ioException) {
+      } catch (IOException | URISyntaxException ioException) {
         ioException.printStackTrace();
-      } catch (URISyntaxException uriSyntaxException) {
-        uriSyntaxException.printStackTrace();
       }
     });
     animation = new Timeline();
@@ -81,7 +77,8 @@ public class Game extends Application {
     animation.play();
   }
 
-  Scene setupScene(int levelNumber, int width, int height, Paint background) throws IOException, URISyntaxException {
+  Scene setupScene(int levelNumber, int width, int height, Paint background)
+      throws IOException, URISyntaxException {
     myRoot = new Group();
     currentLevelNumber = levelNumber;
     level = new LevelLayout(myRoot, currentLevelNumber);
@@ -119,8 +116,19 @@ public class Game extends Application {
     switch(code) {
       case R -> reset();
       case P -> dropPowerUp();
-      case B -> breakBlock();
+      case D -> breakBlock();
       case L -> extraLife();
+      case DIGIT1 -> skipLevel(1);
+      case DIGIT2 -> skipLevel(2);
+      case DIGIT3 -> skipLevel(3);
+    }
+  }
+
+  private void skipLevel(int level) {
+    try {
+      endLevel(level);
+    } catch (IOException | URISyntaxException e) {
+      e.printStackTrace();
     }
   }
 
@@ -130,16 +138,30 @@ public class Game extends Application {
       movePowerUps(elapsedTime);
       checkBallBrickCollision();
       checkPowerUpDeactivate();
-      checkLevelEnd();
+      checkLevelEnd(currentLevelNumber+1);
     }
   }
 
-  private void checkLevelEnd() throws IOException, URISyntaxException {
+  private void checkLevelEnd(int newLevelNumber) throws IOException, URISyntaxException {
     if (isLevelEnd()) {
-      animation.stop();
-      currentLevelNumber++;
-      start(stage);
+      endLevel(newLevelNumber);
     }
+  }
+
+  private void endLevel(int newLevelNumber) throws IOException, URISyntaxException {
+
+    int myOldScore = myDisplay.getScore();
+    int myOldLives = myDisplay.getLives();
+
+    myScene = setupScene(newLevelNumber, SIZE, SIZE, BACKGROUND);
+    stage.setScene(myScene);
+    stage.setTitle(TITLE);
+    stage.show();
+
+    myDisplay.changeScore(myOldScore);
+    myDisplay.changeLives(myOldLives - myDisplay.getLives());
+
+    currentLevelNumber = newLevelNumber;
   }
 
   private boolean isLevelEnd() {
@@ -187,9 +209,9 @@ public class Game extends Application {
     for (Brick brick : myBricks) {
       if (ball.checkBrickHit(brick)) {
         brick.activateBrick(myDisplay, myRoot, myBricks, myFallingPowerUps);
-        /*if (myBricks.size() == myUnbreakableBricks) {
+        if (myBricks.size() == myUnbreakableBricks && currentLevelNumber == 3) {
           gameOver("YOU WIN!");
-        }*/
+        }
         break;
       }
     }
@@ -234,9 +256,9 @@ public class Game extends Application {
     Brick brick = myBricks.remove(0);
     brick.destroyBrick(myRoot, myBricks, myFallingPowerUps);
     myDisplay.changeScore(brick.getScore());
-    /*if (myBricks.size() == myUnbreakableBricks) {
+    if (myBricks.size() == myUnbreakableBricks && currentLevelNumber == 3) {
       gameOver("YOU WIN!");
-    }*/
+    }
   }
 
   public Ball getBall() {
