@@ -107,55 +107,6 @@ public class Game extends Application {
     return scene;
   }
 
-  /**
-   * Builds the bricks for a level from a text file
-   *
-   * @param level filename of the level
-   * @param root  of the JavaFX resource tree
-   * @throws IOException
-   * @throws URISyntaxException
-   */
-  /*public void buildBlocksFromFile(String level,
-      Group root) // Maybe this method should be in Brick.java?
-      throws IOException, URISyntaxException {
-    Path path = Paths
-        .get(Objects.requireNonNull(Game.class.getClassLoader().getResource(level)).toURI());
-    int currentX;
-    int currentY = 0;
-
-    myBricks = new ArrayList<>();
-
-    for (String row : Files.readAllLines(path)) {
-      currentX = 0;
-      for (String blockType : row.split("")) {
-        if (validBrick(blockType)) {
-          Brick brick = brickBuilder(currentX, currentY, blockType);
-          root.getChildren().add(brick.getRectangle());
-        }
-        currentX += Brick.LENGTH;
-      }
-      currentY += Brick.HEIGHT;
-    }
-  }
-
-  private boolean validBrick(String blockType) {
-    return !(blockType.equals(" ") || blockType.equals(""));
-  }
-
-  private Brick brickBuilder(int currentX, int currentY, String blockType) {
-    Brick brick;
-    switch(blockType) {
-      case "X" -> brick = new MultiHitBrick(currentX, currentY);
-      case "i" -> {
-        brick = new UnbreakableBrick(currentX, currentY);
-        myUnbreakableBricks++;
-      }
-      default -> brick = new BasicBrick(currentX, currentY);
-    }
-    myBricks.add(brick);
-    return brick;
-  }*/
-
   private void handleKeyInput(KeyCode code) {
     if (!paused) {
       myPaddle.movePaddle(code);
