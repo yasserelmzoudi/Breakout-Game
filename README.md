@@ -46,14 +46,14 @@ Cheat keys:
 - 3: Skips to Level 3
 
 Known Bugs:
-- 
+- The Ball will occasionally bounce inside UnbreakableBricks if they are hit exactly on their corner
 
 Extra credit:
 - Made Winning and Losing Transition Screens such that they adjust to the size of any screen
 
 
 ### Notes/Assumptions
-
+- Assumes that level source files will be named "levelN.txt", where N denotes the level number 
 
 ### Impressions
 
