@@ -32,7 +32,7 @@ public class PowerUpTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testPowerUpFall() {
+  public void testPowerUpFall() throws IOException, URISyntaxException {
     PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
     myGame.getFallingPowerUps().add(myPowerUp);
     myGame.step(Game.SECOND_DELAY);
@@ -41,7 +41,7 @@ public class PowerUpTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testMultiBallPowerUp() {
+  public void testMultiBallPowerUp() throws IOException, URISyntaxException {
     PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
     myGame.getFallingPowerUps().add(myPowerUp);
     while (myGame.getBalls().size() == 1) {
@@ -51,7 +51,7 @@ public class PowerUpTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testExtendedPaddlePowerUp() {
+  public void testExtendedPaddlePowerUp() throws IOException, URISyntaxException {
     PowerUp myPowerUp = new ExtendedPaddlePowerUp(Game.SIZE / 2, Game.SIZE / 2);
     myGame.getFallingPowerUps().add(myPowerUp);
     while (myGame.getPaddle().getRectangle().getWidth() == Paddle.STARTING_WIDTH) {
@@ -62,7 +62,7 @@ public class PowerUpTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testSlowBallPowerUp() {
+  public void testSlowBallPowerUp() throws IOException, URISyntaxException {
     PowerUp myPowerUp = new SlowBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
     myGame.getFallingPowerUps().add(myPowerUp);
     while (Math.abs(myGame.getBall().getVerticalSpeed()) == Ball.VERTICAL_SPEED) {

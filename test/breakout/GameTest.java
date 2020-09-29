@@ -80,7 +80,7 @@ public class GameTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBlockHit() {
+  public void testBlockHit() throws IOException, URISyntaxException {
     myGame.getBall().setVerticalSpeed(-80);
     int brickNum = myGame.getBricks().size();
     while (myGame.getBall().getVerticalSpeed() < 0) {

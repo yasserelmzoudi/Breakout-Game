@@ -42,6 +42,7 @@ public class Game extends Application {
 
   private Scene myScene;
   private Group myRoot;
+  private Stage stage;
   private Paddle myPaddle;
   private Display myDisplay;
   private List<Ball> myBalls;
@@ -52,8 +53,8 @@ public class Game extends Application {
   private Timeline animation;
 
   private boolean paused = false;
-  private int currentLevelNumber;
-  private LevelPage level;
+  private int currentLevelNumber = 1;
+  private LevelLayout level;
 
   /**
    * Begins the application by opening a window with objects initialized
@@ -62,11 +63,20 @@ public class Game extends Application {
    */
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    myScene = setupScene(0, SIZE, SIZE, BACKGROUND);
+    this.stage = stage;
+    myScene = setupScene(currentLevelNumber, SIZE, SIZE, BACKGROUND);
     stage.setScene(myScene);
     stage.setTitle(TITLE);
     stage.show();
-    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step(SECOND_DELAY));
+    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
+      try {
+        step(SECOND_DELAY);
+      } catch (IOException ioException) {
+        ioException.printStackTrace();
+      } catch (URISyntaxException uriSyntaxException) {
+        uriSyntaxException.printStackTrace();
+      }
+    });
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
@@ -76,7 +86,10 @@ public class Game extends Application {
   Scene setupScene(int levelNumber, int width, int height, Paint background) throws IOException, URISyntaxException {
     myRoot = new Group();
     currentLevelNumber = levelNumber;
-    level = new LevelPage(currentLevelNumber);
+    level = new LevelLayout(myRoot, currentLevelNumber);
+    myBricks = new ArrayList<>();
+    myUnbreakableBricks = 0;
+    level.buildBlocksFromFile(myRoot, currentLevelNumber, myBricks, myUnbreakableBricks);
     myPaddle = new Paddle();
     myRoot.getChildren().add(myPaddle.getRectangle());
 
@@ -86,8 +99,6 @@ public class Game extends Application {
     myBalls = new ArrayList<>();
     myBalls.add(new Ball());
     myRoot.getChildren().add(myBalls.get(MAIN_BALL).getCircle());
-
-    buildBlocksFromFile(LEVEL, myRoot);
 
     myDisplay = new Display(DIFFICULTY);
     myRoot.getChildren().add(myDisplay.getScoreText());
@@ -106,7 +117,7 @@ public class Game extends Application {
    * @throws IOException
    * @throws URISyntaxException
    */
-  public void buildBlocksFromFile(String level,
+  /*public void buildBlocksFromFile(String level,
       Group root) // Maybe this method should be in Brick.java?
       throws IOException, URISyntaxException {
     Path path = Paths
@@ -145,7 +156,7 @@ public class Game extends Application {
     }
     myBricks.add(brick);
     return brick;
-  }
+  }*/
 
   private void handleKeyInput(KeyCode code) {
     if (!paused) {
@@ -164,20 +175,21 @@ public class Game extends Application {
     }
   }
 
-  void step(double elapsedTime) {
+  void step(double elapsedTime) throws IOException, URISyntaxException {
     if (!paused) {
       moveBalls(elapsedTime);
       movePowerUps(elapsedTime);
       checkBallBrickCollision();
       checkPowerUpDeactivate();
       checkLevelEnd();
-      check
     }
   }
 
-  private void checkLevelEnd() {
+  private void checkLevelEnd() throws IOException, URISyntaxException {
     if (isLevelEnd()) {
-      animation.stop();
+      //animation.stop();
+      currentLevelNumber++;
+      start(stage);
     }
   }
 
@@ -226,9 +238,9 @@ public class Game extends Application {
     for (Brick brick : myBricks) {
       if (ball.checkBrickHit(brick)) {
         brick.activateBrick(myDisplay, myRoot, myBricks, myFallingPowerUps);
-        if (myBricks.size() == myUnbreakableBricks) {
+        /*if (myBricks.size() == myUnbreakableBricks) {
           gameOver("YOU WIN!");
-        }
+        }*/
         break;
       }
     }
@@ -273,9 +285,9 @@ public class Game extends Application {
     Brick brick = myBricks.remove(0);
     brick.destroyBrick(myRoot, myBricks, myFallingPowerUps);
     myDisplay.changeScore(brick.getScore());
-    if (myBricks.size() == myUnbreakableBricks) {
+    /*if (myBricks.size() == myUnbreakableBricks) {
       gameOver("YOU WIN!");
-    }
+    }*/
   }
 
   public Ball getBall() {

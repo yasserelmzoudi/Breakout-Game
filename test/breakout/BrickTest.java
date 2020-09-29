@@ -31,7 +31,7 @@ class BrickTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBasicBrick() {
+  public void testBasicBrick() throws IOException, URISyntaxException {
     Brick brick = new BasicBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
     myGame.getBricks().add(brick);
@@ -43,7 +43,7 @@ class BrickTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testMultiHitBrick() {
+  public void testMultiHitBrick() throws IOException, URISyntaxException {
     Brick brick = new MultiHitBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
     myGame.getBricks().add(brick);
@@ -68,7 +68,7 @@ class BrickTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testUnbreakableBrick() {
+  public void testUnbreakableBrick() throws IOException, URISyntaxException {
     Brick brick = new UnbreakableBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
     myGame.getBricks().add(brick);

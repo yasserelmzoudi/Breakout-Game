@@ -1,4 +1,4 @@
-package breakout;
+/*package breakout;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -12,7 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
-public class LevelPage {
+public class LevelLayout {
 
   private static final int MAIN_BALL = 0;
   private int levelNumber;
@@ -31,7 +31,7 @@ public class LevelPage {
   private List<PowerUp> activePowerUps;
 
 
-  public LevelPage(int levelNumber) {
+  public LevelLayout(int levelNumber) {
     this.levelNumber = levelNumber;
   }
 
@@ -94,7 +94,7 @@ public class LevelPage {
     /*if (bricks.size() == unbreakableBricks) {
       gameOver("YOU WIN!");
     }*/
-  }
+  /*}
 
   private void createGameObjects() throws IOException, URISyntaxException {
     paddle = new Paddle();
@@ -154,4 +154,68 @@ public class LevelPage {
     return brick;
   }
 
+}*/
+package breakout;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+
+public class LevelLayout {
+
+  private int levelNumber;
+  private Group groupRoot;
+
+  public LevelLayout(Group groupRoot, int levelNumber) {
+    this.groupRoot = groupRoot;
+    this.levelNumber = levelNumber;
+  }
+  public void buildBlocksFromFile(Group root, int levelNumber, List<Brick> bricks, int unbreakableBricks) // Maybe this method should be in Brick.java?
+      throws IOException, URISyntaxException {
+    Path path = Paths
+        .get(Objects.requireNonNull(Game.class.getClassLoader().getResource("level" + levelNumber + ".txt")).toURI());
+    int currentX;
+    int currentY = 0;
+
+    for (String row : Files.readAllLines(path)) {
+      currentX = 0;
+      for (String blockType : row.split("")) {
+        if (validBrick(blockType)) {
+          Brick brick = brickBuilder(currentX, currentY, blockType, unbreakableBricks, bricks);
+          root.getChildren().add(brick.getRectangle());
+        }
+        currentX += Brick.LENGTH;
+      }
+      currentY += Brick.HEIGHT;
+    }
+  }
+
+  private boolean validBrick(String blockType) {
+    return !(blockType.equals(" ") || blockType.equals(""));
+  }
+
+  private Brick brickBuilder(int currentX, int currentY, String blockType, int unbreakableBricks, List<Brick> bricks) {
+    Brick brick;
+    switch(blockType) {
+      case "X" -> brick = new MultiHitBrick(currentX, currentY);
+      case "i" -> {
+        brick = new UnbreakableBrick(currentX, currentY);
+        unbreakableBricks++;
+      }
+      default -> brick = new BasicBrick(currentX, currentY);
+    }
+    bricks.add(brick);
+    return brick;
+  }
+
 }
+
+
