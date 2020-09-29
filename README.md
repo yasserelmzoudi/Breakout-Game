@@ -56,4 +56,4 @@ Extra credit:
 - Assumes that level source files will be named "levelN.txt", where N denotes the level number 
 
 ### Impressions
-
+- This was an overall solid introduction to JavaFX which was both challenging and educational.  There were some difficult aspects of JavaFX to handle (especially switching scenes), but we were able to overcome most of our initial challenges.
