@@ -5,14 +5,14 @@ import javafx.scene.text.Text;
 
 public class Display {
 
-  private int myLives;
-  private int myScore;
-  private Text myLivesText;
-  private Text myScoreText;
   public static final int MAX_LIVES = 4;
   public static final double TEXT_LOCATION = Game.SIZE / 16;
   public static final double TEXT_OFFSET = 20;
   private static final Color TEXT_COLOR = Color.BLACK;
+  private int myLives;
+  private int myScore;
+  private final Text myLivesText;
+  private final Text myScoreText;
 
   public Display(int difficulty) {
     myLives = MAX_LIVES - difficulty;

@@ -56,6 +56,15 @@ public class Game extends Application {
   private LevelLayout level;
 
   /**
+   * Used to launch the application.
+   *
+   * @param args
+   */
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+  /**
    * Begins the application by opening a window with objects initialized
    *
    * @param stage the stage used to display the application
@@ -116,7 +125,7 @@ public class Game extends Application {
   }
 
   private void checkCheatKey(KeyCode code) {
-    switch(code) {
+    switch (code) {
       case R -> resetCheat();
       case P -> dropPowerUpCheat();
       case D -> breakBlockCheat();
@@ -162,7 +171,7 @@ public class Game extends Application {
       movePowerUps(elapsedTime);
       checkBallBrickCollision();
       checkPowerUpDeactivate();
-      checkLevelEnd(currentLevelNumber+1);
+      checkLevelEnd(currentLevelNumber + 1);
     }
   }
 
@@ -315,15 +324,6 @@ public class Game extends Application {
 
   public Display getDisplay() {
     return myDisplay;
-  }
-
-  /**
-   * Used to launch the application.
-   *
-   * @param args
-   */
-  public static void main(String[] args) {
-    launch(args);
   }
 
 }

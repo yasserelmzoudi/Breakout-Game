@@ -16,7 +16,7 @@ public class Ball {
   public static final double VERTICAL_SPEED = 120;
   public static final double HORIZONTAL_SPEED = 120;
 
-  private Circle ball;
+  private final Circle ball;
   private double verticalSpeed;
   private double horizontalSpeed;
 
@@ -41,8 +41,7 @@ public class Ball {
       }
       if (topSidePaddleHit(paddle) || bottomSidePaddleHit(paddle)) {
         bounceVertical();
-      }
-      else if (rightSidePaddleHit(paddle) || leftSidePaddleHit(paddle)) {
+      } else if (rightSidePaddleHit(paddle) || leftSidePaddleHit(paddle)) {
         bounceHorizontal();
       }
     }
@@ -57,8 +56,8 @@ public class Ball {
   }
 
   private boolean bottomSidePaddleHit(Paddle paddle) {
-    return getRightX() >= paddle.getLeftX() && getLeftX() <= paddle.getRightX() && getTopY() >= paddle
-        .getBottomY();
+    return getRightX() >= paddle.getLeftX() && getLeftX() <= paddle.getRightX()
+        && getTopY() >= paddle.getBottomY();
   }
 
   private boolean topSidePaddleHit(Paddle paddle) {
@@ -114,12 +113,12 @@ public class Ball {
     return ball.getCenterX();
   }
 
-  public double getY() {
-    return ball.getCenterY();
-  }
-
   public void setX(double x) {
     ball.setCenterX(x);
+  }
+
+  public double getY() {
+    return ball.getCenterY();
   }
 
   public void setY(double y) {
@@ -130,12 +129,12 @@ public class Ball {
     return horizontalSpeed;
   }
 
-  public double getVerticalSpeed() {
-    return verticalSpeed;
-  }
-
   public void setHorizontalSpeed(double horizontalSpeed) {
     this.horizontalSpeed = horizontalSpeed;
+  }
+
+  public double getVerticalSpeed() {
+    return verticalSpeed;
   }
 
   public void setVerticalSpeed(double verticalSpeed) {

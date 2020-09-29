@@ -15,7 +15,7 @@ public class Paddle {
   public static final double STARTING_Y = 7 * Game.SIZE / 8;
   public static final double SPEED = 10;
 
-  private Rectangle myRectangle;
+  private final Rectangle myRectangle;
   private double myWidth;
 
   /**
@@ -62,8 +62,13 @@ public class Paddle {
     return getX() + getWidth();
   }
 
-  public  double getWidth() {
+  public double getWidth() {
     return myRectangle.getWidth();
+  }
+
+  public void setWidth(double newWidth) {
+    myWidth = newWidth;
+    myRectangle.setWidth(myWidth);
   }
 
   public double getLeftX() {
@@ -80,10 +85,5 @@ public class Paddle {
 
   private double getHeight() {
     return myRectangle.getHeight();
-  }
-
-  public void setWidth(double newWidth) {
-    myWidth = newWidth;
-    myRectangle.setWidth(myWidth);
   }
 }

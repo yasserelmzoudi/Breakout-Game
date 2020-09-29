@@ -172,8 +172,8 @@ import javafx.scene.Group;
 
 public class LevelLayout {
 
-  private int levelNumber;
-  private Group groupRoot;
+  private final int levelNumber;
+  private final Group groupRoot;
 
   public LevelLayout(Group groupRoot, int levelNumber) {
     this.groupRoot = groupRoot;
@@ -210,7 +210,7 @@ public class LevelLayout {
   private Brick brickBuilder(int currentX, int currentY, String blockType, int unbreakableBricks,
       List<Brick> bricks) {
     Brick brick;
-    switch(blockType) {
+    switch (blockType) {
       case "X" -> brick = new MultiHitBrick(currentX, currentY);
       case "i" -> {
         brick = new UnbreakableBrick(currentX, currentY);

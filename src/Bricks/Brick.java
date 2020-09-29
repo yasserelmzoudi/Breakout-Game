@@ -16,7 +16,7 @@ public abstract class Brick {
   public static final int HEIGHT = 20;
   public static final Color BRICK_BASE_COLOR = Color.CRIMSON;
 
-  private Rectangle myRectangle;
+  private final Rectangle myRectangle;
   private Color myColor;
 
   /**
