@@ -21,7 +21,8 @@ public class BallTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    myScene = myGame.setupScene(Game.SIZE, Game.SIZE, Game.BACKGROUND);
+    // create game's scene with all shapes in their initial positions and show it
+    myScene = myGame.setupScene(1, Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
 
@@ -39,7 +40,7 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBallReset() {
+  public void testBallReset() throws IOException, URISyntaxException {
     double ballBefore = myBallCircle.getCenterY();
     double ballAfter = myBallCircle.getCenterY();
 

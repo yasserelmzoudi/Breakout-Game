@@ -23,7 +23,8 @@ public class BrickTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    myScene = myGame.setupScene(Game.SIZE, Game.SIZE, Game.BACKGROUND);
+    // create game's scene with all shapes in their initial positions and show it
+    myScene = myGame.setupScene(1, Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
 
@@ -33,7 +34,7 @@ public class BrickTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBasicBrick() {
+  public void testBasicBrick() throws IOException, URISyntaxException {
     Brick brick = new BasicBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
     myBricks.add(brick);
@@ -45,7 +46,7 @@ public class BrickTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testMultiHitBrick() {
+  public void testMultiHitBrick() throws IOException, URISyntaxException {
     Brick brick = new MultiHitBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
     myBricks.add(brick);
@@ -70,7 +71,7 @@ public class BrickTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testUnbreakableBrick() {
+  public void testUnbreakableBrick() throws IOException, URISyntaxException {
     Brick brick = new UnbreakableBrick((int) myBallCircle.getCenterX(),
         (int) myBallCircle.getCenterY() - 5);
     myBricks.add(brick);
