@@ -1,6 +1,7 @@
 package breakout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -33,6 +34,21 @@ public class DisplayTest extends DukeApplicationTest {
   public void testScoreDisplay() {
     myDisplay.changeScore(500);
     assertEquals(500, myDisplay.getScore());
+  }
+
+  @Test
+  public void testHighScoreDisplay() {
+    assertNotEquals(myDisplay.getScore(), myDisplay.getHighScore());
+    while(myDisplay.getScore() <= myDisplay.getHighScore()){
+      myDisplay.changeScore(500);
+    }
+    assertEquals(myDisplay.getScore(), myDisplay.getHighScore());
+  }
+
+  @Test
+  public void testLevelDisplay() {
+    myDisplay.setLevel(2);
+    assertEquals(2, myDisplay.getLevel());
   }
 
 }

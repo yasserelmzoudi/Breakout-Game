@@ -1,5 +1,7 @@
 package breakout;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -100,6 +102,8 @@ public class Game extends Application {
     myDisplay = new Display(DIFFICULTY);
     myRoot.getChildren().add(myDisplay.getScoreText());
     myRoot.getChildren().add(myDisplay.getLivesText());
+    myRoot.getChildren().add(myDisplay.getHighScoreText());
+    myRoot.getChildren().add(myDisplay.getLevelText());
 
     Scene scene = new Scene(myRoot, width, height, background);
     scene.setOnKeyPressed(key -> handleKeyInput(key.getCode()));
@@ -141,6 +145,17 @@ public class Game extends Application {
       checkBallBrickCollision();
       checkPowerUpDeactivate();
       checkLevelEnd(currentLevelNumber+1);
+      checkHighScore();
+    }
+  }
+
+  private void checkHighScore() throws IOException {
+    if(myDisplay.getScore() >= myDisplay.getHighScore()){
+      myDisplay.setHighScore(myDisplay.getScore());
+      FileWriter newHighScoreWriter = new FileWriter("data/highscore.txt", false);
+      BufferedWriter highScoreBuffer = new BufferedWriter(newHighScoreWriter);
+      highScoreBuffer.write(Integer.toString(myDisplay.getHighScore()));
+      highScoreBuffer.close();
     }
   }
 
@@ -154,6 +169,7 @@ public class Game extends Application {
 
     int myOldScore = myDisplay.getScore();
     int myOldLives = myDisplay.getLives();
+    int myOldHighScore = myDisplay.getHighScore();
 
     myScene = setupScene(newLevelNumber, SIZE, SIZE, BACKGROUND);
     stage.setScene(myScene);
@@ -162,6 +178,8 @@ public class Game extends Application {
 
     myDisplay.changeScore(myOldScore);
     myDisplay.changeLives(myOldLives - myDisplay.getLives());
+    myDisplay.setLevel(newLevelNumber);
+    myDisplay.setHighScore(myOldHighScore);
 
     currentLevelNumber = newLevelNumber;
   }

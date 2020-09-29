@@ -180,7 +180,7 @@ public class LevelLayout {
   }
 
   public void buildBlocksFromFile(Group root, int levelNumber, List<Brick> bricks,
-      int unbreakableBricks) // Maybe this method should be in Brick.java?
+      int unbreakableBricks)
       throws IOException, URISyntaxException {
     Path path = Paths
         .get(Objects
