@@ -17,7 +17,7 @@ public abstract class Brick {
   private Color myColor;
 
   /**
-   * Block constructor
+   * Brick constructor
    *
    * @param x location of block
    * @param y location of block
@@ -27,15 +27,6 @@ public abstract class Brick {
     myRectangle.setId("block" + x + y);
     myColor = BRICK_BASE_COLOR;
     myRectangle.setFill(myColor);
-  }
-
-  /**
-   * Get's the Block object's rectangle instance variable
-   *
-   * @return myRectangle
-   */
-  public Rectangle getRectangle() {
-    return myRectangle;
   }
 
   public abstract void activateBrick(Display display, Group root, List<Brick> bricks,
@@ -49,7 +40,7 @@ public abstract class Brick {
     spawnPowerUp(root, powerUps);
   }
 
-  protected void spawnPowerUp(Group root, List<PowerUp> fallingPowerUps) {
+  private void spawnPowerUp(Group root, List<PowerUp> fallingPowerUps) {
     int randomPowerUpSeed = ThreadLocalRandom.current().nextInt(0, 100);
     if (randomPowerUpSeed < Game.POWER_UP_SPAWN_CHANCE) {
       PowerUp newPowerUp = PowerUp.powerUpGenerator(getX(), getY());
@@ -67,19 +58,28 @@ public abstract class Brick {
     myColor = newColor;
   }
 
-  public double getX() {
+  /**
+   * Get's the Block object's rectangle instance variable
+   *
+   * @return myRectangle
+   */
+  public Rectangle getRectangle() {
+    return myRectangle;
+  }
+
+  private double getX() {
     return myRectangle.getX();
   }
 
-  public double getY() {
+  private double getY() {
     return myRectangle.getY();
   }
 
-  public double getHeight() {
+  private double getHeight() {
     return myRectangle.getHeight();
   }
 
-  public double getWidth() {
+  private double getWidth() {
     return myRectangle.getWidth();
   }
 

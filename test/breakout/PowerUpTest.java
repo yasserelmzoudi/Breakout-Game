@@ -1,12 +1,11 @@
 package breakout;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 import javafx.scene.Scene;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -15,26 +14,30 @@ public class PowerUpTest extends DukeApplicationTest {
 
   private final Game myGame = new Game();
   private Scene myScene;
+
+  private Paddle myPaddle;
   private Rectangle myPaddleRectangle;
-  private Circle myBallCircle;
-  private Rectangle myBlockRectangle;
+  private Ball myBall;
+  private List<Ball> myBalls;
+  private List<PowerUp> myFallingPowerUps;
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    // create game's scene with all shapes in their initial positions and show it
     myScene = myGame.setupScene(Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
 
-    // find individual items within game by ID (must have been set in your code using setID())
-    myPaddleRectangle = lookup("#paddle").query();
-    myBallCircle = myGame.getBall().getCircle();
+    myPaddle = myGame.getPaddle();
+    myPaddleRectangle = myPaddle.getRectangle();
+    myBall = myGame.getBall();
+    myBalls = myGame.getBalls();
+    myFallingPowerUps = myGame.getFallingPowerUps();
   }
 
   @Test
   public void testPowerUpFall() {
     PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getFallingPowerUps().add(myPowerUp);
+    myFallingPowerUps.add(myPowerUp);
     myGame.step(Game.SECOND_DELAY);
     assertEquals(Game.SIZE / 2 + PowerUp.SPEED * Game.SECOND_DELAY + PowerUp.HEIGHT,
         myPowerUp.getBottom());
@@ -43,35 +46,35 @@ public class PowerUpTest extends DukeApplicationTest {
   @Test
   public void testMultiBallPowerUp() {
     PowerUp myPowerUp = new MultiBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getFallingPowerUps().add(myPowerUp);
-    while (myGame.getBalls().size() == 1) {
+    myFallingPowerUps.add(myPowerUp);
+    while (myBalls.size() == 1) {
       myGame.step(Game.SECOND_DELAY);
     }
-    assertEquals(3, myGame.getBalls().size());
+    assertEquals(3, myBalls.size());
   }
 
   @Test
   public void testExtendedPaddlePowerUp() {
     PowerUp myPowerUp = new ExtendedPaddlePowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getFallingPowerUps().add(myPowerUp);
-    while (myGame.getPaddle().getRectangle().getWidth() == Paddle.STARTING_WIDTH) {
+    myFallingPowerUps.add(myPowerUp);
+    while (myPaddleRectangle.getWidth() == Paddle.STARTING_WIDTH) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(Paddle.STARTING_WIDTH * ExtendedPaddlePowerUp.WIDTH_INCREASE,
-        myGame.getPaddle().getRectangle().getWidth());
+        myPaddleRectangle.getWidth());
   }
 
   @Test
   public void testSlowBallPowerUp() {
     PowerUp myPowerUp = new SlowBallPowerUp(Game.SIZE / 2, Game.SIZE / 2);
-    myGame.getFallingPowerUps().add(myPowerUp);
-    while (Math.abs(myGame.getBall().getVerticalSpeed()) == Ball.VERTICAL_SPEED) {
+    myFallingPowerUps.add(myPowerUp);
+    while (Math.abs(myBall.getVerticalSpeed()) == Ball.VERTICAL_SPEED) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(Ball.VERTICAL_SPEED * SlowBallPowerUp.SPEED_DECREASE,
-        Math.abs(myGame.getBall().getVerticalSpeed()));
+        Math.abs(myBall.getVerticalSpeed()));
     assertEquals(Ball.HORIZONTAL_SPEED * SlowBallPowerUp.SPEED_DECREASE,
-        Math.abs(myGame.getBall().getHorizontalSpeed()));
+        Math.abs(myBall.getHorizontalSpeed()));
   }
 
 }
