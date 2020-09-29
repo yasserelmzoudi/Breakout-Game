@@ -32,7 +32,7 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
-  public void testBounceOffPaddle() {
+  public void testBounceOffPaddle() throws IOException, URISyntaxException {
     while (myBall.getVerticalSpeed() > 0) {
       myGame.step(Game.SECOND_DELAY);
     }

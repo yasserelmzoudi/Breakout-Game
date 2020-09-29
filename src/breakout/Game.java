@@ -187,7 +187,7 @@ public class Game extends Application {
 
   private void checkLevelEnd() throws IOException, URISyntaxException {
     if (isLevelEnd()) {
-      //animation.stop();
+      animation.stop();
       currentLevelNumber++;
       start(stage);
     }
