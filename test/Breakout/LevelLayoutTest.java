@@ -1,7 +1,9 @@
-package breakout;
+package Breakout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import Bricks.Brick;
+import Bricks.UnbreakableBrick;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
