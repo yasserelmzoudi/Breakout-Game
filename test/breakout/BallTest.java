@@ -1,7 +1,7 @@
 package breakout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javafx.scene.Scene;
@@ -31,11 +31,52 @@ public class BallTest extends DukeApplicationTest {
   }
 
   @Test
+  public void testBallMovement() {
+    double myBallInitialY = myBall.getY();
+    myGame.step(Game.SECOND_DELAY);
+    assertNotEquals(myBallInitialY, myBall.getY());
+  }
+
+  @Test
   public void testBounceOffPaddle() {
     while (myBall.getVerticalSpeed() > 0) {
       myGame.step(Game.SECOND_DELAY);
     }
     assertEquals(-1 * Ball.VERTICAL_SPEED, myBall.getVerticalSpeed());
+  }
+
+  @Test
+  public void testBounceOffRightWall() {
+    myBall.setVerticalSpeed(0);
+    myBall.setHorizontalSpeed(120);
+    while(myBall.getHorizontalSpeed() > 0){
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(-120, myBall.getHorizontalSpeed());
+  }
+
+  @Test
+  public void testBounceOffLeftWall() {
+    myBall.setVerticalSpeed(0);
+    myBall.setHorizontalSpeed(-120);
+    while(myBall.getHorizontalSpeed() < 0){
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(120, myBall.getHorizontalSpeed());
+  }
+
+  @Test
+  public void testBounceOffBrick() {
+    myBall.setX(Game.SIZE / 2);
+    myBall.setY(Game.SIZE / 2);
+    myBall.setVerticalSpeed(-Ball.VERTICAL_SPEED);
+    myBall.setHorizontalSpeed(0);
+
+    while(myBall.getVerticalSpeed() < 0){
+      myGame.step(Game.SECOND_DELAY);
+    }
+    assertEquals(myBall.VERTICAL_SPEED, myBall.getVerticalSpeed());
+
   }
 
   @Test
