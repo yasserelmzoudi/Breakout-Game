@@ -45,8 +45,8 @@ public abstract class PowerUp {
 
   public boolean collisionWithPaddle(Paddle paddle) {
     return getBottom() >= Paddle.STARTING_Y && getTop() <= Paddle.STARTING_Y + Paddle.HEIGHT
-        && getRightSideX() >= paddle.getLeftSideX()
-        && getLeftSideX() <= paddle.getRightSideX();
+        && getRightSideX() >= paddle.getLeftX()
+        && getLeftSideX() <= paddle.getRightX();
   }
 
   public static PowerUp powerUpGenerator(double x, double y) {

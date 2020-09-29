@@ -39,8 +39,31 @@ public class Ball {
       if (horizontalSpeed == 0) {
         setHorizontalSpeed(HORIZONTAL_SPEED);
       }
-      bounceVertical();
+      if (topSidePaddleHit(paddle) || bottomSidePaddleHit(paddle)) {
+        bounceVertical();
+      }
+      else if (rightSidePaddleHit(paddle) || leftSidePaddleHit(paddle)) {
+        bounceHorizontal();
+      }
     }
+  }
+
+  private boolean leftSidePaddleHit(Paddle paddle) {
+    return getBottomY() >= paddle.getTopY() && getTopY() <= paddle.getBottomY();
+  }
+
+  private boolean rightSidePaddleHit(Paddle paddle) {
+    return getBottomY() >= paddle.getTopY() && getTopY() <= paddle.getBottomY();
+  }
+
+  private boolean bottomSidePaddleHit(Paddle paddle) {
+    return getRightX() >= paddle.getLeftX() && getLeftX() <= paddle.getRightX() && getTopY() >= paddle
+        .getBottomY();
+  }
+
+  private boolean topSidePaddleHit(Paddle paddle) {
+    return getRightX() >= paddle.getLeftX() && getLeftX() <= paddle.getRightX()
+        && getBottomY() <= paddle.getTopY();
   }
 
   private boolean isPaddleHit(Paddle paddle) {
