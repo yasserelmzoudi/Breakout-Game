@@ -10,7 +10,7 @@ public class MultiHitBrick extends Brick {
   private static final int STARTING_HEALTH = 3;
 
   private int myHealth;
-  private int myScore;
+  private final int myScore;
 
   public MultiHitBrick(int x, int y) {
     super(x, y);

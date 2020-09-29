@@ -16,8 +16,8 @@ public abstract class PowerUp {
   public static final Color BACKGROUND_COLOR = Color.ORANGE;
   public static final double MAX_POWER_UP_TIME = Game.FRAMES_PER_SECOND * 15;
 
-  private Text myText;
-  private Rectangle myRectangle;
+  private final Text myText;
+  private final Rectangle myRectangle;
 
   public PowerUp(double x, double y) {
     myText = new Text(getImageString());
@@ -29,6 +29,17 @@ public abstract class PowerUp {
     myRectangle = new Rectangle(x, y, LENGTH, HEIGHT);
     myRectangle.setFill(BACKGROUND_COLOR);
     myRectangle.setId("powerUpRectangle" + x + y);
+  }
+
+  public static PowerUp powerUpGenerator(double x, double y) {
+    PowerUp newPowerUp;
+    int randomPowerUpType = ThreadLocalRandom.current().nextInt(0, 3);
+    switch (randomPowerUpType) {
+      case 0 -> newPowerUp = new MultiBallPowerUp(x, y);
+      case 1 -> newPowerUp = new ExtendedPaddlePowerUp(x, y);
+      default -> newPowerUp = new SlowBallPowerUp(x, y);
+    }
+    return newPowerUp;
   }
 
   public boolean fallFromDestroyedBlock(Game game, double elapsedTime) {
@@ -47,17 +58,6 @@ public abstract class PowerUp {
     return getBottom() >= Paddle.STARTING_Y && getTop() <= Paddle.STARTING_Y + Paddle.HEIGHT
         && getRightSideX() >= paddle.getLeftX()
         && getLeftSideX() <= paddle.getRightX();
-  }
-
-  public static PowerUp powerUpGenerator(double x, double y) {
-    PowerUp newPowerUp;
-    int randomPowerUpType = ThreadLocalRandom.current().nextInt(0, 3);
-    switch(randomPowerUpType) {
-      case 0 -> newPowerUp = new MultiBallPowerUp(x, y);
-      case 1 -> newPowerUp = new ExtendedPaddlePowerUp(x, y);
-      default -> newPowerUp = new SlowBallPowerUp(x, y);
-    }
-    return newPowerUp;
   }
 
   public abstract void activate(Game game);
