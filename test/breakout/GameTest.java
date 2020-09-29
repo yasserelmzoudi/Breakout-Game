@@ -2,6 +2,8 @@ package breakout;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
@@ -16,20 +18,27 @@ public class GameTest extends DukeApplicationTest {
 
   private final Game myGame = new Game();
   private Scene myScene;
+  private Paddle myPaddle;
+  private Ball myBall;
+  private List<Brick> myBricks;
+  private Display myDisplay;
+
   private Rectangle myPaddleRectangle;
   private Circle myBallCircle;
-  private Rectangle myBlockRectangle;
+  private Rectangle myBrickRectangle;
 
   @Override
   public void start(Stage stage) throws IOException, URISyntaxException {
-    // create game's scene with all shapes in their initial positions and show it
     myScene = myGame.setupScene(Game.SIZE, Game.SIZE, Game.BACKGROUND);
     stage.setScene(myScene);
     stage.show();
 
-    // find individual items within game by ID (must have been set in your code using setID())
-    myPaddleRectangle = lookup("#paddle").query();
-    myBallCircle = myGame.getBall().getCircle();
+    myPaddle = myGame.getPaddle();
+    myPaddleRectangle = myPaddle.getRectangle();
+    myBall = myGame.getBall();
+    myBallCircle = myBall.getCircle();
+    myBricks = myGame.getBricks();
+    myDisplay = myGame.getDisplay();
   }
 
   @Test
@@ -38,7 +47,6 @@ public class GameTest extends DukeApplicationTest {
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
     assertEquals(Paddle.STARTING_WIDTH, myPaddleRectangle.getWidth());
     assertEquals(Paddle.HEIGHT, myPaddleRectangle.getHeight());
-    // sleep(1, TimeUnit.SECONDS); // If you want to see the test
   }
 
   @Test
@@ -46,25 +54,23 @@ public class GameTest extends DukeApplicationTest {
     assertEquals(Ball.STARTING_X, myBallCircle.getCenterX());
     assertEquals(Ball.STARTING_Y, myBallCircle.getCenterY());
     assertEquals(Ball.BALL_RADIUS, myBallCircle.getRadius());
-    assertEquals(0, myGame.getBall().getHorizontalSpeed());
+    assertEquals(0, myBall.getHorizontalSpeed());
     assertEquals(Ball.VERTICAL_SPEED, myGame.getBall().getVerticalSpeed());
-    // sleep(1, TimeUnit.SECONDS); // If you want to see the test
   }
 
   @Test
   public void testInitialBlockPositions() {
-    myBlockRectangle = lookup("#block00").query();
-    assertEquals(0, myBlockRectangle.getX());
-    assertEquals(0, myBlockRectangle.getY());
+    myBrickRectangle = lookup("#block00").query();
+    assertEquals(0, myBrickRectangle.getX());
+    assertEquals(0, myBrickRectangle.getY());
 
-    myBlockRectangle = lookup("#block040").query();
-    assertEquals(0, myBlockRectangle.getX());
-    assertEquals(40, myBlockRectangle.getY());
+    myBrickRectangle = lookup("#block040").query();
+    assertEquals(0, myBrickRectangle.getX());
+    assertEquals(40, myBrickRectangle.getY());
 
-    myBlockRectangle = lookup("#block080").query();
-    assertEquals(0, myBlockRectangle.getX());
-    assertEquals(80, myBlockRectangle.getY());
-    // sleep(1, TimeUnit.SECONDS); // If you want to see the test
+    myBrickRectangle = lookup("#block080").query();
+    assertEquals(0, myBrickRectangle.getX());
+    assertEquals(80, myBrickRectangle.getY());
   }
 
   @Test
@@ -81,20 +87,18 @@ public class GameTest extends DukeApplicationTest {
 
   @Test
   public void testBlockHit() {
-    myGame.getBall().setVerticalSpeed(-80);
-    int brickNum = myGame.getBricks().size();
-    while (myGame.getBall().getVerticalSpeed() < 0) {
+    myBall.setVerticalSpeed(-80);
+    int brickNum = myBricks.size();
+    while (myBall.getVerticalSpeed() < 0) {
       myGame.step(Game.SECOND_DELAY);
     }
-    assertEquals(brickNum - 1, myGame.getBricks().size());
-    assertEquals(Game.POINTS_FOR_HITTING_BRICK, myGame.getDisplay().getScore());
+    assertEquals(brickNum - 1, myBricks.size());
+    assertEquals(Game.POINTS_FOR_HITTING_BRICK, myDisplay.getScore());
   }
 
   @Test
   public void testReset() {
-    //sleep(1, TimeUnit.SECONDS);
     press(myScene, KeyCode.R);
-    //sleep(1, TimeUnit.SECONDS);
 
     assertEquals(Paddle.STARTING_X, myPaddleRectangle.getX());
     assertEquals(Paddle.STARTING_Y, myPaddleRectangle.getY());
@@ -123,14 +127,14 @@ public class GameTest extends DukeApplicationTest {
   @Test
   public void testExtraLife() {
     press(myScene, KeyCode.L);
-    assertEquals(Display.MAX_LIVES - Game.DIFFICULTY + 1, myGame.getDisplay().getLives());
+    assertEquals(Display.MAX_LIVES - Game.DIFFICULTY + 1, myDisplay.getLives());
   }
 
   @Test
   public void testBreakBlock() {
-    int brickNum = myGame.getBricks().size();
+    int brickNum = myBricks.size();
     press(myScene, KeyCode.B);
-    assertEquals(brickNum - 1, myGame.getBricks().size());
+    assertEquals(brickNum - 1, myBricks.size());
   }
 
 }
