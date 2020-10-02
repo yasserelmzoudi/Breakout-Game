@@ -294,34 +294,66 @@ public class Game extends Application {
     }
   }
 
+  /**
+   * Returns first ball created
+   * @return Ball representing first Ball created
+   */
   public Ball getBall() {
     return myBalls.get(MAIN_BALL);
   }
 
+  /**
+   * Returns List of Balls that are currently active
+   * @return List<Ball> representing Balls that are currently on the screen
+   */
   public List<Ball> getBalls() {
     return myBalls;
   }
 
+  /**
+   * Returns List of Bricks that are currently active
+   * @return List<Brick> representing Bricks that are currently on the screen
+   */
   public List<Brick> getBricks() {
     return myBricks;
   }
 
+  /**
+   * Returns Paddle that is currently on the screen
+   * @return Paddle representing the Paddle that is currently on the screen
+   */
   public Paddle getPaddle() {
     return myPaddle;
   }
 
+  /**
+   * Returns List of PowerUps that are currently active
+   * @return List<PowerUp> representing PowerUps that are currently active
+   */
   public List<PowerUp> getActivePowerUps() {
     return myActivePowerUps;
   }
 
+  /**
+   * Returns List of PowerUps that are currently falling from the screen
+   * @return List<PowerUp> representing PowerUps that are currently falling from the screen
+   */
   public List<PowerUp> getFallingPowerUps() {
     return myFallingPowerUps;
   }
 
+  /**
+   * Returns Group representing root of the Stage
+   * @return Group representing root of the Stage
+   */
   public Group getRoot() {
     return myRoot;
   }
 
+  /**
+   * Returns Game Display
+   * @return Display representing the current Display of the game
+   */
   public Display getDisplay() {
     return myDisplay;
   }
