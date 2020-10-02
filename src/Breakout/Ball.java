@@ -95,9 +95,10 @@ public class Ball {
    * Checks to see if a Ball has hit any wall and bounces off of the wall accordingly based on where
    * the wall is hit. Also, updates the Display in the case of a loss of life
    *
-   * @param myDisplay Display that is to be changed if a life is lost when a ball hits the bottom of a screen
-   * @param ballList List<Ball> representing all of the Balls that are currently active
-   * @param root Group representing the root of the Objects currently created
+   * @param myDisplay Display that is to be changed if a life is lost when a ball hits the bottom of
+   *                  a screen
+   * @param ballList  List<Ball> representing all of the Balls that are currently active
+   * @param root      Group representing the root of the Objects currently created
    */
   public void checkWallHit(Display myDisplay, List<Ball> ballList, Group root) {
     if (rightSideWallHit() || leftSideWallHit()) {
@@ -134,10 +135,12 @@ public class Ball {
   }
 
   /**
-   * Checks to see if a Ball has hit a given Brick and bounces off of the Brick accordingly based
-   * on where the Brick is hit
+   * Checks to see if a Ball has hit a given Brick and bounces off of the Brick accordingly based on
+   * where the Brick is hit
+   *
    * @param brick Brick representing brick that is checked for a collision with a Ball
-   * @return boolean representing if a Brick has been hit so that multiple collisions can be detected at once
+   * @return boolean representing if a Brick has been hit so that multiple collisions can be
+   * detected at once
    */
   public boolean checkBrickHit(Brick brick) {
     if (isBrickHit(brick)) {
@@ -158,6 +161,7 @@ public class Ball {
 
   /**
    * Provides a Ball's center x-coordinate
+   *
    * @return double representing a Ball's center x-coordinate
    */
   public double getX() {
@@ -166,13 +170,16 @@ public class Ball {
 
   /**
    * Sets a Ball's center x-coordinate to a provided value
+   *
    * @param x double representing a Ball's new center x-coordinate
    */
   public void setX(double x) {
     ball.setCenterX(x);
   }
+
   /**
    * Provides a Ball's center y-coordinate
+   *
    * @return double representing a Ball's center y-coordinate
    */
   public double getY() {
@@ -181,6 +188,7 @@ public class Ball {
 
   /**
    * Sets a Ball's center y-coordinate to a provided value
+   *
    * @param y double representing a Ball's new center y-coordinate
    */
   public void setY(double y) {
@@ -189,6 +197,7 @@ public class Ball {
 
   /**
    * Provides a Ball's current horizontal speed
+   *
    * @return double representing a Ball's horizontal speed
    */
   public double getHorizontalSpeed() {
@@ -197,6 +206,7 @@ public class Ball {
 
   /**
    * Set's a Ball's horizontal speed to a provided value
+   *
    * @param horizontalSpeed double representing a Ball's new horizontal speed
    */
   public void setHorizontalSpeed(double horizontalSpeed) {
@@ -205,6 +215,7 @@ public class Ball {
 
   /**
    * Provides a Ball's current vertical speed
+   *
    * @return double representing a Ball's vertical speed
    */
   public double getVerticalSpeed() {
@@ -213,6 +224,7 @@ public class Ball {
 
   /**
    * Set's a Ball's vertical speed to a provided value
+   *
    * @param verticalSpeed double representing a Ball's new vertical speed
    */
   public void setVerticalSpeed(double verticalSpeed) {
@@ -225,6 +237,7 @@ public class Ball {
 
   /**
    * Provides a Ball's Shape
+   *
    * @return Circle representing a Ball's Shape
    */
   public Circle getCircle() {
@@ -241,6 +254,7 @@ public class Ball {
 
   /**
    * Determines if a Ball hits the bottom wall
+   *
    * @return boolean representing if the bottom wall is hit
    */
   public boolean bottomSideWallHit() {

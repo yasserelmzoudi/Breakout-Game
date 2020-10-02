@@ -3,6 +3,9 @@ package Breakout;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+/**
+ *
+ */
 public class Display {
 
   public static final int MAX_LIVES = 4;
