@@ -9,10 +9,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
- * @author Yasser Elmzoudi, Jack Ellwood This class is dependent on the breakout package as well as
+ * This class is dependent on the breakout package as well as
  * the Paddle class and defines the characteristics of a Ball, whose Shape is a Circle. A Ball can
  * be created by simply calling new Ball() with no parameters as the default parameters of Ball have
  * already been set
+ * @author Yasser Elmzoudi, Jack Ellwood
  */
 public class Ball {
 

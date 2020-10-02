@@ -9,7 +9,9 @@ Jack Ellwood (jce22), Yasser Elmzoudi (ye9)
 
  Worked primarily on implementing the Brick and PowerUp abstractions and their concrete classes.  Also implemented the Paddle and Display classes.
 
- * Team Member #2
+ * Team Member #2: Yasser Elmzoudi
+ 
+ Worked primarily on implementing the Ball class and its collisions with Paddle and the walls. Also worked on integrating these Objects into Game and worked to design LevelLayout that would create the levels themselves
 
 
 ## Design goals
