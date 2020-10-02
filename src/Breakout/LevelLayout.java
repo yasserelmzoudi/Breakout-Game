@@ -170,16 +170,35 @@ import java.util.List;
 import java.util.Objects;
 import javafx.scene.Group;
 
+/**
+ * Creates and places Bricks from text file to represent the layout of a level
+ *
+ * @author Yasser Elmzoudi, Jack Ellwood
+ */
 public class LevelLayout {
 
   private final int levelNumber;
   private final Group groupRoot;
 
+  /**
+   * Creates the layout of a given level
+   * @param groupRoot Group representing root of the Game that Group should be added to
+   * @param levelNumber int representing the current level
+   */
   public LevelLayout(Group groupRoot, int levelNumber) {
     this.groupRoot = groupRoot;
     this.levelNumber = levelNumber;
   }
 
+  /**
+   * Reads Strings from data file and create Bricks accordingly
+   * @param root Group of the Game that Objects should be added to
+   * @param levelNumber int representing the current level
+   * @param bricks List<Brick> representing Bricks that are to be created
+   * @param unbreakableBricks int representing number of Bricks that cannot be destroyed
+   * @throws IOException if input is not valid
+   * @throws URISyntaxException if resource cannot be found
+   */
   public void buildBlocksFromFile(Group root, int levelNumber, List<Brick> bricks,
       int unbreakableBricks) // Maybe this method should be in Brick.java?
       throws IOException, URISyntaxException {
