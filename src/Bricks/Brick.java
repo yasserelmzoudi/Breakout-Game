@@ -10,6 +10,11 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Represents the abstraction of Brick that all subclasses are made from
+ *
+ * @author Yasser Elmzoudi, Jack Ellwood
+ */
 public abstract class Brick {
 
   public static final int LENGTH = 40;
@@ -32,11 +37,28 @@ public abstract class Brick {
     myRectangle.setFill(myColor);
   }
 
+  /**
+   * Activates the brick by setting score and destruction when hit
+   * @param display Display showing number of lives and score
+   * @param root Group of Objects to be added to Game
+   * @param bricks List of Bricks that should be updated once a Brick is destroyed
+   * @param powerUps List of PowerUps that could spawn from a Brick
+   */
   public abstract void activateBrick(Display display, Group root, List<Brick> bricks,
       List<PowerUp> powerUps);
 
+  /**
+   * Returns score of a Brick
+   * @return int representing score of a Brick
+   */
   public abstract int getScore();
 
+  /**
+   * Destroys a Brick and drops a random PowerUp
+   * @param root Group of Objects to be added to Game
+   * @param bricks List of Bricks that should be updated once a Brick is destroyed
+   * @param powerUps List of PowerUps that could spawn from a Brick
+   */
   public void destroyBrick(Group root, List<Brick> bricks, List<PowerUp> powerUps) {
     Platform.runLater(() -> root.getChildren().remove(myRectangle));
     bricks.remove(this);
@@ -53,6 +75,10 @@ public abstract class Brick {
     }
   }
 
+  /**
+   * Returns the Color of Brick
+   * @return Color representing Color of Brick
+   */
   public Color getColor() {
     return myColor;
   }
