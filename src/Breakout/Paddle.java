@@ -50,11 +50,11 @@ public class Paddle {
     }
   }
 
-  public double getX() {
+  private double getX() {
     return myRectangle.getX();
   }
 
-  public double getY() {
+  private double getY() {
     return myRectangle.getY();
   }
 
@@ -62,7 +62,7 @@ public class Paddle {
     return getX() + getWidth();
   }
 
-  public double getWidth() {
+  private double getWidth() {
     return myRectangle.getWidth();
   }
 
